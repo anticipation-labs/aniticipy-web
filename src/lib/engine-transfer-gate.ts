@@ -6,10 +6,16 @@ export const GATE_COOKIE_TTL_SECONDS = 15 * 60; // 15 minutes
 function getSecret(): string {
   // Reuse JWT_SECRET if available; otherwise a per-process default.
   // The signed value is just "valid" — the secret prevents forgery, not secrecy.
+  // Same reasoning as confirm-token.ts: the literal below is published in a
+  // public repo, and verifyGateCookie only ever checks the string "valid", so a
+  // known secret makes the whole cookie computable offline. Random in
+  // production, fixed in development.
   return (
     process.env.GATE_COOKIE_SECRET ||
     process.env.JWT_SECRET ||
-    "anticipy-engine-transfer-gate-default-secret"
+    (process.env.NODE_ENV === "production"
+      ? crypto.randomBytes(32).toString("hex")
+      : "anticipy-engine-transfer-gate-default-secret")
   );
 }
 

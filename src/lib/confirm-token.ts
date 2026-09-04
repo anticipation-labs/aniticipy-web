@@ -24,10 +24,17 @@ function getSecret(): string {
   // production, so it's a safe fallback. The signature is integrity-only
   // — leaking the secret would let an attacker forge confirm links, so it
   // must never be exposed to the client.
+  // A MISSING secret must not fall back to a literal that ships in this repo:
+  // the repo is public, so anyone could sign a valid 7-day confirm link. A
+  // random per-process value makes forgery impossible and costs only that links
+  // do not survive a restart -- the right trade for a signing key. Development
+  // keeps the fixed string so local work needs no env setup.
   return (
     process.env.JWT_SECRET ||
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    "anticipy-confirm-token-default-secret"
+    (process.env.NODE_ENV === "production"
+      ? crypto.randomBytes(32).toString("hex")
+      : "anticipy-confirm-token-default-secret")
   );
 }
 

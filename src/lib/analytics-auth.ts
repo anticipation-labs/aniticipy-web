@@ -1,9 +1,19 @@
 import crypto from "crypto";
 
+// In production a MISSING secret must not fall back to a literal that ships in
+// this repo -- the repo is public, so the HMAC would be computable by anyone and
+// the token forgeable offline. A random per-process value keeps the process
+// starting while making forgery impossible; the cost is that these tokens do not
+// survive a restart, which is the correct trade for a gate. Development keeps the
+// fixed string so local work needs no env setup. This mirrors the password check
+// below, which already returns false in production rather than accepting a
+// published default.
 const SECRET =
   process.env.ANALYTICS_SECRET ||
   process.env.SUPABASE_SERVICE_ROLE_KEY ||
-  "anticipy-analytics-default-secret-not-for-prod";
+  (process.env.NODE_ENV === "production"
+    ? crypto.randomBytes(32).toString("hex")
+    : "anticipy-analytics-default-secret-not-for-prod");
 
 const TOKEN_PAYLOAD = "anticipy-analytics-v1";
 
