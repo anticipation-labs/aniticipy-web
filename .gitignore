@@ -110,3 +110,11 @@ desktop/src-tauri/resources/parakeet-tdt-0.6b-v3/config.json
 desktop/target/
 desktop/src-tauri/target/
 *.dmg
+# ...but NOT this one. `*.dmg` is meant for DMG BINARIES, and it also matches a
+# DIRECTORY whose name ends .dmg -- which src/app/dl/ has, because the route
+# serves a file of that name. Without this negation `git add` silently skips a
+# real source file, so the download route is missing from a fresh clone while a
+# build from a dirty working copy still passes. Git cannot re-include a file
+# whose parent directory is excluded, so the DIRECTORY is what must be negated,
+# and it must come AFTER the `*.dmg` line: last match wins.
+!src/app/dl/Anticipy_1.0.0_aarch64.dmg/
