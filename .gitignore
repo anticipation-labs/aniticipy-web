@@ -118,3 +118,7 @@ desktop/src-tauri/target/
 # whose parent directory is excluded, so the DIRECTORY is what must be negated,
 # and it must come AFTER the `*.dmg` line: last match wins.
 !src/app/dl/Anticipy_1.0.0_aarch64.dmg/
+
+# Cloudflare / OpenNext build output
+.open-next/
+.wrangler/

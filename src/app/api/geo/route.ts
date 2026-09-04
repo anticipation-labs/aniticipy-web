@@ -1,12 +1,11 @@
 import { NextRequest, NextResponse } from "next/server";
 
-export const runtime = "edge";
 export const dynamic = "force-dynamic";
 
 /**
  * Best-effort "where is this person" for prefilling the location field.
  *
- * Uses the geo headers Vercel already attaches at the edge rather than the
+ * Uses the geo headers the platform already attaches at the edge rather than the
  * browser Geolocation API. That choice matters for this page specifically:
  * Geolocation throws a permission prompt, and asking a candidate for GPS
  * access before they have typed a word is exactly the kind of friction that
@@ -22,7 +21,7 @@ export function GET(request: NextRequest) {
 
   const decode = (v: string | null): string => {
     if (!v) return "";
-    // Vercel percent-encodes non-ASCII city names (e.g. Montr%C3%A9al).
+    // Both platforms percent-encode non-ASCII city names (e.g. Montr%C3%A9al).
     try {
       return decodeURIComponent(v);
     } catch {
@@ -30,9 +29,25 @@ export function GET(request: NextRequest) {
     }
   };
 
-  const city = decode(h.get("x-vercel-ip-city"));
-  const region = decode(h.get("x-vercel-ip-country-region"));
-  const countryCode = decode(h.get("x-vercel-ip-country"));
+  // Cloudflare first, Vercel second. Both are read for the whole cutover
+  // window so this route is correct wherever it happens to be running, and
+  // nothing here changes on the day traffic moves.
+  //
+  // The Cloudflare names come from the "Add visitor location headers"
+  // managed transform, which MUST be enabled on the zone or all three are
+  // absent and the field simply prefills empty -- the same graceful nothing
+  // this route already returns for an unknown visitor.
+  const first = (...names: string[]): string => {
+    for (const n of names) {
+      const v = decode(h.get(n));
+      if (v) return v;
+    }
+    return "";
+  };
+
+  const city = first("cf-ipcity", "x-vercel-ip-city");
+  const region = first("cf-region", "x-vercel-ip-country-region");
+  const countryCode = first("cf-ipcountry", "x-vercel-ip-country");
 
   const COUNTRY: Record<string, string> = {
     US: "United States",
