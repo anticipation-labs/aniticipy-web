@@ -79,8 +79,10 @@ const nextConfig = {
       //
       // A fellow's minted link. /c/* was the old creator link shape and is
       // pointed at the same place so anything already posted keeps working.
-      { source: "/r/:code", destination: `${FELLOWSHIP_ORIGIN}/r/:code` },
-      { source: "/c/:code", destination: `${FELLOWSHIP_ORIGIN}/r/:code` },
+      // /r/:code and /c/:code are NO LONGER REWRITTEN. They are route handlers
+      // at src/app/r/[code] and src/app/c/[code], because a rewrite proxy's
+      // redirect handling differs between Vercel and OpenNext and the 302 those
+      // links return IS the attribution. See the comment in either file.
       // HQ — the team's own workspace — now answers at anticipy.ai/internal.
       //
       // It used to be reachable only at the raw Railway hostname, because
