@@ -1,5 +1,15 @@
 import crypto from "crypto";
 
+// Module scope, not inside getSecret(): signGateCookie and verifyGateCookie
+// both call getSecret(), so a random generated per call would never verify and
+// the gate would be permanently shut. Per-process is unforgeable and consistent
+// within a running instance.
+const PROCESS_FALLBACK_SECRET =
+  process.env.NODE_ENV === "production"
+    ? crypto.randomBytes(32).toString("hex")
+    : "anticipy-engine-transfer-gate-default-secret";
+
+
 export const GATE_COOKIE_NAME = "engine_transfer_gate";
 export const GATE_COOKIE_TTL_SECONDS = 15 * 60; // 15 minutes
 
@@ -13,9 +23,7 @@ function getSecret(): string {
   return (
     process.env.GATE_COOKIE_SECRET ||
     process.env.JWT_SECRET ||
-    (process.env.NODE_ENV === "production"
-      ? crypto.randomBytes(32).toString("hex")
-      : "anticipy-engine-transfer-gate-default-secret")
+    PROCESS_FALLBACK_SECRET
   );
 }
 

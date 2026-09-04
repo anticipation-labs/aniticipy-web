@@ -17,6 +17,16 @@
  */
 import crypto from "crypto";
 
+// Computed ONCE, at module scope, and that is the whole point: getSecret() is
+// called on every sign AND every verify, so generating the random here inside
+// the function would hand each call a different key and no signature would ever
+// validate. A per-PROCESS secret is unforgeable and still round-trips.
+const PROCESS_FALLBACK_SECRET =
+  process.env.NODE_ENV === "production"
+    ? crypto.randomBytes(32).toString("hex")
+    : "anticipy-confirm-token-default-secret";
+
+
 export const CONFIRM_TOKEN_TTL_MS = 7 * 24 * 60 * 60 * 1000; // 7 days
 
 function getSecret(): string {
@@ -32,9 +42,7 @@ function getSecret(): string {
   return (
     process.env.JWT_SECRET ||
     process.env.SUPABASE_SERVICE_ROLE_KEY ||
-    (process.env.NODE_ENV === "production"
-      ? crypto.randomBytes(32).toString("hex")
-      : "anticipy-confirm-token-default-secret")
+    PROCESS_FALLBACK_SECRET
   );
 }
 
