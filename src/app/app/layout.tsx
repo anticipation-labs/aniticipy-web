@@ -1,5 +1,11 @@
 import type { Metadata } from "next";
 
+// FIX 2026-09-05: on the OpenNext/Cloudflare build, the statically prerendered
+// "/app" route resolved to the root homepage (both are static app-router pages
+// and the worker confused them), breaking signup/login at cutover. Forcing this
+// segment dynamic takes it out of the static-prerender path so it routes correctly.
+export const dynamic = "force-dynamic";
+
 // B011 + B013: /app needs its own title + description, distinct from the
 // marketing homepage. Previously the root layout set title='Anticipy App'
 // and a /app-centric description for every route, which buried the
