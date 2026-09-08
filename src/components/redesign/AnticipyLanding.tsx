@@ -2,6 +2,8 @@
 
 import { FormEvent, useEffect, useRef, useState } from "react";
 import "./landing.css";
+import "./revision.css";
+import { PendantScene, type PendantSceneHandle } from "./PendantScene";
 
 const STORE = "https://www.anticipy.ai";
 const STEPS = [
@@ -19,6 +21,119 @@ const STEPS = [
     title: "You give the go-ahead.",
     subtitle: "Your say. Every step of the way.",
     text: "Review the action. Approve it when it’s right. Anticipy follows through and keeps a receipt, so you know it’s done.",
+  },
+];
+const BENEFITS = [
+  {
+    title: (
+      <>
+        A thought.
+        <br />A little follow-through.
+      </>
+    ),
+    label: "A MOMENT, REMEMBERED",
+    title2: "Send Marcus the notes.",
+    text: "The promise you made over coffee, ready when you are.",
+    note: "Catch the things you mean to do.",
+  },
+  {
+    title: (
+      <>
+        Your words.
+        <br />
+        The whole picture.
+      </>
+    ),
+    label: "THE CONTEXT MATTERS",
+    title2: "Leave out the budget slide.",
+    text: "The small correction that makes the next step the right one.",
+    note: "Keep the detail that makes it yours.",
+  },
+  {
+    title: (
+      <>
+        Your decision.
+        <br />A little less to do.
+      </>
+    ),
+    label: "READY FOR YOUR REVIEW",
+    title2: "Looks right? Give it the go-ahead.",
+    text: "Review the action, approve it, and keep a record of the result.",
+    note: "You stay in charge. Always.",
+  },
+];
+const HARDWARE = [
+  {
+    title: (
+      <>
+        Quietly
+        <br />
+        sculpted.
+      </>
+    ),
+    subtitle: "A small presence. A considered shape.",
+    bullets: [
+      "A continuous, domed silhouette",
+      "A tactile brushed metal finish",
+      "A fine chain at the shoulders",
+    ],
+    tag: "THE OUTSIDE",
+    label: "Brushed titanium",
+    caption: "A softer side of technology.",
+  },
+  {
+    title: (
+      <>
+        A closer
+        <br />
+        look inside.
+      </>
+    ),
+    subtitle: "Every layer has a purpose.",
+    bullets: [
+      "Sculpted front enclosure",
+      "The intelligence at its centre",
+      "A gently curved rear shell",
+    ],
+    tag: "THE INSIDE",
+    label: "Layer by layer",
+    caption: "Thoughtful on the inside, too.",
+  },
+  {
+    title: (
+      <>
+        Designed
+        <br />
+        around you.
+      </>
+    ),
+    subtitle: "Technology that gives you the say.",
+    bullets: [
+      "Review actions before they happen",
+      "Choose how your information is used",
+      "See a record of what gets done",
+    ],
+    tag: "THE DETAIL",
+    label: "Your control",
+    caption: "A clear view. A clear next step.",
+  },
+  {
+    title: (
+      <>
+        Back to
+        <br />
+        your day.
+      </>
+    ),
+    subtitle: "All that possibility. One little object.",
+    bullets: [
+      "Wear it on a fine chain",
+      "Keep the moment in the real world",
+      "Let a good thought become a next step",
+    ],
+    tag: "THE EVERYDAY",
+    label: "Made to be with you",
+    caption: "Less on your mind. More in your life.",
   },
 ];
 const FAQ = [
@@ -129,6 +244,11 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
   const menuButton = useRef<HTMLButtonElement>(null);
   const story = useRef<HTMLElement>(null);
   const hardware = useRef<HTMLElement>(null);
+  const benefits = useRef<HTMLElement>(null);
+  const hardwareScene = useRef<PendantSceneHandle>(null);
+  const benefitScene = useRef<PendantSceneHandle>(null);
+  const [benefitStep, setBenefitStep] = useState(0);
+  const [hardwareStep, setHardwareStep] = useState(0);
   const [menu, setMenu] = useState(false);
   const [intro, setIntro] = useState(true);
   const [step, setStep] = useState(0);
@@ -150,7 +270,7 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
     query.addEventListener("change", onPreference);
     const timer = window.setTimeout(
       () => setIntro(false),
-      query.matches || window.location.hash ? 0 : 1700,
+      query.matches || window.location.hash ? 0 : 2300,
     );
     return () => {
       window.clearTimeout(timer);
@@ -176,22 +296,32 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
         story.current &&
         motion &&
         window.innerWidth > 800 &&
-        window.innerHeight >= 780
+        window.innerHeight >= 680
       ) {
         const rect = story.current.getBoundingClientRect();
         const p = clamp(-rect.top / Math.max(1, rect.height - h));
         setStep(Math.min(2, Math.floor(p * 3)));
         story.current.style.setProperty("--story-progress", String(p));
       }
-      if (hardware.current) {
-        const rect = hardware.current.getBoundingClientRect();
-        const stickyHeight =
-          hardware.current.firstElementChild?.getBoundingClientRect().height ??
+      for (const [section, scene, count, setStage, property] of [
+        [benefits, benefitScene, 3, setBenefitStep, "--benefit-progress"],
+        [hardware, hardwareScene, 4, setHardwareStep, "--hardware-progress"],
+      ] as const) {
+        if (!section.current || !motion || h < 680) continue;
+        const rect = section.current.getBoundingClientRect();
+        const stageHeight =
+          section.current.firstElementChild?.getBoundingClientRect().height ??
           h;
-        const p = motion
-          ? clamp(-rect.top / Math.max(1, rect.height - stickyHeight))
-          : 1;
-        hardware.current.style.setProperty("--hardware-progress", String(p));
+        const stickyTop =
+          parseFloat(
+            getComputedStyle(section.current.firstElementChild as Element).top,
+          ) || 0;
+        const p = clamp(
+          (stickyTop - rect.top) / Math.max(1, rect.height - stageHeight),
+        );
+        section.current.style.setProperty(property, String(p));
+        scene.current?.setProgress(p);
+        setStage(Math.min(count - 1, Math.floor(p * count)));
       }
     };
     const requestUpdate = () => {
@@ -255,7 +385,7 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
       story.current &&
       motion &&
       window.innerWidth > 800 &&
-      window.innerHeight >= 780
+      window.innerHeight >= 680
     ) {
       const y =
         window.scrollY +
@@ -263,6 +393,38 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
         (story.current.offsetHeight - window.innerHeight) *
           ((index + 0.35) / 3);
       window.scrollTo({ top: y, behavior: "smooth" });
+    }
+  };
+  const chooseProductChapter = (
+    kind: "benefits" | "hardware",
+    index: number,
+  ) => {
+    const section = kind === "benefits" ? benefits.current : hardware.current;
+    const positions =
+      kind === "benefits" ? [0.05, 0.5, 0.95] : [0.04, 0.35, 0.62, 0.98];
+    const progress = positions[index];
+    section?.style.setProperty(
+      kind === "benefits" ? "--benefit-progress" : "--hardware-progress",
+      String(progress),
+    );
+    (kind === "benefits" ? setBenefitStep : setHardwareStep)(index);
+    (kind === "benefits" ? benefitScene : hardwareScene).current?.setProgress(
+      progress,
+    );
+    if (motion && section && window.innerHeight >= 680) {
+      const stageHeight =
+        section.firstElementChild?.getBoundingClientRect().height ??
+        window.innerHeight;
+      window.scrollTo({
+        top:
+          window.scrollY +
+          section.getBoundingClientRect().top -
+          (parseFloat(
+            getComputedStyle(section.firstElementChild as Element).top,
+          ) || 0) +
+          (section.offsetHeight - stageHeight) * progress,
+        behavior: "smooth",
+      });
     }
   };
   const submitWaitlist = async (e: FormEvent<HTMLFormElement>) => {
@@ -300,14 +462,88 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
         Skip to content
       </a>
       <div className="ap-intro" aria-hidden="true">
-        <div className="ap-orbit">
-          <i />
-          <i />
-          <i />
-          <span>anticipy</span>
-          <b className="ap-cross ap-cross-a">+</b>
-          <b className="ap-cross ap-cross-b">+</b>
-        </div>
+        <svg className="ap-construction" viewBox="0 0 800 800" fill="none">
+          <defs>
+            <pattern
+              id="ap-grid"
+              width="100"
+              height="100"
+              patternUnits="userSpaceOnUse"
+            >
+              <path
+                d="M100 0H0V100"
+                stroke="currentColor"
+                strokeOpacity=".1"
+                strokeDasharray="3 6"
+              />
+            </pattern>
+          </defs>
+          <rect width="800" height="800" fill="url(#ap-grid)" />
+          <rect
+            className="ap-drawn-pendant"
+            x="280"
+            y="160"
+            width="240"
+            height="480"
+            rx="120"
+            stroke="currentColor"
+            strokeWidth="1.5"
+            strokeDasharray="3 5"
+          />
+          <g className="ap-construction-ring">
+            <circle
+              cx="400"
+              cy="400"
+              r="240"
+              fill="currentColor"
+              fillOpacity=".035"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeDasharray="3 5"
+            />
+            <circle
+              cx="400"
+              cy="400"
+              r="112"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeDasharray="3 5"
+            />
+          </g>
+          {[160, 288, 512, 640].map((line, index) => (
+            <g
+              className="ap-construction-handle"
+              key={line}
+              style={{ animationDelay: `${index * 0.08}s` }}
+            >
+              <path
+                d={`M${line} 310v180M310 ${line}h180`}
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              {[310, 490].map((v) => (
+                <g key={v}>
+                  <circle cx={line} cy={v} r="4" fill="currentColor" />
+                  <circle cx={v} cy={line} r="4" fill="currentColor" />
+                </g>
+              ))}
+              <rect
+                x={line - 4}
+                y="396"
+                width="8"
+                height="8"
+                fill="currentColor"
+              />
+              <rect
+                x="396"
+                y={line - 4}
+                width="8"
+                height="8"
+                fill="currentColor"
+              />
+            </g>
+          ))}
+        </svg>
         <p>ANTICIPATION LABS · A LITTLE AHEAD</p>
       </div>
       <noscript>
@@ -457,6 +693,164 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
               do. Anticipy helps carry it forward, so you can stay in the
               moment.
             </p>
+          </div>
+        </section>
+
+        <section
+          ref={benefits}
+          className="ap-benefits"
+          id="product-story"
+          aria-label="The everyday companion"
+        >
+          <div className="ap-benefits-sticky">
+            <div className="ap-chapter-track" aria-hidden="true">
+              {BENEFITS.map((_, i) => (
+                <i key={i} className={i <= benefitStep ? "active" : ""} />
+              ))}
+            </div>
+            <div className="ap-benefit-heading" key={benefitStep}>
+              <span className="ap-kicker">
+                THE EVERYDAY COMPANION / 0{benefitStep + 1}
+              </span>
+              <h2>{BENEFITS[benefitStep].title}</h2>
+              <p>{BENEFITS[benefitStep].note}</p>
+            </div>
+            <div
+              className="ap-benefit-object"
+              role="img"
+              aria-label="Anticipy pendant rotating through views of its sculpted metal enclosure"
+            >
+              <PendantScene ref={benefitScene} mode="benefits" />
+            </div>
+            <div className="ap-benefit-context" key={"card" + benefitStep}>
+              <span className="ap-kicker">{BENEFITS[benefitStep].label}</span>
+              <div className="ap-benefit-card">
+                <Mark
+                  type={
+                    benefitStep === 0
+                      ? "sound"
+                      : benefitStep === 1
+                        ? "context"
+                        : "check"
+                  }
+                />
+                <div>
+                  <h3>{BENEFITS[benefitStep].title2}</h3>
+                  <p>{BENEFITS[benefitStep].text}</p>
+                </div>
+              </div>
+            </div>
+            <div className="ap-product-bottom">
+              <span>ONE LITTLE OBJECT. A LITTLE MORE HEADSPACE.</span>
+              <div role="group" aria-label="Product story chapters">
+                {BENEFITS.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => chooseProductChapter("benefits", i)}
+                    aria-pressed={benefitStep === i}
+                    aria-label={`Product story ${i + 1}: ${BENEFITS[i].note}`}
+                  >
+                    0{i + 1}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="ap-lifestyle" data-section-id="worn">
+          <img
+            src="/redesign/pendant-lifestyle.webp"
+            alt="The small silver Anticipy pendant worn on a fine chain with a cream knit top in natural sunlight"
+            width="2688"
+            height="1520"
+            loading="lazy"
+          />
+          <div className="ap-lifestyle-shade" />
+          <div className="ap-lifestyle-top">
+            <span className="ap-kicker">
+              LESS SCREEN TIME.
+              <br />
+              MORE LIFE TIME.
+            </span>
+            <span className="ap-kicker">02 / WORN, NOT NOTICED.</span>
+          </div>
+          <div className="ap-lifestyle-copy ap-reveal">
+            <h2>
+              Keep your head
+              <br />
+              in the real world.
+            </h2>
+            <p>
+              A quiet companion.
+              <br />
+              For a beautifully busy life.
+            </p>
+          </div>
+          <div className="ap-lifestyle-caption">
+            <i /> Just you. And a little backup.
+          </div>
+        </section>
+
+        <section
+          tabIndex={-1}
+          id="pendant"
+          ref={hardware}
+          className="ap-engineering"
+          data-section-id="pendant"
+          aria-label="Explore the pendant"
+        >
+          <div className="ap-engineering-sticky" data-chapter={hardwareStep}>
+            <div className="ap-engineering-top">
+              <span className="ap-kicker">03 / AN OBJECT, CONSIDERED.</span>
+              <span className="ap-kicker">ANTICIPY — FROM EVERY ANGLE</span>
+            </div>
+            <div className="ap-engineering-copy" key={hardwareStep}>
+              <h2>{HARDWARE[hardwareStep].title}</h2>
+              <p>{HARDWARE[hardwareStep].subtitle}</p>
+              <ul>
+                {HARDWARE[hardwareStep].bullets.map((text) => (
+                  <li key={text}>{text}</li>
+                ))}
+              </ul>
+            </div>
+            <div
+              className="ap-engineering-object"
+              role="img"
+              aria-label="Interactive concept study of the pendant: solid metal, separated shell and board, technical contours, and reassembled enclosure"
+            >
+              <PendantScene ref={hardwareScene} mode="hardware" />
+            </div>
+            <div className="ap-inspector" aria-hidden="true">
+              <span className="ap-inspector-plus">+</span>
+              <div className="ap-inspector-card">
+                <span>{HARDWARE[hardwareStep].tag}</span>
+                <strong>{HARDWARE[hardwareStep].label}</strong>
+              </div>
+              <div className="ap-inspector-caption">
+                {HARDWARE[hardwareStep].caption}
+              </div>
+            </div>
+            <div
+              className="ap-engineering-index"
+              role="group"
+              aria-label="Pendant views"
+            >
+              {["Shape", "Layers", "Detail", "Everyday"].map((label, i) => (
+                <button
+                  key={label}
+                  onClick={() => chooseProductChapter("hardware", i)}
+                  aria-pressed={hardwareStep === i}
+                >
+                  <span>{label}</span>
+                  <b>0{i + 1}</b>
+                </button>
+              ))}
+            </div>
+            <div className="ap-engineering-bottom">
+              <span>SCROLL TO LOOK CLOSER ↓</span>
+              <span>DESIGN STUDY · INTERNAL LAYOUT IS CONCEPTUAL</span>
+            </div>
           </div>
         </section>
 
@@ -660,122 +1054,6 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           </div>
         </section>
 
-        <section className="ap-lifestyle" data-section-id="worn">
-          <img
-            src="/redesign/pendant-lifestyle.webp"
-            alt="The small silver Anticipy pendant worn on a fine chain with a cream knit top in natural sunlight"
-            width="2688"
-            height="1520"
-            loading="lazy"
-          />
-          <div className="ap-lifestyle-shade" />
-          <div className="ap-lifestyle-top">
-            <span className="ap-kicker">
-              LESS SCREEN TIME.
-              <br />
-              MORE LIFE TIME.
-            </span>
-            <span className="ap-kicker">02 / WORN, NOT NOTICED.</span>
-          </div>
-          <div className="ap-lifestyle-copy ap-reveal">
-            <h2>
-              Keep your head
-              <br />
-              in the real world.
-            </h2>
-            <p>
-              A quiet companion.
-              <br />
-              For a beautifully busy life.
-            </p>
-          </div>
-          <div className="ap-lifestyle-caption">
-            <i /> Just you. And a little backup.
-          </div>
-        </section>
-
-        <section
-          tabIndex={-1}
-          id="pendant"
-          ref={hardware}
-          className="ap-hardware"
-          data-section-id="pendant"
-        >
-          <div className="ap-hardware-sticky">
-            <div className="ap-section-line">
-              <span className="ap-kicker">03 / SMALL ON THE OUTSIDE.</span>
-              <span className="ap-kicker">THOUGHTFULLY PUT TOGETHER.</span>
-            </div>
-            <div className="ap-hardware-copy">
-              <h2>
-                A little wonder.
-                <br />
-                <span>Layer by layer.</span>
-              </h2>
-              <p>
-                Thoughtful on the inside.
-                <br />
-                Beautiful in the everyday.
-              </p>
-            </div>
-            <div
-              className="ap-hardware-visual"
-              role="img"
-              aria-label="Conceptual exploded study: a silver pendant shell separates from its green circuit board and rear enclosure as you scroll."
-            >
-              <div className="ap-hardware-layers" aria-hidden="true">
-                {["back", "board", "front"].map((layer) => (
-                  <div
-                    className={"ap-hardware-layer ap-layer-" + layer}
-                    key={layer}
-                  >
-                    <img
-                      src="/redesign/exploded-cutout.webp"
-                      alt=""
-                      width="2048"
-                      height="1158"
-                      loading="lazy"
-                    />
-                  </div>
-                ))}
-              </div>
-            </div>
-            <div className="ap-hardware-label ap-hardware-label-one">
-              <span>01</span>
-              <div>
-                <strong>Brushed titanium</strong>
-                <p>A tactile, quietly sculpted shell.</p>
-              </div>
-            </div>
-            <div className="ap-hardware-label ap-hardware-label-two">
-              <span>02</span>
-              <div>
-                <strong>A little intelligence</strong>
-                <p>From a moment to a next step.</p>
-              </div>
-            </div>
-            <div className="ap-hardware-label ap-hardware-label-three">
-              <span>03</span>
-              <div>
-                <strong>Everyday by design</strong>
-                <p>Made to go where you go.</p>
-              </div>
-            </div>
-            <div className="ap-hardware-bottom">
-              <span className="ap-kicker">SCROLL TO EXPLORE THE LAYERS ↓</span>
-              <a
-                className="ap-film-link"
-                href="/redesign/pendant-disassembly.mp4"
-                target="_blank"
-                rel="noreferrer"
-              >
-                Watch the concept film <Arrow diagonal />
-              </a>
-              <span>CONCEPT VISUALIZATION · FINAL HARDWARE MAY DIFFER</span>
-            </div>
-          </div>
-        </section>
-
         <section
           tabIndex={-1}
           id="privacy"
@@ -849,6 +1127,36 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
                 <p>{a}</p>
               </details>
             ))}
+          </div>
+        </section>
+
+        <section
+          className="ap-stone"
+          aria-label="Made for life beyond the screen"
+        >
+          <img
+            src="/redesign/pendant-stone.webp"
+            alt="The silver Anticipy pendant resting on warm pale travertine in natural light"
+            width="2752"
+            height="1536"
+            loading="lazy"
+          />
+          <div className="ap-stone-copy">
+            <span className="ap-kicker">
+              A LITTLE LESS SCREEN. A LITTLE MORE LIFE.
+            </span>
+            <h2>
+              Ready for
+              <br />
+              the real world.
+            </h2>
+            <p>A small companion for everything you have going on.</p>
+            <Button href={STORE + "/pre-orders/purchase"}>
+              Make room for a little less
+            </Button>
+          </div>
+          <div className="ap-stone-caption">
+            BRUSHED TITANIUM. EVERYDAY POSSIBILITY.
           </div>
         </section>
 

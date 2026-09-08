@@ -30,7 +30,11 @@ const { html } = createRequire(import.meta.url)(
 );
 await build({
   entryPoints: ["design-preview/client.tsx"],
-  outfile: "dist/assets/site.js",
+  outdir: "dist/assets",
+  entryNames: "site",
+  chunkNames: "chunks/[name]-[hash]",
+  format: "esm",
+  splitting: true,
   bundle: true,
   minify: true,
   jsx: "automatic",
@@ -44,7 +48,7 @@ await cp("public/og.png", "dist/og.png");
 await cp("src/app/icon.svg", "dist/icon.svg");
 await writeFile(
   "dist/index.html",
-  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#f1f2f3"><meta name="robots" content="noindex"><title>Anticipy — Life, a little lighter.</title><meta name="description" content="Meet Anticipy, the titanium AI pendant that turns the things you say into the things you get done."><meta property="og:title" content="Anticipy — Life, a little lighter."><meta property="og:description" content="A quiet companion for a beautifully busy life."><meta property="og:image" content="/og.png"><link rel="icon" href="/icon.svg"><link rel="preload" href="/redesign/fonts/dm-sans-regular.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/assets/site.css"><style>html{scroll-behavior:smooth}body{margin:0}button,input{font:inherit}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style></head><body><div id="root">${html}</div><script type="module" src="/assets/site.js"></script></body></html>`,
+  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#faf8f4"><meta name="robots" content="noindex"><title>Anticipy — Life, a little lighter.</title><meta name="description" content="Meet Anticipy, the titanium AI pendant that turns the things you say into the things you get done."><meta property="og:title" content="Anticipy — Life, a little lighter."><meta property="og:description" content="A quiet companion for a beautifully busy life."><meta property="og:image" content="/og.png"><link rel="icon" href="/icon.svg"><link rel="preload" href="/redesign/fonts/dm-sans-regular.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/assets/site.css"><style>html{scroll-behavior:auto}body{margin:0}button,input{font:inherit}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style></head><body><div id="root">${html}</div><script type="module" src="/assets/site.js"></script></body></html>`,
 );
 await writeFile("dist/robots.txt", "User-agent: *\nDisallow: /\n");
 console.log("Static review build ready in dist/");
