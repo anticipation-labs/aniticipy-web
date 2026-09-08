@@ -118,7 +118,8 @@ export function OfferMount() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (armed.current) return;
-    if (SUPPRESSED.some((p) => pathname?.startsWith(p))) return;
+    // Keep the homepage product story uninterrupted; purchase links stay visible.
+    if (pathname === "/" || SUPPRESSED.some((p) => pathname?.startsWith(p))) return;
     if (isBot() && !window.location.search.includes("popup=force")) return;
     if (!eligibleByFrequency()) return;
 
@@ -231,7 +232,7 @@ export function OfferMount() {
     };
   }, [pathname]);
 
-  if (!offer) return null;
+  if (!offer || pathname === "/") return null;
 
   return (
     <OfferDialog
