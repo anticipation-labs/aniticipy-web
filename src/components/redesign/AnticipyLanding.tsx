@@ -6,11 +6,13 @@ import "./revision.css";
 import "./conversion.css";
 import "./action.css";
 import "./clarity.css";
+import "./purchase.css";
 import { ActionExperience, PrototypeTrust } from "./ActionExperience";
 import { ActionFAQ, ActionManifesto, FinishPicker } from "./ActionSections";
 import { FINISHES, PENDANT, type PendantFinish } from "./pendant-design";
 import { PendantScene, type PendantSceneHandle } from "./PendantScene";
 import { PhotorealPendantScene } from "./PhotorealPendantScene";
+import { PurchaseGallery } from "./PurchaseGallery";
 
 const STORE = "https://www.anticipy.ai";
 const BENEFITS = [
@@ -36,8 +38,8 @@ const BENEFITS = [
       </>
     ),
     label: "THE CONTEXT MATTERS",
-    title2: "Friday. At seven. With Alex.",
-    text: "An action needs the right person, timing and context, not just a transcript.",
+    title2: "The meaning behind your words.",
+    text: "Anticipy carries the details that matter from your conversation into the next step.",
     note: "The context goes with the task.",
   },
   {
@@ -939,100 +941,100 @@ export function AnticipyLanding({
         </section>
 
         <section
-          className="ap-close ap-order"
+          className="ap-close ap-order ap-purchase"
           id="order"
           data-section-id="order"
         >
-          <div className="ap-order-product">
-            <span className="ap-kicker">YOUR PERSONAL AI ACTION TAKER</span>
-            <img
-              src={FINISHES[finish].image}
-              alt={
-                "The seamless " +
-                FINISHES[finish].label +
-                " Anticipy AI pendant and its matching fine necklace"
-              }
-              width="2048"
-              height="1156"
-              loading="lazy"
-            />
-            <div className="ap-order-finish">
-              <span className={"ap-swatch-" + finish} />{" "}
-              {FINISHES[finish].label}{" "}
-              <span className="ap-order-included">Matching chain included</span>
-            </div>
-          </div>
-          <div className="ap-order-details">
-            <p className="ap-shop-category">ANTICIPY AI PENDANT</p>
-            <h2>
-              Choose your
-              <br />
-              <span>Anticipy.</span>
-            </h2>
-            <div className="ap-order-price">
-              <strong>
-                $149.99 <small>USD</small>
-              </strong>
-              <span>
-                Projected launch price $199
-                <br />
-                <b className="ap-offer-saving">
-                  $49.01 below projected launch price
-                </b>
-              </span>
-            </div>
-            <p className="ap-order-summary">
-              One pendant. Your everyday conversations, put to work.
-            </p>
-            <FinishPicker finish={finish} onChange={setFinish} />
-            <ul className="ap-order-inclusions">
-              <li>
-                <Mark type="check" /> Titanium pendant & matching chain
-              </li>
-              <li>
-                <Mark type="check" /> Wireless charging pad
-              </li>
-              <li>
-                <Mark type="check" /> First year of AI service
-              </li>
-            </ul>
-            <Button
-              href={STORE + "/pre-orders/purchase?finish=" + finish}
-              ctaId="order-checkout"
-            >
-              Pre-order {FINISHES[finish].label} · $149.99 USD
-            </Button>
-            <p className="ap-order-payment">
-              Charged today. Estimated shipping Q4 2026.
-            </p>
-            <div className="ap-order-reassurance">
-              <span>
-                <Mark type="check" /> Free US & Canada shipping
-              </span>
-              <span>
-                <Mark type="shield" /> Full refund before shipping
-              </span>
-            </div>
-            <p className="ap-order-service-cost">
-              After year one: optional AI service, projected at $99 USD/year. No
-              automatic enrollment. Requires a compatible smartphone and
-              connected tools.
-            </p>
-            <details className="ap-service-terms">
-              <summary>
-                What happens after the first year? <span>+</span>
-              </summary>
-              <p>
-                Your first year of AI service starts when your pendant ships.
-                Continued cloud AI then requires a separate annual opt-in,
-                currently projected at $99 USD/year. You won’t be automatically
-                enrolled.{" "}
-                <a href={STORE + "/pre-orders/agreement"}>
-                  Read the pre-order terms
-                </a>
-                .
+          <header className="ap-purchase-heading">
+            <h2>Get your Anticipy.</h2>
+            <p>More done. More time for you.</p>
+          </header>
+          <div className="ap-purchase-layout">
+            <PurchaseGallery finish={finish} />
+            <div className="ap-purchase-info">
+              <p className="ap-purchase-eyebrow">
+                YOUR PERSONAL AI ACTION TAKER
               </p>
-            </details>
+              <h3>Anticipy AI pendant</h3>
+              <p className="ap-purchase-intro">
+                Turn conversations into emails, plans and tasks, with your
+                approval.
+              </p>
+              <div className="ap-purchase-offer">
+                <div className="ap-purchase-price">
+                  <span>Pre-order price</span>
+                  <strong>
+                    $149.99 <small>USD</small>
+                  </strong>
+                </div>
+                <div className="ap-purchase-saving">
+                  <span>Projected launch price $199</span>
+                  <strong>$49.01 less at pre-order</strong>
+                </div>
+                <p>
+                  <Mark type="check" /> First year of AI service included
+                </p>
+              </div>
+              <FinishPicker finish={finish} onChange={setFinish} />
+              <div className="ap-purchase-included">
+                <h4>Included with your Anticipy</h4>
+                <ul>
+                  <li>
+                    <Mark type="check" /> Pendant & matching chain
+                  </li>
+                  <li>
+                    <Mark type="check" /> Wireless charging pad
+                  </li>
+                </ul>
+              </div>
+              <Button
+                href={STORE + "/pre-orders/purchase?finish=" + finish}
+                ctaId="order-checkout"
+              >
+                Pre-order Anticipy · $149.99
+              </Button>
+              <p className="ap-purchase-payment">
+                Charged today. Estimated shipping Q4 2026.
+              </p>
+              <div className="ap-purchase-reassurance">
+                <span>
+                  <Mark type="check" />
+                  <span>
+                    Free shipping<small>US & Canada</small>
+                  </span>
+                </span>
+                <span>
+                  <Mark type="shield" />
+                  <span>
+                    Fully refundable<small>Before your pendant ships</small>
+                  </span>
+                </span>
+              </div>
+              <p className="ap-purchase-renewal">
+                After year one: optional AI service, projected at $99 USD/year.
+                No automatic enrollment.
+              </p>
+              <details className="ap-purchase-terms">
+                <summary>
+                  Good to know before you pre-order <span>+</span>
+                </summary>
+                <div>
+                  <p>
+                    Your first year of AI service starts when your pendant
+                    ships. Continued cloud AI requires a separate annual opt-in.
+                    Anticipy requires a compatible smartphone and connected
+                    tools.
+                  </p>
+                  <p>
+                    Cancel for a full refund any time before shipping.{" "}
+                    <a href={STORE + "/pre-orders/agreement"}>
+                      Read the pre-order terms
+                    </a>{" "}
+                    or <a href={STORE + "/refund"}>refund policy</a>.
+                  </p>
+                </div>
+              </details>
+            </div>
           </div>
           <div className="ap-waitlist" id="waitlist">
             <div>

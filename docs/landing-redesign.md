@@ -1,4 +1,4 @@
-# Anticipy landing redesign — revision 9
+# Anticipy landing redesign
 
 The hero gives “Not a note taker” stronger emphasis with a larger black line. The homepage identifies Anticipy immediately: “Not a note taker. An action taker.” followed by the AI pendant category and email, calendar and task capabilities. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
 
@@ -24,17 +24,35 @@ The final eight-second videos are encoded at 1600×900, 24fps with frequent keyf
 
 ## Consistent product geometry and motion
 
-The technical renderer preserves the accepted 1.58×2.37 front outline and uses a 0.72 relative depth. A single continuously convex oval volume replaces the shallow face, fillet shoulder and straight sidewall band. The circular radial profile (`radius=sin(theta)`, `z=0.36*cos(theta)`) keeps curvature across the entire face and produces a full oval side view. Both halves share the same rim normals and join without a casing gap. The original rotation, X-ray, opening and reassembly timing are retained.
+The technical renderer preserves the accepted 1.58×2.37 front outline and uses a 0.72 relative depth. Independent longitudinal and transverse curvature maintains a broad face and full rounded shoulders. Surface depth follows `z=0.36*sqrt((1-|y/B|^4.5)*(1-|x/widthAtY|^4))`, so the photographic outline does not collapse into a tapering lens. Both halves share the same rim normals and join without a casing gap. The original rotation, X-ray, opening and reassembly timing are retained.
 
 The small upper aperture follows the new dome with an eight-ring tessellated surface, preventing a flat disc from clipping into the curved body. Technical contours are derived from the same volume. The front outline is retained from the accepted photographic reconstruction; depth is art direction from those references, not a manufacturing measurement.
 
 Both finish variants use the same mesh with an anisotropic physical metal material, deterministic 1024px longitudinal grain, mipmapped bump/roughness texture and broad neutral studio reflections. Existing scroll rotation, X-ray timing, front/rear opening, reassembly, color state, on-demand rendering and resource cleanup remain. Closed shell normals meet at the rim. Scroll anchoring is disabled within the landing page to prevent keyed text changes from moving the viewport away from a selected chapter.
 
-“Choose your Anticipy” now offers only compact silver/gold swatch controls beside its purchase details. The duplicate photo selection tiles are removed. One large selected-finish photograph remains, and its image, selected state and checkout finish parameter update together.
+The purchase area uses compact silver/gold swatch controls for choosing the order finish. A separate five-photo gallery supports thumbnails, previous/next navigation, horizontal swipe and native-dialog enlargement. Choosing a finish opens the corresponding worn photograph and updates checkout metadata. Browsing other gallery images does not change the chosen order finish.
 
 The FAQ displays the existing silver and gold photographic cutouts together at identical scale, staggered diagonally. Both remain visible on mobile. The stone photographs were retouched through Higgsfield GPT Image 2 to remove the perimeter assembly line while retaining the scene and pendant silhouette. Accepted edits: silver `7f12063b-d0b4-41c4-a867-5c658d616be8`; gold `3390ef25-02b8-4e23-8d66-3a2d530bd2e0`.
 
 Static headings, descriptive copy and primary actions enter once with an 800ms opacity/14px rise, using a restrained 70ms stagger capped at 210ms. Dynamic product-chapter copy and opened FAQ answers use the same curve. Reduced-motion preferences and the page toggle keep text visible without animation; the server-rendered/no-JS content remains visible. The protected lifestyle composition keeps its existing treatment.
+
+## Purchase gallery and offer
+
+The buying section places the photographic gallery beside a literal product title, concise purpose, clearly labeled $149.99 USD pre-order price, projected launch comparison, first-year inclusion, compact finish controls and a full-width pre-order button. Shipping, charge timing, refund terms and optional AI cost remain visible by the purchase action. Detailed service and pre-order terms expand below. Mobile uses the same five visible thumbnails, with the purchase information immediately after the gallery. The replaced context heading is “The meaning behind your words.”
+
+This structure draws from [Pocket's purchase block](https://heypocket.com/pages/pocket), [Baymard's visible-thumbnail guidance](https://baymard.com/blog/truncating-product-gallery-thumbnails), [product scale research](https://baymard.com/blog/current-state-ecommerce-product-page-ux) and [shipping information placement](https://baymard.com/blog/avoid-banners-only-free-shipping). These informed implementation choices; no Anticipy conversion improvement has yet been measured. No unverified reviews, bundles, payment badges, warranty or countdown were added.
+
+Five new reference-guided Higgsfield photographs were generated at 2048×2048, visually checked and encoded as 1600×1600 WebP at quality 88. The gallery totals approximately 831 KiB. All retain a compact brushed capsule, one upper aperture, fine shoulder chain and continuously closed casing. They are generated visualizations, not photos of manufactured units.
+
+| Local asset under public/redesign | Composition | Higgsfield generation ID |
+| --- | --- | --- |
+| purchase-silver-worn.webp | Silver worn outdoors with a white T-shirt | 831dadb2-0d30-4b3b-9386-1d482b7b1636 |
+| purchase-gold-worn.webp | Gold worn with a black top in window light | ad25e714-6b3c-4781-b716-d7c807cfce17 |
+| purchase-both-finishes.webp | Silver and gold together on pale surfaces | dbe0d56f-8aea-47b3-8a9a-1b478bd18542 |
+| purchase-silver-hand.webp | Silver resting in cupped adult hands | 7c0f7223-54b6-42a1-b743-9ce603a33df8 |
+| purchase-gold-detail.webp | Gold at an oblique angle on an architectural ledge | 904ddfae-88ef-4ba8-a5b8-a2c76b600da4 |
+
+The product-photoshoot workflow requested Nano Banana Pro at 2k; terminal job metadata reports `nano_banana_2`. Original silver, gold, lifestyle scale and seamless stone generation references were supplied. Format-only optimization preserves the full square composition. The existing lifestyle asset and interactive geometry are unchanged by this purchase revision.
 
 ## Content, purchase and publication boundaries
 
@@ -52,3 +70,5 @@ The offer remains $149.99 USD charged today, projected $199 launch price, estima
 TypeScript, static build and whitespace checks pass. Browser inspection covers the new editorial section at 1440px and 390px, white surface/black heading computed colors, and no horizontal overflow at those sizes. The new photographic scene loads correctly; native scroll and chapter controls seek forward and backward. The final lifestyle asset hash matches the prior commit exactly. The previous mocked finish-to-fulfillment contract tests remain unchanged; no backend changes were made in revision 9.
 
 Revision 9 verification: TypeScript, the static build and whitespace checks pass. A numerical audit checks 25,440 housing triangles and 720 aperture triangles: no degenerate triangles, reversed winding, non-finite coordinates or reversed normals. All 1,161 aperture samples clear the actual shell mesh by 0.000979–0.001022 units. Browser inspection covers the domed front, near-side angle (progress 0.889), both finishes, open shells and reassembly. The finish swatches and accepted photographic assets are unchanged. Browser error logs are empty. The protected lifestyle image retains Git blob `c887ad44d06fc22965933696fdb2cdf41d76e840`.
+
+Purchase revision verification: TypeScript, static build and whitespace checks pass. Browser inspection at 1275px and 390px found no horizontal overflow. All five images load. Thumbnail navigation, wraparound, swipe, Enter after swiping, dialog arrow keys, Escape, focus restoration, finish-to-gallery synchronization and checkout metadata were exercised. Purchase disclosures expand, browser error logs are empty, and both static routes and their JavaScript contain no em dashes or rejected Friday/Alex copy. The protected lifestyle hash remains unchanged.
