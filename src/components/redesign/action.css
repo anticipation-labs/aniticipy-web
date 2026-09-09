@@ -1,15 +1,14 @@
-/* Brand reference: cream knitwear, sunlit skin, brushed silver and warm shadow.
-   Lightness creates hierarchy; low-chroma bronze is a restrained accent. */
+/* White and black carry the page. Photo-derived bronze stays in small accents. */
 .ap-site {
-  --ap-paper: #f8f7f4;
-  --ap-surface: #fefdfb;
-  --ap-linen: #efede8;
-  --ap-sand: #e3dfd7;
-  --ap-ink: #2d2b27;
-  --ap-muted: #65615a;
+  --ap-paper: #ffffff;
+  --ap-surface: #ffffff;
+  --ap-linen: #f6f6f6;
+  --ap-sand: #e8e5e0;
+  --ap-ink: #111111;
+  --ap-muted: #626262;
   --ap-accent: #705d48;
-  --ap-line: #d8d3cb;
-  --ap-control: #898176;
+  --ap-line: #e1e1e1;
+  --ap-control: #868686;
   background: var(--ap-paper);
   color: var(--ap-ink);
 }
@@ -128,7 +127,7 @@
 }
 .ap-site.ap-scrolled .ap-nav,
 .ap-site.ap-campaign .ap-nav {
-  background: #fefdfbed;
+  background: #ffffffed;
   border-color: var(--ap-line);
 }
 .ap-site .ap-menu-panel {
@@ -272,7 +271,7 @@
 }
 .ap-site .ap-inspector-card,
 .ap-site .ap-inspector-caption {
-  background: #40382e;
+  background: #111111;
   color: var(--ap-surface);
 }
 .ap-site .ap-inspector-card strong {
@@ -421,7 +420,7 @@
   border-color: var(--ap-line);
 }
 .ap-site .ap-footer {
-  background: #40382e;
+  background: #111111;
   color: var(--ap-surface);
 }
 .ap-site .ap-footer-mark {
@@ -533,7 +532,7 @@
 .ap-site .ap-manifesto {
   height: 220svh;
   position: relative;
-  background: #40382e;
+  background: #111111;
   color: white;
 }
 .ap-site .ap-manifesto-sticky {
@@ -617,7 +616,7 @@
   padding: 14px 22px;
   margin-top: 20px;
   background: white;
-  color: #40382e;
+  color: #111111;
   border-radius: 6px;
   font-size: 14px;
 }

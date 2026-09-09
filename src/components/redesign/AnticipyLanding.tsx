@@ -6,10 +6,11 @@ import "./revision.css";
 import "./conversion.css";
 import "./action.css";
 import "./clarity.css";
-import { ActionDemonstration, PrototypeTrust } from "./ActionDemonstration";
+import { ActionExperience, PrototypeTrust } from "./ActionExperience";
 import { ActionFAQ, ActionManifesto, FinishPicker } from "./ActionSections";
 import { FINISHES, PENDANT, type PendantFinish } from "./pendant-design";
 import { PendantScene, type PendantSceneHandle } from "./PendantScene";
+import { PhotorealPendantScene } from "./PhotorealPendantScene";
 
 const STORE = "https://www.anticipy.ai";
 const BENEFITS = [
@@ -620,13 +621,13 @@ export function AnticipyLanding({
           <div className="ap-shop-foot">
             <span>LESS ON YOUR MIND. MORE IN YOUR LIFE.</span>
             <a href="#experience">
-              Try an action <span>↓</span>
+              Explore the possibilities <span>↓</span>
             </a>
           </div>
         </section>
 
         <PrototypeTrust />
-        <ActionDemonstration motion={motion} />
+        <ActionExperience motion={motion} />
 
         <section
           ref={benefits}
@@ -650,12 +651,12 @@ export function AnticipyLanding({
             <div
               className="ap-benefit-object"
               role="img"
-              aria-label="Anticipy pendant rotating through views of its sculpted metal enclosure"
+              aria-label={`${FINISHES[finish].label} Anticipy pendant turning in a photographic product view`}
             >
-              <PendantScene
+              <PhotorealPendantScene
                 ref={benefitScene}
-                mode="benefits"
                 finish={finish}
+                motion={motion}
               />
             </div>
             <div className="ap-benefit-context" key={"card" + benefitStep}>
