@@ -155,14 +155,11 @@ export function createPendantScene(
     back = new THREE.Group(),
     board = new THREE.Group();
   product.add(front, back, board);
-  // Broad shallow faces join a localized fillet and a short constant-width sidewall.
-  // Radially shrinking the whole body here would recreate the rejected lens-shaped edge.
+  // A single continuously convex volume: the accepted front outline, with an oval depth profile.
+  // Circular radial falloff avoids a flat face, bevel shoulder or constant-width perimeter band.
   const bodyGeometry = new THREE.BufferGeometry();
   const segments = 160,
-    faceRings = 36,
-    filletRings = 24,
-    sideRings = 4;
-  const rings = faceRings + filletRings + sideRings;
+    rings = 80;
   const outline = capsuleShape(PENDANT.width, PENDANT.height).getSpacedPoints(
     segments,
   );
@@ -171,15 +168,8 @@ export function createPendantScene(
       next = outline[(i + 1) % segments];
     return new THREE.Vector2(prev.y - next.y, next.x - prev.x).normalize();
   });
-  const fillet = 0.28,
-    sideHalf = 0.04,
-    faceEdge = 0.15;
-  const inner = outline.map((point, i) =>
-    point.clone().addScaledVector(outward[i], -fillet),
-  );
   const faceZ = (radius: number) =>
-    PENDANT.halfDepth -
-    (PENDANT.halfDepth - faceEdge) * (2 * radius ** 2 - radius ** 4);
+    PENDANT.halfDepth * Math.sqrt(Math.max(0, 1 - radius * radius));
   const positions: number[] = [],
     uvs: number[] = [],
     indices: number[] = [];
@@ -187,21 +177,10 @@ export function createPendantScene(
   for (let ring = 0; ring <= rings; ring++) {
     const section: THREE.Vector3[] = [];
     for (let i = 0; i <= segments; i++) {
-      let point: THREE.Vector2, z: number;
-      if (ring <= faceRings) {
-        const radius = Math.max(0.0001, ring / faceRings);
-        point = inner[i].clone().multiplyScalar(radius);
-        z = faceZ(radius);
-      } else if (ring <= faceRings + filletRings) {
-        const theta = (((ring - faceRings) / filletRings) * Math.PI) / 2;
-        point = outline[i]
-          .clone()
-          .addScaledVector(outward[i], -fillet * (1 - Math.sin(theta)));
-        z = sideHalf + (faceEdge - sideHalf) * Math.cos(theta);
-      } else {
-        point = outline[i];
-        z = sideHalf * (1 - (ring - faceRings - filletRings) / sideRings);
-      }
+      const theta = ((ring / rings) * Math.PI) / 2;
+      const radius = Math.sin(theta);
+      const point = outline[i].clone().multiplyScalar(radius);
+      const z = PENDANT.halfDepth * Math.cos(theta);
       positions.push(point.x, point.y, z);
       uvs.push(
         (point.x + PENDANT.width / 2) / PENDANT.width,
@@ -211,7 +190,9 @@ export function createPendantScene(
       if (ring < rings && i < segments) {
         const a = ring * (segments + 1) + i,
           b = a + segments + 1;
-        indices.push(a, a + 1, b, b, a + 1, b + 1);
+        // The crown is one point: use a triangle fan, not zero-area triangles.
+        if (ring > 0) indices.push(a, a + 1, b);
+        indices.push(b, a + 1, b + 1);
       }
     }
     crossSections.push(section);
@@ -225,6 +206,7 @@ export function createPendantScene(
   bodyGeometry.computeVertexNormals();
   const normals = bodyGeometry.getAttribute("normal");
   // Match both shell normals at the closed join and across the contour's UV wrap.
+  for (let i = 0; i <= segments; i++) normals.setXYZ(i, 0, 0, 1);
   for (let i = 0; i <= segments; i++) {
     normals.setXYZ(rings * (segments + 1) + i, outward[i].x, outward[i].y, 0);
   }
@@ -238,7 +220,7 @@ export function createPendantScene(
     normals.setXYZ(a, n.x, n.y, n.z);
     normals.setXYZ(b, n.x, n.y, n.z);
   }
-  // Explicit tangents remain defined on the constant-width sidewall, where planar UVs flatten.
+  // Explicit tangents keep the longitudinal metal grain coherent around the rounded sides.
   const tangents: number[] = [];
   for (let i = 0; i < normals.count; i++) {
     const n = new THREE.Vector3().fromBufferAttribute(normals, i);
@@ -303,30 +285,55 @@ export function createPendantScene(
   backMesh.position.z = 0;
   back.add(backMesh);
 
-  // The prototype has a plain dark aperture; it is not a lens or a separate metal eyelet.
-  const aperture = new THREE.Mesh(
-    new THREE.CircleGeometry(PENDANT.apertureRadius, 32),
-    new THREE.MeshBasicMaterial({ color: 0x161614, side: THREE.DoubleSide }),
-  );
-  const aperturePositions = aperture.geometry.getAttribute("position");
-  for (let i = 0; i < aperturePositions.count; i++) {
-    const x = aperturePositions.getX(i),
-      y = aperturePositions.getY(i) + PENDANT.apertureY;
-    // Intersect the ray with the inset face contour to use the exact same shallow face profile.
-    let radius = 0;
+  // The plain aperture follows the curved body. A tessellated surface avoids the clipping
+  // a single flat circle would cause on the fuller dome; no raised eyelet is introduced.
+  const radialCoordinate = (x: number, y: number) => {
     for (let j = 0; j < segments; j++) {
-      const a = inner[j],
-        b = inner[j + 1],
+      const a = outline[j],
+        b = outline[j + 1],
         dx = b.x - a.x,
         dy = b.y - a.y;
       const denominator = x * dy - y * dx;
       if (Math.abs(denominator) < 0.000001) continue;
       const distance = (a.x * dy - a.y * dx) / denominator;
       const along = (a.x * y - a.y * x) / denominator;
-      if (distance > 0 && along >= 0 && along <= 1) radius = 1 / distance;
+      if (distance > 0 && along >= 0 && along <= 1) return 1 / distance;
     }
-    aperturePositions.setZ(i, faceZ(radius) + 0.001);
+    return 0;
+  };
+  const apertureGeometry = new THREE.BufferGeometry();
+  const aperturePoints: number[] = [],
+    apertureIndices: number[] = [];
+  const apertureRings = 8,
+    apertureSegments = 48;
+  for (let ring = 0; ring <= apertureRings; ring++) {
+    const radius = (PENDANT.apertureRadius * ring) / apertureRings;
+    for (let i = 0; i <= apertureSegments; i++) {
+      const angle = (i / apertureSegments) * Math.PI * 2;
+      const x = Math.cos(angle) * radius,
+        y = Math.sin(angle) * radius;
+      aperturePoints.push(
+        x,
+        y,
+        faceZ(radialCoordinate(x, y + PENDANT.apertureY)) + 0.001,
+      );
+      if (ring < apertureRings && i < apertureSegments) {
+        const a = ring * (apertureSegments + 1) + i,
+          b = a + apertureSegments + 1;
+        if (ring > 0) apertureIndices.push(a, b, a + 1);
+        apertureIndices.push(b, b + 1, a + 1);
+      }
+    }
   }
+  apertureGeometry.setAttribute(
+    "position",
+    new THREE.Float32BufferAttribute(aperturePoints, 3),
+  );
+  apertureGeometry.setIndex(apertureIndices);
+  const aperture = new THREE.Mesh(
+    apertureGeometry,
+    new THREE.MeshBasicMaterial({ color: 0x161614, side: THREE.DoubleSide }),
+  );
   aperture.position.y = PENDANT.apertureY;
   front.add(aperture);
 
@@ -344,8 +351,12 @@ export function createPendantScene(
   backLines.rotation.y = Math.PI;
   backLines.position.z = -0.008;
   wire.add(frontLines, backLines);
-  // Construction contours come from the housing's actual fillet, not a separate lens equation.
-  for (const ring of [faceRings + 5, faceRings + 13, rings]) {
+  // Construction contours follow the same continuous volume as the visible housing.
+  for (const ring of [
+    Math.round(rings * 0.5),
+    Math.round(rings * 0.75),
+    rings,
+  ]) {
     for (const side of ring === rings ? [1] : [-1, 1]) {
       const points = crossSections[ring]
         .slice(0, segments)
