@@ -87,7 +87,7 @@ const faqGroups = [
   },
 ];
 
-export function ActionFAQ({ finish }: { finish: PendantFinish }) {
+export function ActionFAQ() {
   const [group, setGroup] = useState(0);
   return (
     <section className="ap-action-faq" id="questions">
@@ -135,18 +135,28 @@ export function ActionFAQ({ finish }: { finish: PendantFinish }) {
           ))}
         </div>
       </div>
-      <div className="ap-faq-object">
-        <img
-          src={FINISHES[finish].image}
-          alt={
-            FINISHES[finish].label + " pendant with a continuous closed casing"
-          }
-          width="2048"
-          height="1158"
-          loading="lazy"
-        />
-        <span>Small object. Real possibility.</span>
-      </div>
+      <figure className="ap-faq-object">
+        <div className="ap-faq-pair">
+          {(["gold", "silver"] as const).map((finish) => (
+            <div
+              className={"ap-faq-pendant ap-faq-pendant-" + finish}
+              key={finish}
+            >
+              <img
+                src={FINISHES[finish].image}
+                alt={
+                  FINISHES[finish].label +
+                  " Anticipy pendant with a seamless closed casing"
+                }
+                width="2048"
+                height="1158"
+                loading="lazy"
+              />
+            </div>
+          ))}
+        </div>
+        <figcaption>Titanium silver. Gold. Your choice.</figcaption>
+      </figure>
     </section>
   );
 }

@@ -4,7 +4,7 @@
 export const PENDANT = {
   width: 1.58,
   height: 2.37,
-  halfDepth: 0.3,
+  halfDepth: 0.18,
   apertureRadius: 0.067,
   apertureY: 0.6,
 } as const;

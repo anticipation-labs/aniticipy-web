@@ -102,11 +102,12 @@ export function createPendantScene(
     uvs: number[] = [],
     indices: number[] = [];
   const segments = 160,
-    rings = 32;
+    rings = 64;
   for (let ring = 0; ring <= rings; ring++) {
-    const radius = Math.max(0.0001, ring / rings);
-    const z =
-      PENDANT.halfDepth * Math.sqrt(Math.max(0, 1 - Math.pow(radius, 4)));
+    // Angular sampling keeps the rounded rim smooth, even in a side view.
+    const theta = ((ring / rings) * Math.PI) / 2;
+    const radius = Math.max(0.0001, Math.sqrt(Math.sin(theta)));
+    const z = PENDANT.halfDepth * Math.cos(theta);
     for (let i = 0; i <= segments; i++) {
       const point = outline[i % segments];
       positions.push(point.x * radius, point.y * radius, z);
@@ -128,6 +129,34 @@ export function createPendantScene(
   bodyGeometry.setAttribute("uv", new THREE.Float32BufferAttribute(uvs, 2));
   bodyGeometry.setIndex(indices);
   bodyGeometry.computeVertexNormals();
+  // Both halves share the same tangent at their join: no visible lighting seam.
+  const normals = bodyGeometry.getAttribute("normal");
+  for (let i = 0; i <= segments; i++) {
+    const previous = outline[(i + segments - 1) % segments];
+    const next = outline[(i + 1) % segments];
+    const normal = new THREE.Vector3(
+      previous.y - next.y,
+      next.x - previous.x,
+      0,
+    ).normalize();
+    if (
+      normal.x * outline[i % segments].x + normal.y * outline[i % segments].y <
+      0
+    )
+      normal.negate();
+    normals.setXYZ(rings * (segments + 1) + i, normal.x, normal.y, 0);
+  }
+  // Weld the lighting normal across the UV wrap without changing UV coordinates.
+  for (let ring = 0; ring <= rings; ring++) {
+    const a = ring * (segments + 1),
+      b = a + segments;
+    const n = new THREE.Vector3()
+      .fromBufferAttribute(normals, a)
+      .add(new THREE.Vector3().fromBufferAttribute(normals, b))
+      .normalize();
+    normals.setXYZ(a, n.x, n.y, n.z);
+    normals.setXYZ(b, n.x, n.y, n.z);
+  }
   // Deterministic, very fine longitudinal grain; no external texture or render-time randomness.
   const grainData = new Uint8Array(256 * 256 * 4);
   for (let y = 0; y < 256; y++)
@@ -160,7 +189,25 @@ export function createPendantScene(
     new THREE.CircleGeometry(PENDANT.apertureRadius, 32),
     new THREE.MeshBasicMaterial({ color: 0x161614, side: THREE.DoubleSide }),
   );
-  aperture.position.set(0, PENDANT.apertureY, PENDANT.halfDepth - 0.004);
+  const aperturePositions = aperture.geometry.getAttribute("position");
+  for (let i = 0; i < aperturePositions.count; i++) {
+    const x = aperturePositions.getX(i),
+      y = aperturePositions.getY(i) + PENDANT.apertureY;
+    const r = PENDANT.width / 2,
+      straight = PENDANT.height / 2 - r;
+    // Radial coordinate of the capsule, matching the shell's pillow equation.
+    const radial =
+      Math.abs(y) <= (Math.abs(x) * straight) / r
+        ? Math.abs(x) / r
+        : (Math.sqrt(r * r * y * y + (r * r - straight * straight) * x * x) -
+            straight * Math.abs(y)) /
+          (r * r - straight * straight);
+    aperturePositions.setZ(
+      i,
+      PENDANT.halfDepth * Math.sqrt(Math.max(0, 1 - radial ** 4)) + 0.0008,
+    );
+  }
+  aperture.position.y = PENDANT.apertureY;
   front.add(aperture);
 
   const wire = new THREE.Group();
@@ -178,7 +225,8 @@ export function createPendantScene(
   backLines.position.z = -0.008;
   wire.add(frontLines, backLines);
   // Sparse construction contours convey the curved shell without a noisy triangulated mesh.
-  for (let z = -0.24; z <= 0.24; z += 0.12) {
+  for (const fraction of [-0.8, -0.4, 0, 0.4, 0.8]) {
+    const z = fraction * PENDANT.halfDepth;
     const factor = Math.pow(
       Math.max(0, 1 - (z / PENDANT.halfDepth) ** 2),
       0.25,
@@ -210,8 +258,9 @@ export function createPendantScene(
     d: number,
     material: THREE.Material,
   ) => {
-    const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, d), material);
-    mesh.position.set(x, y, 0.04 + d / 2);
+    const depth = d * 0.58;
+    const mesh = new THREE.Mesh(new THREE.BoxGeometry(w, h, depth), material);
+    mesh.position.set(x, y, 0.02 + depth / 2);
     board.add(mesh);
     const edges = new THREE.LineSegments(
       new THREE.EdgesGeometry(mesh.geometry),
@@ -239,9 +288,9 @@ export function createPendantScene(
       y = 0.92 - Math.floor(i / 2) * 0.145;
     const x = side * (0.16 + (i % 4) * 0.04);
     const points = [
-      new THREE.Vector3(x, y, 0.016),
-      new THREE.Vector3(side * 0.35, y, 0.016),
-      new THREE.Vector3(side * 0.5, y - 0.13, 0.016),
+      new THREE.Vector3(x, y, 0.012),
+      new THREE.Vector3(side * 0.35, y, 0.012),
+      new THREE.Vector3(side * 0.5, y - 0.13, 0.012),
     ];
     board.add(
       new THREE.Line(
@@ -264,7 +313,7 @@ export function createPendantScene(
     dummy.position.set(
       i % 2 ? 0.13 : -0.31,
       -0.015 + Math.floor(i / 2) * 0.028,
-      0.06,
+      0.025,
     );
     dummy.updateMatrix();
     pins.setMatrixAt(i, dummy.matrix);
@@ -313,7 +362,7 @@ export function createPendantScene(
       product.position.y = -0.13;
       board.visible = false;
     } else {
-      const xray = smooth(0.2, 0.35, p) * (1 - smooth(0.74, 0.9, p));
+      const xray = smooth(0.2, 0.35, p) * (1 - smooth(0.66, 0.745, p));
       const turn =
         p < 0.4
           ? THREE.MathUtils.lerp(-0.45, 0.8, smooth(0, 0.4, p))
@@ -343,6 +392,7 @@ export function createPendantScene(
       silver.depthWrite = rearSilver.depthWrite = xray < 0.5;
       aperture.visible = xray < 0.65;
       edgeMaterial.opacity = xray * 0.65;
+      wire.visible = xray > 0.005;
       board.visible = xray > 0.02;
       product.scale.setScalar(1 - open * 0.14);
     }

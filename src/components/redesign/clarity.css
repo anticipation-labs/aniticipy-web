@@ -16,11 +16,11 @@
 }
 .ap-site .ap-hero-contrast {
   display: block;
-  color: var(--ap-muted);
-  font-size: 0.57em;
+  color: var(--ap-ink);
+  font-size: 0.76em;
   letter-spacing: -0.05em;
   margin-bottom: 13px;
-  font-weight: 400;
+  font-weight: 550;
 }
 .ap-site .ap-shop-description {
   font-size: 19px;
@@ -190,7 +190,7 @@
     line-height: 1.04;
   }
   .ap-site .ap-hero-contrast {
-    font-size: 0.53em;
+    font-size: 0.76em;
     margin-bottom: 12px;
   }
   .ap-site .ap-shop-mobile-product {
@@ -476,4 +476,122 @@
 .ap-site .ap-benefits,
 .ap-site .ap-engineering {
   background: #fff;
+}
+
+/* A paired product portrait, with identical scale for both finishes. */
+.ap-site .ap-faq-intro {
+  grid-column: 1;
+}
+.ap-site .ap-faq-object {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  display: block;
+  min-height: 0;
+  margin: 0;
+}
+.ap-site .ap-faq-pair {
+  position: relative;
+  height: 570px;
+  isolation: isolate;
+}
+.ap-site .ap-faq-pendant {
+  position: absolute;
+  width: 68%;
+  height: 440px;
+  overflow: hidden;
+}
+.ap-site .ap-faq-pendant img {
+  width: 320%;
+  height: 100%;
+  max-width: none;
+  top: 0;
+  left: -110%;
+  transform: none;
+}
+.ap-site .ap-faq-pendant-gold {
+  top: -15px;
+  left: 32%;
+  transform: rotate(16deg);
+}
+.ap-site .ap-faq-pendant-silver {
+  top: 155px;
+  left: -3%;
+  transform: rotate(-14deg);
+  z-index: 1;
+}
+.ap-site .ap-faq-object figcaption {
+  font-size: 12px;
+  color: var(--ap-muted);
+  margin-top: 10px;
+}
+
+/* One restrained entry rhythm across headings, descriptions and actions. */
+.ap-site .ap-text-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--text-delay, 0ms);
+}
+.ap-site .ap-text-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.ap-site .ap-benefit-heading,
+.ap-site .ap-benefit-context,
+.ap-site .ap-engineering-copy,
+.ap-site .ap-faq-list details[open] p {
+  animation: ap-text-flow 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ap-text-flow {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.ap-site.ap-reduced .ap-text-reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.ap-site.ap-reduced .ap-benefit-heading,
+.ap-site.ap-reduced .ap-benefit-context,
+.ap-site.ap-reduced .ap-engineering-copy,
+.ap-site.ap-reduced .ap-faq-list details[open] p {
+  animation: none;
+}
+@media (max-width: 800px) {
+  .ap-site .ap-faq-object {
+    display: block;
+    max-width: 450px;
+    margin: 35px auto 0;
+  }
+  .ap-site .ap-faq-pair {
+    height: 470px;
+  }
+  .ap-site .ap-faq-pendant {
+    height: 365px;
+  }
+  .ap-site .ap-faq-pendant-silver {
+    top: 110px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-site .ap-text-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .ap-site .ap-benefit-heading,
+  .ap-site .ap-benefit-context,
+  .ap-site .ap-engineering-copy,
+  .ap-site .ap-faq-list details[open] p {
+    animation: none;
+  }
 }

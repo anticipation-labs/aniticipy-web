@@ -1,6 +1,6 @@
-# Anticipy landing redesign — revision 6
+# Anticipy landing redesign — revision 7
 
-The homepage identifies Anticipy immediately: “Not a note taker. An action taker.” followed by the AI pendant category and email, calendar and task capabilities. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
+The hero gives “Not a note taker” stronger emphasis with a larger black line. The homepage identifies Anticipy immediately: “Not a note taker. An action taker.” followed by the AI pendant category and email, calendar and task capabilities. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
 
 ## Visual direction
 
@@ -12,7 +12,7 @@ The approved scoop-neck necklace image and its “Keep your head in the real wor
 
 The “Wear it. Get on with your day.” scene now uses reference-based Higgsfield MCP video, replacing its procedural renderer. Both finishes have a continuous closed body, a fine chain and a small upper aperture. The gold version derives from the silver motion so the silhouette and turn are consistent. A candidate with a visible casing seam was rejected. White-background edits allow the photographic visualization to sit in the new page palette.
 
-These are AI-generated photographic visualizations, not footage of a physical unit or measured 3D scans. The separate rotating technical/exploded scene remains a labeled concept study, as previously requested. The shared relative specification is width 1.58, height 2.37, depth 0.60; photographs are not guaranteed dimensionally identical to a procedural model. No manufacturing CAD/Blender file is created.
+These are AI-generated photographic visualizations, not footage of a physical unit or measured 3D scans. The separate rotating technical/exploded scene remains a labeled concept study, as previously requested. The shared relative specification is width 1.58, height 2.37, depth 0.36; photographs are not guaranteed dimensionally identical to a procedural model. No manufacturing CAD/Blender file is created.
 
 Accepted Higgsfield jobs:
 - Silver reference turn: ef964d60-28c6-4c7e-8bdb-0919a827310c; final white-background edit: fddaee27-55c0-4afc-bf89-2778066e708a.
@@ -20,6 +20,14 @@ Accepted Higgsfield jobs:
 - Models: Seedance 2.0 for the reference turn, Seedance 2.5 for finish/background edits.
 
 The final eight-second videos are encoded at 1600×900, 24fps with frequent keyframes for seeking. Silver is approximately 2.2 MiB; gold is 1.9 MiB. Only the selected finish loads when the scene approaches the viewport. Scroll and chapter buttons seek the paused video; there is no autoplay loop. Progress persists across loading and finish changes. A WebP poster covers loading/error states. Reduced motion renders only the poster, without fetching video. Event listeners, observers and animation frames clean up on unmount.
+
+## Consistent product geometry and motion
+
+The technical renderer retains the accepted 1:1.5 front proportion and reduces thickness by 40% (half-depth 0.30 to 0.18 in relative units). Angular shell sampling with 64 rings and shared rim/wrap normals remove the faceted edge and lighting crease. Internal component depths fit the slimmer body; the aperture follows the shell surface. X-ray contours disappear before the final everyday chapter, leaving that entire rotation opaque and closed. The separate exploded view still opens the front and rear shells.
+
+The FAQ displays the existing silver and gold photographic cutouts together at identical scale, staggered diagonally. Both remain visible on mobile. The stone photographs were retouched through Higgsfield GPT Image 2 to remove the perimeter assembly line while retaining the scene and pendant silhouette. Accepted edits: silver `7f12063b-d0b4-41c4-a867-5c658d616be8`; gold `3390ef25-02b8-4e23-8d66-3a2d530bd2e0`.
+
+Static headings, descriptive copy and primary actions enter once with an 800ms opacity/14px rise, using a restrained 70ms stagger capped at 210ms. Dynamic product-chapter copy and opened FAQ answers use the same curve. Reduced-motion preferences and the page toggle keep text visible without animation; the server-rendered/no-JS content remains visible. The protected lifestyle composition keeps its existing treatment.
 
 ## Content, purchase and publication boundaries
 
@@ -34,4 +42,6 @@ The offer remains $149.99 USD charged today, projected $199 launch price, estima
 
 ## Verification
 
-TypeScript, static build and whitespace checks pass. Browser inspection covers the new editorial section at 1440px and 390px, white surface/black heading computed colors, and no horizontal overflow at those sizes. The new photographic scene loads correctly; native scroll and chapter controls seek forward and backward. The final lifestyle asset hash matches the prior commit exactly. The previous mocked finish-to-fulfillment contract tests remain unchanged; no backend changes were made in revision 6.
+TypeScript, static build and whitespace checks pass. Browser inspection covers the new editorial section at 1440px and 390px, white surface/black heading computed colors, and no horizontal overflow at those sizes. The new photographic scene loads correctly; native scroll and chapter controls seek forward and backward. The final lifestyle asset hash matches the prior commit exactly. The previous mocked finish-to-fulfillment contract tests remain unchanged; no backend changes were made in revision 7.
+
+Revision 7 verification: desktop (1440×900) and mobile (390×844) hero/FAQ layouts have no horizontal overflow; both FAQ finishes load and their complete silhouettes are visible. Native FAQ expansion, gold finish selection, internal separation and final closed side profile were inspected. The final profile at progress 0.881 is slim and has no construction overlay. With motion disabled there are no pending hidden text nodes, chapter text animation is none, and no photographic video element loads. Browser error log is empty. The protected lifestyle image retains Git blob `c887ad44d06fc22965933696fdb2cdf41d76e840`.

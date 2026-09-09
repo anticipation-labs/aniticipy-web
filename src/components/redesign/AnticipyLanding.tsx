@@ -324,6 +324,48 @@ export function AnticipyLanding({
   }, [motion]);
 
   useEffect(() => {
+    const el = root.current;
+    if (!el || intro || !motion) return;
+    // Reveal whole readable phrases once, leaving the no-JS page fully visible.
+    const nodes = Array.from(
+      el.querySelectorAll<HTMLElement>(
+        "main h1, main h2, main h3, main p, main .ap-kicker, .ap-shop-actions, .ap-shop-assurances",
+      ),
+    ).filter(
+      (node) =>
+        !node.closest(
+          ".ap-lifestyle, .ap-reveal, .ap-benefit-heading, .ap-benefit-context, .ap-engineering-copy, .ap-faq-list",
+        ),
+    );
+    const groups = new Map<Element, number>();
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add("ap-text-visible");
+          observer.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.08 },
+    );
+    nodes.forEach((node) => {
+      const parent = node.parentElement!;
+      const index = groups.get(parent) || 0;
+      groups.set(parent, index + 1);
+      node.style.setProperty("--text-delay", `${Math.min(index, 3) * 70}ms`);
+      node.classList.add("ap-text-reveal");
+      observer.observe(node);
+    });
+    return () => {
+      observer.disconnect();
+      nodes.forEach((node) => {
+        node.classList.remove("ap-text-reveal", "ap-text-visible");
+        node.style.removeProperty("--text-delay");
+      });
+    };
+  }, [intro, motion]);
+
+  useEffect(() => {
     let navigationTimer: number | undefined;
     if (menu) dialog.current?.showModal();
     else if (dialog.current?.open) {
@@ -861,7 +903,7 @@ export function AnticipyLanding({
           </a>
         </section>
 
-        <ActionFAQ finish={finish} />
+        <ActionFAQ />
 
         <section
           className="ap-stone"
