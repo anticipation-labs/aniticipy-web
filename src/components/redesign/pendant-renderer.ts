@@ -55,7 +55,8 @@ function capsuleShape(width: number, height: number) {
 
 export function createPendantScene(
   canvas: HTMLCanvasElement,
-  mode: "benefits" | "hardware",
+  mode: "benefits" | "hardware" | "hero",
+  onFirstRender?: () => void,
 ) {
   // Preserve the last frame: this renderer sleeps at rest, including during the CSS reveal.
   const renderer = new THREE.WebGLRenderer({
@@ -484,6 +485,81 @@ export function createPendantScene(
   chain.visible = mode === "benefits";
   product.add(chain);
 
+  // Intro contours are sampled from the exact housing perimeter, sharing its camera.
+  // These are only visible in the hero; the technical chapter keeps its original timeline.
+  const drawing = new THREE.Group();
+  product.add(drawing);
+  const drawingMaterial = new THREE.LineBasicMaterial({
+    color: 0x9a825a,
+    transparent: true,
+    opacity: 1,
+    depthTest: false,
+  });
+  const contours: THREE.Line[] = [];
+  if (mode === "hero") {
+    for (const scale of [1, 1.085]) {
+      const points = outline.map(
+        (point) => new THREE.Vector3(point.x * scale, point.y * scale, 0),
+      );
+      const line = new THREE.Line(
+        new THREE.BufferGeometry().setFromPoints(points),
+        drawingMaterial,
+      );
+      line.renderOrder = 5;
+      drawing.add(line);
+      contours.push(line);
+    }
+    const marks: THREE.Vector3[] = [];
+    for (const [x, y] of [
+      [0, (PENDANT.height / 2) * 1.085],
+      [0, (-PENDANT.height / 2) * 1.085],
+      [(-PENDANT.width / 2) * 1.085, 0],
+      [(PENDANT.width / 2) * 1.085, 0],
+    ]) {
+      marks.push(
+        new THREE.Vector3(x - 0.035, y, 0),
+        new THREE.Vector3(x + 0.035, y, 0),
+        new THREE.Vector3(x, y - 0.035, 0),
+        new THREE.Vector3(x, y + 0.035, 0),
+      );
+    }
+    drawing.add(
+      new THREE.LineSegments(
+        new THREE.BufferGeometry().setFromPoints(marks),
+        drawingMaterial,
+      ),
+    );
+    const micPoints = Array.from({ length: 65 }, (_, i) => {
+      const x = Math.cos((i / 64) * Math.PI * 2) * PENDANT.apertureRadius;
+      const y =
+        PENDANT.apertureY +
+        Math.sin((i / 64) * Math.PI * 2) * PENDANT.apertureRadius;
+      return new THREE.Vector3(x, y, faceZ(x, y) + 0.001);
+    });
+    const micLine = new THREE.Line(
+      new THREE.BufferGeometry().setFromPoints(micPoints),
+      drawingMaterial,
+    );
+    drawing.add(micLine);
+    contours.push(micLine);
+  }
+  drawing.visible = false;
+  const heroTwin = new THREE.Group();
+  const twinMaterial = silver.clone();
+  if (mode === "hero") {
+    const face = new THREE.Mesh(bodyGeometry, twinMaterial);
+    const rear = new THREE.Mesh(bodyGeometry, twinMaterial);
+    rear.rotation.y = Math.PI;
+    const mic = aperture.clone();
+    heroTwin.add(face, rear, mic);
+    scene.add(heroTwin);
+    heroTwin.visible = false;
+  }
+  let heroIntro = 0,
+    heroPointer = 0,
+    heroCompact = false,
+    heroFinish: PendantFinish = "silver";
+  let firstRender = true;
   let target = 0,
     current = -1,
     frame = 0,
@@ -502,6 +578,78 @@ export function createPendantScene(
       );
       product.position.y = -0.13;
       board.visible = false;
+    } else if (mode === "hero") {
+      const toCenter = smooth(0.05, 0.23, p);
+      const toBox = smooth(0.57, 0.81, p);
+      const turn = smooth(0.2, 0.57, p);
+      const arrive = smooth(0.82, 1, heroIntro);
+      const fill = smooth(0.4, 0.72, heroIntro);
+      const mobile = heroCompact;
+      const halfViewHeight =
+        Math.tan(THREE.MathUtils.degToRad(camera.fov / 2)) * camera.position.z;
+      product.position.set(
+        mobile
+          ? 0
+          : halfViewHeight *
+              camera.aspect *
+              (0.47 * (1 - toCenter) + 0.22 * toBox),
+        mobile ? 0 : -0.01 + toBox * 0.22,
+        0,
+      );
+      product.rotation.set(
+        -0.055 * arrive + Math.sin(turn * Math.PI) * 0.18 - toBox * 0.16,
+        -0.28 * arrive + turn * Math.PI * 2 + heroPointer * 0.12 * arrive,
+        -0.085 * arrive + toBox * 0.22,
+      );
+      product.scale.setScalar(
+        (mobile ? 1.13 : 0.86) *
+          (0.25 + 0.75 * smooth(0, 0.3, heroIntro)) *
+          (1 + toCenter * 0.3 - toBox * 0.55),
+      );
+      board.visible = wire.visible = chain.visible = false;
+      front.position.set(0, 0, 0);
+      back.position.set(0, 0, 0);
+      silver.opacity = rearSilver.opacity = fill;
+      silver.depthWrite = rearSilver.depthWrite = fill > 0.95;
+      frontMesh.visible = backMesh.visible = fill > 0.001;
+      aperture.visible = fill > 0.72;
+      const from = new THREE.Color(FINISHES[heroFinish].color);
+      const to = new THREE.Color(
+        FINISHES[heroFinish === "silver" ? "gold" : "silver"].color,
+      );
+      from.lerp(to, smooth(0.36, 0.44, p) * (1 - smooth(0.6, 0.76, p)));
+      silver.color.copy(from);
+      rearSilver.color.copy(silver.color);
+      heroTwin.visible = p > 0.64;
+      const twinReveal = smooth(0.64, 0.82, p);
+      heroTwin.position.set(
+        halfViewHeight * camera.aspect * 0.62,
+        -0.16 - (1 - twinReveal) * 0.7,
+        -0.06,
+      );
+      heroTwin.rotation.set(-0.055, -0.32, 0.07);
+      heroTwin.scale.setScalar(0.86 * 0.75 * (0.8 + twinReveal * 0.2));
+      twinMaterial.color.setHex(
+        FINISHES[heroFinish === "silver" ? "gold" : "silver"].color,
+      );
+      twinMaterial.opacity = twinReveal;
+      twinMaterial.depthWrite = twinReveal > 0.95;
+      drawing.visible = heroIntro < 0.82;
+      drawingMaterial.opacity = 1 - smooth(0.61, 0.82, heroIntro);
+      for (let i = 0; i < contours.length; i++) {
+        const geometry = contours[i].geometry;
+        geometry.setDrawRange(
+          0,
+          Math.ceil(
+            geometry.getAttribute("position").count *
+              smooth(
+                i === 2 ? 0.3 : i * 0.04,
+                i === 2 ? 0.5 : 0.45 + i * 0.04,
+                heroIntro,
+              ),
+          ),
+        );
+      }
     } else {
       const xray = smooth(0.2, 0.35, p) * (1 - smooth(0.66, 0.745, p));
       const turn =
@@ -538,6 +686,10 @@ export function createPendantScene(
       product.scale.setScalar(1 - open * 0.14);
     }
     renderer.render(scene, camera);
+    if (firstRender) {
+      firstRender = false;
+      onFirstRender?.();
+    }
   }
   const requestRender = () => {
     if (!frame && visible && !disposed) frame = requestAnimationFrame(render);
@@ -547,7 +699,14 @@ export function createPendantScene(
     if (!width || !height) return;
     renderer.setSize(width, height, false);
     camera.aspect = width / height;
-    camera.position.z = width < 600 ? 8.7 : camera.aspect < 0.85 ? 8 : 6.9;
+    camera.position.z =
+      mode === "hero"
+        ? 6.9
+        : width < 600
+          ? 8.7
+          : camera.aspect < 0.85
+            ? 8
+            : 6.9;
     camera.updateProjectionMatrix();
     requestRender();
   };
@@ -565,6 +724,20 @@ export function createPendantScene(
   document.addEventListener("visibilitychange", requestRender);
   resize();
   return {
+    setHeroFrame(
+      progress: number,
+      intro: number,
+      finish: PendantFinish,
+      pointer = 0,
+      compact = false,
+    ) {
+      target = progress;
+      heroIntro = intro;
+      heroFinish = finish;
+      heroPointer = pointer;
+      heroCompact = compact;
+      requestRender();
+    },
     setFinish(finish: PendantFinish) {
       silver.color.setHex(FINISHES[finish].color);
       rearSilver.color.setHex(FINISHES[finish].color);
@@ -599,6 +772,8 @@ export function createPendantScene(
           ).forEach((m) => materials.add(m));
       });
       geometries.forEach((g) => g.dispose());
+      materials.add(drawingMaterial);
+      materials.add(twinMaterial);
       materials.forEach((m) => m.dispose());
       grain.dispose();
       env.dispose();

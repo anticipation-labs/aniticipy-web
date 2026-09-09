@@ -557,7 +557,11 @@ export function AnticipyLanding({
       </dialog>
       {campaign && <ActionManifesto />}
       <main tabIndex={-1} id="main" className="ap-page">
-        <MotionHero motion={motion} />
+        <MotionHero
+          motion={motion}
+          finish={finish}
+          onFinishChange={setFinish}
+        />
 
         <PrototypeTrust />
         <ActionExperience motion={motion} />

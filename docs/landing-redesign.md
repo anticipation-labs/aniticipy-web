@@ -1,6 +1,6 @@
 # Anticipy landing redesign
 
-The hero now uses a full-screen asymmetric composition with a large photographic pendant film and masked typography. “Not a note taker. An action taker.” resolves in stages while the pendant pulls back, turns and changes between silver and gold. The hero has a Buy Now action, with pricing and offer details kept in the purchase section. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
+The hero keeps the approved asymmetric left typography and now uses a live pendant construction reveal instead of the reused film. Its actual housing outline is drawn, the closed brushed-metal body appears in registration, and scrolling carries the same object through a full turn into a silver-and-gold pair. Buy Now remains prominent; pricing and offer details stay in the purchase section. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
 
 ## Visual direction
 
@@ -10,7 +10,7 @@ The approved scoop-neck necklace image and its “Keep your head in the real wor
 
 ## Hero reference synthesis
 
-All eight supplied reference heroes were freshly sampled and inspected. See [revision14-motion-study.md](revision14-motion-study.md) for observed motion, source links, implementation timing, film provenance and evidence limits. The current hero replaces the previous centered still-photo layout. It uses the accepted photographic turns in a 14.5-second silent loop, a meaningful poster, staged line masks, a close-up-to-rest entrance and native-scroll parallax. The page remains white and black, with metal finishes supplying color. Pricing and purchase terms remain in the order section.
+The latest deep study of [Oryzo](https://oryzo.ai/) informs the registered construction opening and persistent-object scroll handoffs. See [revision15-motion-study.md](revision15-motion-study.md) for sampled source timings, implementation, QA and limitations. Earlier research across all eight supplied sites remains in revision14-motion-study.md as historical evidence; its reused film solution is superseded. The new hero contains no video element and does not request the previous hero film. Silver/gold swatches share the purchase finish state. Desktop supports the full three-scene scroll sequence; compact layouts use the contour opening followed by the paired photographic composition in normal document flow. Motion-off and unavailable-WebGL presentations remain readable and buyable.
 
 ## Photographic pendant story
 
