@@ -272,8 +272,8 @@ export function PurchaseForm({ canceled }: { canceled: boolean }) {
             Privacy Policy
           </a>
           . I understand the estimated ship date is Q4 2026, that
-          refunds are at Anticipation Labs Inc&apos;s sole discretion except
-          where required by applicable law, and that the Pre-Order Agreement
+          I can cancel for a full refund any time before my unit ships,
+          and that the Pre-Order Agreement
           contains a binding arbitration clause and class action waiver in
           Section 14 that affect my legal rights (with a 30-day opt-out).
         </span>

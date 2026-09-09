@@ -1,0 +1,733 @@
+/* Product clarity and a consistent, explicit path to the pre-order. */
+.ap-site .ap-nav-order {
+  background: #26241f;
+  color: #fffaf1;
+  border: 0;
+  border-radius: 5px;
+  padding: 13px 17px;
+  gap: 8px;
+  font-size: 14px;
+}
+.ap-site .ap-nav-order:hover {
+  background: #584933;
+  color: white;
+}
+.ap-site .ap-nav-order svg {
+  width: 17px;
+  height: 17px;
+}
+.ap-site .ap-shop-hero {
+  position: relative;
+  min-height: 780px;
+  height: max(780px, 100svh);
+  max-height: 1080px;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 2%;
+  padding: 115px 5% 100px;
+  background: #faf8f4;
+  overflow: hidden;
+}
+.ap-site .ap-shop-copy {
+  position: relative;
+  z-index: 2;
+  padding: 15px 0;
+}
+.ap-site .ap-shop-category {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #6a5c49;
+  font-size: 12px;
+  letter-spacing: 0.09em;
+  margin: 0 0 25px;
+}
+.ap-site .ap-shop-category > span {
+  width: 6px;
+  height: 6px;
+  background: #aa8658;
+  border-radius: 50%;
+}
+.ap-site .ap-shop-copy h1 {
+  font-size: clamp(52px, 5.35vw, 86px);
+  line-height: 1.035;
+  letter-spacing: -0.065em;
+  font-weight: 400;
+  margin: 0;
+  max-width: 710px;
+}
+.ap-site .ap-shop-description {
+  font-size: clamp(18px, 1.45vw, 22px);
+  line-height: 1.55;
+  color: #635d53;
+  max-width: 495px;
+  margin: 28px 0 30px;
+}
+.ap-site .ap-shop-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 22px;
+}
+.ap-site .ap-shop-actions .ap-button {
+  min-height: 58px;
+  padding-left: 22px;
+  font-size: 15px;
+  border-radius: 5px;
+}
+.ap-site .ap-shop-demo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 14px;
+  padding: 13px 0;
+  border-bottom: 1px solid #b6a791;
+}
+.ap-site .ap-shop-demo:hover {
+  color: #8a6b44;
+}
+.ap-site .ap-shop-delivery {
+  font-size: 12px;
+  color: #6f6557;
+  line-height: 1.6;
+  margin: 17px 0 22px;
+}
+.ap-site .ap-shop-assurances {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 9px 23px;
+  max-width: 520px;
+  font-size: 12px;
+  color: #625b4f;
+}
+.ap-site .ap-shop-assurances > span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+.ap-site .ap-shop-assurances svg {
+  width: 16px;
+  height: 16px;
+  color: #8a6b44;
+}
+.ap-site .ap-shop-visual {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 540px;
+  max-height: 740px;
+  align-self: center;
+}
+.ap-site .ap-shop-backdrop {
+  position: absolute;
+  inset: 0 0 35px;
+  border-radius: 47% 47% 7px 7px;
+  background: radial-gradient(ellipse at 50% 40%, #f8f5ee 5%, #eae3d8 85%);
+}
+.ap-site .ap-shop-material {
+  position: absolute;
+  top: 36px;
+  width: 100%;
+  text-align: center;
+  font-size: 9px;
+  letter-spacing: 0.08em;
+  color: #86745d;
+  z-index: 1;
+}
+.ap-site .ap-shop-visual > img {
+  position: absolute;
+  height: 95%;
+  width: 190%;
+  max-width: none;
+  left: -45%;
+  top: -12%;
+  object-fit: contain;
+  pointer-events: none;
+  transform: translateY(calc(var(--hero-progress, 0) * -20px))
+    rotate(calc(var(--hero-progress, 0) * -3deg));
+}
+.ap-site .ap-hero-result {
+  position: absolute;
+  bottom: 12px;
+  left: 8%;
+  right: 3%;
+  background: #fffefbef;
+  border: 1px solid #e6dfd3;
+  border-radius: 8px;
+  padding: 21px 23px;
+  box-shadow: 0 18px 40px #58482c0b;
+}
+.ap-site .ap-hero-result-top {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  color: #897456;
+  font-size: 8px;
+  letter-spacing: 0.04em;
+}
+.ap-site .ap-hero-result-top svg {
+  width: 20px;
+  height: 20px;
+}
+.ap-site .ap-hero-result-top .ap-result-status {
+  margin-left: auto;
+  border: 1px solid #ddd1bf;
+  border-radius: 4px;
+  padding: 5px 7px;
+  color: #6c5940;
+  letter-spacing: 0;
+  font-size: 10px;
+}
+.ap-site .ap-hero-result h2 {
+  font-size: clamp(18px, 1.65vw, 25px);
+  font-weight: 400;
+  line-height: 1.3;
+  letter-spacing: -0.035em;
+  margin: 18px 0;
+}
+.ap-site .ap-hero-result-bottom {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 15px;
+  border-top: 1px solid #e5ded3;
+  font-size: 10px;
+  color: #756957;
+}
+.ap-site .ap-shop-foot {
+  position: absolute;
+  bottom: 28px;
+  left: 5%;
+  right: 5%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 25px;
+  border-top: 1px solid #d9d0c2;
+  padding-top: 19px;
+  color: #716452;
+  font-size: 9px;
+  letter-spacing: 0.06em;
+}
+.ap-site .ap-shop-foot a {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 30px;
+  letter-spacing: 0;
+}
+.ap-site .ap-shop-foot a span {
+  font-size: 22px;
+}
+/* The construction animation lives with the product. The headline is immediately readable. */
+.ap-site .ap-intro {
+  position: absolute;
+  inset: 82px 0 auto auto;
+  width: 50%;
+  height: min(650px, 80svh);
+  pointer-events: none;
+  background: transparent;
+  animation:
+    ap-shop-material 1.3s both,
+    ap-intro-safety 0s 4.5s forwards;
+}
+.ap-site .ap-intro p {
+  display: none;
+}
+.ap-site .ap-construction {
+  width: 85%;
+  height: 90%;
+  animation: ap-drawing-enter 1.3s both;
+}
+.ap-site .ap-construction-ring {
+  animation:
+    ap-drawing-ring 0.7s both,
+    ap-ring-resolve 0.4s 0.7s forwards;
+}
+.ap-site .ap-drawn-pendant {
+  animation: ap-outline-material 1.5s both;
+}
+@keyframes ap-shop-material {
+  0%,
+  35% {
+    background: #faf8f4;
+  }
+  100% {
+    background: #faf8f400;
+  }
+}
+.ap-site .ap-order {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  padding: 100px 5% 60px;
+  background: #f0ede6;
+  scroll-margin-top: 70px;
+}
+.ap-site .ap-order-product {
+  position: relative;
+  min-height: 615px;
+  background: #e8e1d6;
+  border-radius: 7px;
+  overflow: hidden;
+}
+.ap-site .ap-order-product > .ap-kicker {
+  position: absolute;
+  top: 30px;
+  left: 30px;
+  z-index: 1;
+  font-size: 10px;
+  color: #72604a;
+}
+.ap-site .ap-order-product > img {
+  position: absolute;
+  width: 190%;
+  max-width: none;
+  height: 100%;
+  top: -2%;
+  left: -45%;
+  object-fit: contain;
+}
+.ap-site .ap-order-finish {
+  position: absolute;
+  bottom: 29px;
+  left: 30px;
+  right: 30px;
+  border-top: 1px solid #c9bea9;
+  padding-top: 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  color: #5d5449;
+  font-size: 12px;
+}
+.ap-site .ap-order-finish > span:first-child {
+  width: 17px;
+  height: 17px;
+  background: linear-gradient(135deg, #8f908e, #f0eee6, #b7b7b1);
+  border-radius: 50%;
+  border: 1px solid #aaa69b;
+}
+.ap-site .ap-order-included {
+  margin-left: auto;
+  font-size: 10px;
+}
+.ap-site .ap-order-details {
+  padding: 15px 0 0;
+}
+.ap-site .ap-order-details h2 {
+  font-size: clamp(40px, 4.1vw, 63px);
+  letter-spacing: -0.06em;
+  line-height: 1.07;
+  font-weight: 400;
+}
+.ap-site .ap-order-details h2 span {
+  color: #8a6b44;
+}
+.ap-site .ap-order-price {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 9px 20px;
+  margin: 27px 0 22px;
+}
+.ap-site .ap-order-price strong {
+  font-size: 35px;
+  font-weight: 400;
+  letter-spacing: -0.06em;
+}
+.ap-site .ap-order-price small {
+  font-size: 13px;
+  letter-spacing: 0;
+}
+.ap-site .ap-order-price > span {
+  font-size: 12px;
+  color: #807360;
+}
+.ap-site .ap-order-summary {
+  color: #665c4d;
+  font-size: 16px;
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+.ap-site .ap-order-inclusions {
+  list-style: none;
+  padding: 0;
+  margin: 0 0 27px;
+  display: grid;
+  gap: 12px;
+}
+.ap-site .ap-order-inclusions li {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 15px;
+}
+.ap-site .ap-order-inclusions svg {
+  width: 18px;
+  height: 18px;
+  color: #8a6b44;
+}
+.ap-site .ap-order-details > .ap-button {
+  display: flex;
+  justify-content: space-between;
+  width: 100%;
+  min-height: 59px;
+  padding-left: 23px;
+  border-radius: 5px;
+  font-size: 16px;
+}
+.ap-site .ap-order-payment {
+  color: #736755;
+  font-size: 12px;
+  margin: 14px 0 22px;
+  text-align: center;
+}
+.ap-site .ap-order-reassurance {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  padding: 17px 0;
+  border-top: 1px solid #d5cbbd;
+  border-bottom: 1px solid #d5cbbd;
+}
+.ap-site .ap-order-reassurance > span {
+  font-size: 11px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1.4;
+}
+.ap-site .ap-order-reassurance svg {
+  width: 18px;
+  height: 18px;
+  flex-shrink: 0;
+  color: #8a6b44;
+}
+.ap-site .ap-service-terms {
+  margin-top: 12px;
+  font-size: 12px;
+  color: #716553;
+}
+.ap-site .ap-service-terms summary {
+  list-style: none;
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+  padding: 13px 0;
+  cursor: pointer;
+}
+.ap-site .ap-service-terms summary::-webkit-details-marker {
+  display: none;
+}
+.ap-site .ap-service-terms summary span {
+  font-size: 17px;
+}
+.ap-site .ap-service-terms[open] summary span {
+  transform: rotate(45deg);
+}
+.ap-site .ap-service-terms p {
+  line-height: 1.7;
+  margin: 4px 0 12px;
+}
+.ap-site .ap-service-terms a {
+  text-decoration: underline;
+}
+.ap-site .ap-order .ap-waitlist {
+  grid-column: 1/-1;
+  margin-top: 0;
+}
+@media (min-width: 1600px) {
+  .ap-site .ap-shop-hero {
+    padding-left: 7%;
+    padding-right: 7%;
+  }
+  .ap-site .ap-shop-copy h1 {
+    font-size: 86px;
+  }
+  .ap-site .ap-shop-visual {
+    max-height: 730px;
+  }
+}
+@media (max-width: 1100px) {
+  .ap-site .ap-shop-hero {
+    padding-left: 4%;
+    padding-right: 4%;
+    gap: 1%;
+  }
+  .ap-site .ap-shop-copy h1 {
+    font-size: 57px;
+  }
+  .ap-site .ap-shop-description {
+    font-size: 18px;
+  }
+  .ap-site .ap-shop-actions {
+    gap: 10px;
+  }
+  .ap-site .ap-shop-actions .ap-button {
+    font-size: 14px;
+    padding-left: 17px;
+  }
+  .ap-site .ap-shop-demo {
+    font-size: 12px;
+  }
+  .ap-site .ap-hero-result {
+    left: 4%;
+    right: 0;
+    padding: 20px 16px;
+  }
+  .ap-site .ap-order {
+    gap: 35px;
+  }
+  .ap-site .ap-order-reassurance {
+    grid-template-columns: 1fr;
+  }
+  .ap-site .ap-order-product {
+    min-height: 610px;
+  }
+}
+@media (max-width: 800px) {
+  .ap-site .ap-nav-order {
+    padding: 11px 12px;
+    gap: 5px;
+    font-size: 12px;
+  }
+  .ap-site .ap-nav-order svg {
+    display: none;
+  }
+  .ap-site .ap-nav-actions {
+    gap: 10px;
+  }
+  .ap-site .ap-shop-hero {
+    height: auto;
+    max-height: none;
+    min-height: 0;
+    padding: 107px 6% 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    overflow: hidden;
+  }
+  .ap-site .ap-shop-copy {
+    width: 100%;
+    padding: 0;
+  }
+  .ap-site .ap-shop-category {
+    font-size: 10px;
+    margin-bottom: 17px;
+  }
+  .ap-site .ap-shop-copy h1 {
+    font-size: clamp(40px, 7.6vw, 60px);
+    line-height: 1.055;
+    letter-spacing: -0.06em;
+  }
+  .ap-site .ap-shop-copy h1 br:first-child {
+    display: none;
+  }
+  .ap-site .ap-shop-description {
+    font-size: 17px;
+    line-height: 1.55;
+    max-width: 510px;
+    margin: 21px 0 24px;
+  }
+  .ap-site .ap-shop-actions {
+    gap: 14px;
+    flex-wrap: wrap;
+  }
+  .ap-site .ap-shop-actions .ap-button {
+    font-size: 14px;
+    min-height: 54px;
+  }
+  .ap-site .ap-shop-demo {
+    font-size: 13px;
+  }
+  .ap-site .ap-shop-delivery {
+    font-size: 11px;
+    line-height: 1.55;
+    max-width: 300px;
+    margin: 14px 0 16px;
+  }
+  .ap-site .ap-shop-assurances {
+    font-size: 10px;
+    gap: 12px 17px;
+  }
+  .ap-site .ap-shop-visual {
+    margin: 33px 0 0;
+    min-height: 480px;
+    max-height: 600px;
+    height: 70vw;
+  }
+  .ap-site .ap-shop-backdrop {
+    inset: 0 0 35px;
+  }
+  .ap-site .ap-shop-visual > img {
+    top: -12%;
+    height: 100%;
+  }
+  .ap-site .ap-shop-material {
+    top: 26px;
+    font-size: 8px;
+  }
+  .ap-site .ap-hero-result {
+    left: 4%;
+    right: 0;
+    bottom: 0;
+    padding: 18px 16px;
+  }
+  .ap-site .ap-hero-result h2 {
+    font-size: 21px;
+  }
+  .ap-site .ap-hero-result-bottom {
+    font-size: 9px;
+  }
+  .ap-site .ap-shop-foot {
+    position: relative;
+    inset: auto;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    width: 100%;
+    margin-top: 30px;
+    padding-top: 19px;
+  }
+  .ap-site .ap-shop-foot > span {
+    display: none;
+  }
+  .ap-site .ap-shop-foot a {
+    width: 100%;
+    justify-content: space-between;
+    font-size: 11px;
+  }
+  .ap-site .ap-intro {
+    display: none;
+  }
+  .ap-site .ap-order {
+    display: flex;
+    flex-direction: column;
+    gap: 35px;
+    padding: 65px 6% 40px;
+  }
+  .ap-site .ap-order-product {
+    min-height: 400px;
+    height: 100vw;
+    max-height: 580px;
+  }
+  .ap-site .ap-order-product > .ap-kicker {
+    left: 22px;
+    top: 24px;
+    font-size: 9px;
+  }
+  .ap-site .ap-order-finish {
+    left: 22px;
+    right: 22px;
+    bottom: 22px;
+    font-size: 11px;
+  }
+  .ap-site .ap-order-included {
+    font-size: 9px;
+  }
+  .ap-site .ap-order-details {
+    padding: 0;
+    order: -1;
+  }
+  .ap-site .ap-order-details h2 {
+    font-size: 44px;
+  }
+  .ap-site .ap-order-summary {
+    font-size: 15px;
+  }
+  .ap-site .ap-order-price {
+    margin: 23px 0 18px;
+  }
+  .ap-site .ap-order-inclusions li {
+    font-size: 14px;
+  }
+  .ap-site .ap-order-reassurance {
+    grid-template-columns: 1fr 1fr;
+  }
+  .ap-site .ap-order .ap-waitlist {
+    margin-top: 10px;
+  }
+}
+@media (max-width: 370px) {
+  .ap-site .ap-nav-order {
+    font-size: 11px;
+    padding: 11px 9px;
+  }
+  .ap-site .ap-shop-copy h1 {
+    font-size: 38px;
+  }
+  .ap-site .ap-shop-actions .ap-button {
+    font-size: 13px;
+  }
+  .ap-site .ap-shop-actions {
+    gap: 10px;
+  }
+  .ap-site .ap-hero-result h2 {
+    font-size: 19px;
+  }
+  .ap-site .ap-hero-result-top {
+    font-size: 7px;
+  }
+}
+.ap-site.ap-reduced .ap-shop-visual > img {
+  transform: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-site .ap-shop-visual > img {
+    transform: none !important;
+  }
+}
+.ap-site .ap-shop-mobile-product {
+  display: none;
+}
+@media (max-width: 800px) {
+  .ap-site .ap-shop-mobile-product {
+    display: block;
+    float: right;
+    width: 43%;
+    height: 224px;
+    position: relative;
+    margin: 0 -5% 5px 8px;
+  }
+  .ap-site .ap-shop-mobile-product img {
+    position: absolute;
+    width: 320%;
+    max-width: none;
+    height: 140%;
+    left: -110%;
+    top: -22%;
+    object-fit: cover;
+  }
+  .ap-site .ap-shop-copy h1 {
+    font-size: clamp(35px, 6.8vw, 49px);
+    line-height: 1.08;
+  }
+  .ap-site .ap-shop-description {
+    clear: both;
+    padding-top: 14px;
+    margin-top: 15px;
+  }
+  .ap-site .ap-shop-visual {
+    display: none;
+  }
+  .ap-site .ap-shop-actions .ap-button {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .ap-site .ap-shop-demo {
+    margin: auto;
+  }
+  .ap-site .ap-shop-foot {
+    margin-top: 25px;
+  }
+}
+@media (max-width: 370px) {
+  .ap-site .ap-shop-mobile-product img {
+    height: 125%;
+    top: -14%;
+    transform: translateX(-12px);
+  }
+}

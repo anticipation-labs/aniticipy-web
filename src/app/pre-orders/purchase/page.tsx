@@ -7,7 +7,7 @@ const jsonLdProduct = {
   "@type": "Product",
   name: "Anticipy Pendant Pre-Order",
   description:
-    "Pre-order the Anticipy AI wearable pendant. Brushed titanium, 8 grams. Wireless charging pad and chain included. $149.99 now, $199 at launch.",
+    "Pre-order the Anticipy titanium AI pendant with matching chain, wireless charging pad, and first year of AI service. $149.99 USD now; projected launch price $199.",
   brand: { "@type": "Brand", name: "Anticipy" },
   image: [
     "https://www.anticipy.ai/images/colorways.png",
@@ -17,7 +17,6 @@ const jsonLdProduct = {
     "@type": "Offer",
     priceCurrency: "USD",
     price: "149.99",
-    priceValidUntil: "2026-08-31",
     availability: "https://schema.org/PreOrder",
     url: "https://www.anticipy.ai/pre-orders/purchase",
     seller: {
@@ -145,7 +144,7 @@ export default function PreOrderPurchasePage({
                 className="text-[15px]"
                 style={{ color: "var(--text-on-light-muted)" }}
               >
-                $199 at launch
+                Projected launch price $199
               </span>
             </div>
 
@@ -153,7 +152,7 @@ export default function PreOrderPurchasePage({
               className="text-[14px] font-light mb-8"
               style={{ color: "var(--text-on-light-muted)" }}
             >
-              $149.99 now, $199 at launch. Free shipping to the US and Canada.
+              $149.99 USD charged now. Free shipping to the US and Canada.
             </p>
 
             <div
@@ -180,12 +179,24 @@ export default function PreOrderPurchasePage({
                   <span style={{ color: "var(--gold)" }}>&bull;</span>
                   <span>Free shipping to the US and Canada.</span>
                 </li>
+                <li className="flex items-start gap-2">
+                  <span style={{ color: "var(--gold)" }}>&bull;</span>
+                  <span>Your first year of AI service, starting when your pendant ships.</span>
+                </li>
               </ul>
+              <p className="text-[14px] leading-relaxed mt-5" style={{ color: "var(--text-on-light-muted)" }}>
+                After the first year, continued cloud AI requires a separate annual
+                opt-in, currently projected at $99 USD/year. You won&apos;t be
+                automatically enrolled. See the{" "}
+                <Link href="/pre-orders/agreement" className="underline hover:text-[var(--gold)]">
+                  pre-order terms
+                </Link>.
+              </p>
             </div>
 
             <div className="grid grid-cols-3 gap-4 mb-8">
               <div className="text-center p-4 rounded-card" style={{ background: "var(--cream-muted)" }}>
-                <div className="text-[11px] uppercase tracking-[0.12em] mb-1" style={{ color: "var(--text-on-light-muted)" }}>Ship date</div>
+                <div className="text-[11px] uppercase tracking-[0.12em] mb-1" style={{ color: "var(--text-on-light-muted)" }}>Est. ship date</div>
                 <div className="font-serif text-[16px]" style={{ color: "var(--text-on-light)" }}>Q4 2026</div>
               </div>
               <div className="text-center p-4 rounded-card" style={{ background: "var(--cream-muted)" }}>
@@ -226,11 +237,9 @@ export default function PreOrderPurchasePage({
               q="What is your refund policy?"
               a={
                 <>
-                  Pre-order refunds are at Anticipation Labs Inc&apos;s sole
-                  discretion except where required by applicable law including
-                  the FTC Mail-Order Rule. We will always honour rights granted
-                  to you by your local consumer protection statutes. For full
-                  details see the{" "}
+                  You can cancel for a full refund any time before your pendant
+                  ships, with no reason required. Email hello@anticipy.ai from
+                  the address you ordered with. For full details see the{" "}
                   <Link
                     href="/pre-orders/agreement"
                     className="underline hover:text-[var(--gold)]"

@@ -3,6 +3,7 @@
 import { FormEvent, useEffect, useRef, useState } from "react";
 import "./landing.css";
 import "./revision.css";
+import "./conversion.css";
 import { PendantScene, type PendantSceneHandle } from "./PendantScene";
 
 const STORE = "https://www.anticipy.ai";
@@ -84,19 +85,19 @@ const HARDWARE = [
   {
     title: (
       <>
-        A closer
+        Intelligence,
         <br />
-        look inside.
+        within.
       </>
     ),
-    subtitle: "Every layer has a purpose.",
+    subtitle: "One closed form. A closer look beneath it.",
     bullets: [
-      "Sculpted front enclosure",
+      "A continuous, closed enclosure",
       "The intelligence at its centre",
-      "A gently curved rear shell",
+      "A technical view beneath the surface",
     ],
     tag: "THE INSIDE",
-    label: "Layer by layer",
+    label: "Beneath the surface",
     caption: "Thoughtful on the inside, too.",
   },
   {
@@ -143,7 +144,11 @@ const FAQ = [
   ],
   [
     "What’s included in the pre-order?",
-    "The pendant, a necklace chain, and a wireless charging pad. The current pre-order is $149.99, with free shipping in the US and Canada. The announced launch price is $199.",
+    "The titanium pendant, matching necklace chain, wireless charging pad, and your first year of AI service. The current pre-order is $149.99 USD, with free shipping in the US and Canada. The projected launch price is $199.",
+  ],
+  [
+    "Is there an AI service subscription?",
+    "Your first year is included, starting when your pendant ships. After that, continued cloud AI service requires a separate annual opt-in, currently projected at $99 USD/year. You will not be automatically enrolled.",
   ],
   [
     "When will my Anticipy arrive?",
@@ -218,16 +223,18 @@ function Button({
   children,
   href,
   pale = false,
+  ctaId = "pendant-preorder",
 }: {
   children: React.ReactNode;
   href: string;
   pale?: boolean;
+  ctaId?: string;
 }) {
   return (
     <a
       className={"ap-button" + (pale ? " ap-button-pale" : "")}
       href={href}
-      data-cta-id="pendant-preorder"
+      data-cta-id={ctaId}
       data-cta-type="preorder"
     >
       {children}
@@ -270,7 +277,7 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
     query.addEventListener("change", onPreference);
     const timer = window.setTimeout(
       () => setIntro(false),
-      query.matches || window.location.hash ? 0 : 2300,
+      query.matches || window.location.hash ? 0 : 1300,
     );
     return () => {
       window.clearTimeout(timer);
@@ -378,6 +385,12 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
     menuDestination.current = id;
     setMenu(false);
   };
+  const navigateHome = (event: React.MouseEvent<HTMLAnchorElement>) => {
+    event.preventDefault();
+    document.getElementById("main")?.focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "auto" });
+    window.history.replaceState(null, "", "#main");
+  };
   const chooseStep = (index: number) => {
     setStep(index);
     setApproved(false);
@@ -458,7 +471,7 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
         (!motion ? " ap-reduced" : "")
       }
     >
-      <a className="ap-skip" href="#main">
+      <a className="ap-skip" href="#main" onClick={navigateHome}>
         Skip to content
       </a>
       <div className="ap-intro" aria-hidden="true">
@@ -482,9 +495,9 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           <rect
             className="ap-drawn-pendant"
             x="280"
-            y="160"
+            y="220"
             width="240"
-            height="480"
+            height="360"
             rx="120"
             stroke="currentColor"
             strokeWidth="1.5"
@@ -554,7 +567,12 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
         </style>
       </noscript>
       <header className="ap-nav">
-        <a className="ap-logo" href="#main" aria-label="Anticipy home">
+        <a
+          className="ap-logo"
+          href="#main"
+          onClick={navigateHome}
+          aria-label="Anticipy home"
+        >
           anticipy<span>™</span>
         </a>
         <nav aria-label="Main navigation">
@@ -563,8 +581,13 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           <a href="#privacy">Your privacy</a>
         </nav>
         <div className="ap-nav-actions">
-          <a className="ap-nav-order" href={STORE + "/pre-orders/purchase"}>
-            Pre-order <Arrow diagonal />
+          <a
+            className="ap-nav-order"
+            href="#order"
+            data-cta-id="nav-order"
+            data-cta-type="anchor"
+          >
+            Pre-order <span>· $149.99</span> <Arrow diagonal />
           </a>
           <button
             ref={menuButton}
@@ -619,248 +642,95 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
         </p>
       </dialog>
       <main tabIndex={-1} id="main" className="ap-page">
-        <section className="ap-hero" data-section-id="hero">
-          <div className="ap-hero-top">
-            <span className="ap-kicker">
-              <i /> LIFE, A LITTLE LIGHTER.
-            </span>
-            <span className="ap-kicker">DESIGNED TO BE WITH YOU.</span>
+        <section className="ap-shop-hero" data-section-id="hero">
+          <div className="ap-shop-copy">
+            <p className="ap-shop-category">
+              <span /> MEET ANTICIPY
+            </p>
+            <div className="ap-shop-mobile-product" aria-hidden="true">
+              <img
+                src="/redesign/pendant-cutout-closed.webp"
+                alt=""
+                width="2048"
+                height="1156"
+              />
+            </div>
+            <h1>
+              The AI pendant <br />
+              that turns words
+              <br />
+              into action.
+            </h1>
+            <p className="ap-shop-description">
+              Capture a conversation. Draft the follow-up. Schedule the next
+              step. Anticipy helps get it done, with your approval.
+            </p>
+            <div className="ap-shop-actions">
+              <Button href="#order" ctaId="hero-order">
+                Pre-order · $149.99 USD
+              </Button>
+              <a
+                href="#experience"
+                className="ap-shop-demo"
+                data-cta-id="hero-demo"
+                data-cta-type="anchor"
+              >
+                See how it works <Arrow />
+              </a>
+            </div>
+            <p className="ap-shop-delivery">
+              Estimated shipping Q4 2026 · Free US & Canada shipping
+            </p>
+            <div className="ap-shop-assurances">
+              <span>
+                <Mark type="check" /> First year of AI included
+              </span>
+              <span>
+                <Mark type="shield" /> Refundable before shipping
+              </span>
+            </div>
           </div>
-          <h1 className="ap-wordmark">
-            anticipy<span>™</span>
-          </h1>
-          <div className="ap-hero-art">
+          <div className="ap-shop-visual">
+            <div className="ap-shop-backdrop" />
+            <span className="ap-shop-material">
+              BRUSHED TITANIUM / MADE TO WEAR
+            </span>
             <img
-              src="/redesign/pendant-cutout.webp"
-              alt="Anticipy's brushed silver titanium pendant, suspended on a delicate chain"
-              width="2688"
-              height="1520"
+              src="/redesign/pendant-cutout-closed.webp"
+              alt="Anticipy: a compact, seamless silver AI pendant on a fine necklace"
+              width="2048"
+              height="1156"
               loading="eager"
             />
-          </div>
-          <div className="ap-hero-copy">
-            <h2>
-              Less on your mind.
-              <br />
-              More in your life.
-            </h2>
-            <p>
-              The AI pendant that turns the things you say into the things you
-              get done.
-            </p>
-            <Button href={STORE + "/pre-orders/purchase"}>
-              Meet your Anticipy
-            </Button>
-            <small>PRE-ORDER $149.99 · SHIPS Q4 2026</small>
-          </div>
-          <div className="ap-hero-note">
-            <span className="ap-plus">+</span>
-            <p>
-              A SMALL OBJECT.
-              <br />A LITTLE POSSIBILITY.
-            </p>
-            <span className="ap-note-rule" />
-          </div>
-          <div className="ap-hero-coordinate">
-            <span>01 — THE EVERYDAY COMPANION</span>
-            <span>BRUSHED TITANIUM</span>
-          </div>
-          <a className="ap-scroll" href="#experience">
-            <span>SCROLL TO DISCOVER</span>
-            <span>↓</span>
-          </a>
-        </section>
-
-        <section
-          tabIndex={-1}
-          id="experience"
-          className="ap-introduction"
-          data-section-id="introduction"
-        >
-          <span className="ap-kicker">
-            01 / OUT OF YOUR HEAD.
-            <br />
-            INTO YOUR DAY.
-          </span>
-          <div className="ap-reveal">
-            <h2>
-              Be here.
-              <br />
-              <span>We’ll take it from here.</span>
-            </h2>
-            <p>
-              A thought on a walk. A promise over coffee. Something you meant to
-              do. Anticipy helps carry it forward, so you can stay in the
-              moment.
-            </p>
-          </div>
-        </section>
-
-        <section
-          ref={benefits}
-          className="ap-benefits"
-          id="product-story"
-          aria-label="The everyday companion"
-        >
-          <div className="ap-benefits-sticky">
-            <div className="ap-chapter-track" aria-hidden="true">
-              {BENEFITS.map((_, i) => (
-                <i key={i} className={i <= benefitStep ? "active" : ""} />
-              ))}
-            </div>
-            <div className="ap-benefit-heading" key={benefitStep}>
-              <span className="ap-kicker">
-                THE EVERYDAY COMPANION / 0{benefitStep + 1}
-              </span>
-              <h2>{BENEFITS[benefitStep].title}</h2>
-              <p>{BENEFITS[benefitStep].note}</p>
-            </div>
-            <div
-              className="ap-benefit-object"
-              role="img"
-              aria-label="Anticipy pendant rotating through views of its sculpted metal enclosure"
-            >
-              <PendantScene ref={benefitScene} mode="benefits" />
-            </div>
-            <div className="ap-benefit-context" key={"card" + benefitStep}>
-              <span className="ap-kicker">{BENEFITS[benefitStep].label}</span>
-              <div className="ap-benefit-card">
-                <Mark
-                  type={
-                    benefitStep === 0
-                      ? "sound"
-                      : benefitStep === 1
-                        ? "context"
-                        : "check"
-                  }
-                />
-                <div>
-                  <h3>{BENEFITS[benefitStep].title2}</h3>
-                  <p>{BENEFITS[benefitStep].text}</p>
-                </div>
+            <div className="ap-hero-result">
+              <div className="ap-hero-result-top">
+                <Mark type="context" />
+                <span>FROM YOUR CONVERSATION</span>
+                <span className="ap-result-status">Draft ready</span>
               </div>
-            </div>
-            <div className="ap-product-bottom">
-              <span>ONE LITTLE OBJECT. A LITTLE MORE HEADSPACE.</span>
-              <div role="group" aria-label="Product story chapters">
-                {BENEFITS.map((_, i) => (
-                  <button
-                    key={i}
-                    onClick={() => chooseProductChapter("benefits", i)}
-                    aria-pressed={benefitStep === i}
-                    aria-label={`Product story ${i + 1}: ${BENEFITS[i].note}`}
-                  >
-                    0{i + 1}
-                  </button>
-                ))}
+              <h2>“Send Marcus the notes tonight.”</h2>
+              <div className="ap-hero-result-bottom">
+                <span>Follow-up email prepared</span>
+                <span>You review. You approve.</span>
               </div>
             </div>
           </div>
-        </section>
-
-        <section className="ap-lifestyle" data-section-id="worn">
-          <img
-            src="/redesign/pendant-lifestyle.webp"
-            alt="The small silver Anticipy pendant worn on a fine chain with a cream knit top in natural sunlight"
-            width="2688"
-            height="1520"
-            loading="lazy"
-          />
-          <div className="ap-lifestyle-shade" />
-          <div className="ap-lifestyle-top">
-            <span className="ap-kicker">
-              LESS SCREEN TIME.
-              <br />
-              MORE LIFE TIME.
-            </span>
-            <span className="ap-kicker">02 / WORN, NOT NOTICED.</span>
-          </div>
-          <div className="ap-lifestyle-copy ap-reveal">
-            <h2>
-              Keep your head
-              <br />
-              in the real world.
-            </h2>
-            <p>
-              A quiet companion.
-              <br />
-              For a beautifully busy life.
-            </p>
-          </div>
-          <div className="ap-lifestyle-caption">
-            <i /> Just you. And a little backup.
-          </div>
-        </section>
-
-        <section
-          tabIndex={-1}
-          id="pendant"
-          ref={hardware}
-          className="ap-engineering"
-          data-section-id="pendant"
-          aria-label="Explore the pendant"
-        >
-          <div className="ap-engineering-sticky" data-chapter={hardwareStep}>
-            <div className="ap-engineering-top">
-              <span className="ap-kicker">03 / AN OBJECT, CONSIDERED.</span>
-              <span className="ap-kicker">ANTICIPY — FROM EVERY ANGLE</span>
-            </div>
-            <div className="ap-engineering-copy" key={hardwareStep}>
-              <h2>{HARDWARE[hardwareStep].title}</h2>
-              <p>{HARDWARE[hardwareStep].subtitle}</p>
-              <ul>
-                {HARDWARE[hardwareStep].bullets.map((text) => (
-                  <li key={text}>{text}</li>
-                ))}
-              </ul>
-            </div>
-            <div
-              className="ap-engineering-object"
-              role="img"
-              aria-label="Interactive concept study of the pendant: solid metal, separated shell and board, technical contours, and reassembled enclosure"
-            >
-              <PendantScene ref={hardwareScene} mode="hardware" />
-            </div>
-            <div className="ap-inspector" aria-hidden="true">
-              <span className="ap-inspector-plus">+</span>
-              <div className="ap-inspector-card">
-                <span>{HARDWARE[hardwareStep].tag}</span>
-                <strong>{HARDWARE[hardwareStep].label}</strong>
-              </div>
-              <div className="ap-inspector-caption">
-                {HARDWARE[hardwareStep].caption}
-              </div>
-            </div>
-            <div
-              className="ap-engineering-index"
-              role="group"
-              aria-label="Pendant views"
-            >
-              {["Shape", "Layers", "Detail", "Everyday"].map((label, i) => (
-                <button
-                  key={label}
-                  onClick={() => chooseProductChapter("hardware", i)}
-                  aria-pressed={hardwareStep === i}
-                >
-                  <span>{label}</span>
-                  <b>0{i + 1}</b>
-                </button>
-              ))}
-            </div>
-            <div className="ap-engineering-bottom">
-              <span>SCROLL TO LOOK CLOSER ↓</span>
-              <span>DESIGN STUDY · INTERNAL LAYOUT IS CONCEPTUAL</span>
-            </div>
+          <div className="ap-shop-foot">
+            <span>LESS ON YOUR MIND. MORE IN YOUR LIFE.</span>
+            <a href="#experience">
+              From your words to your next step <span>↓</span>
+            </a>
           </div>
         </section>
 
         <section
           ref={story}
+          tabIndex={-1}
           className="ap-story"
-          id="how-it-works"
-          data-section-id="how-it-works"
+          id="experience"
+          data-section-id="experience"
         >
-          <div className="ap-story-sticky">
+          <div className="ap-story-sticky" id="how-it-works">
             <div className="ap-section-line">
               <span className="ap-kicker">
                 <i /> FROM A FEW WORDS TO A LITTLE LESS WORK.
@@ -1055,6 +925,164 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
         </section>
 
         <section
+          ref={benefits}
+          className="ap-benefits"
+          id="product-story"
+          aria-label="The everyday companion"
+        >
+          <div className="ap-benefits-sticky">
+            <div className="ap-chapter-track" aria-hidden="true">
+              {BENEFITS.map((_, i) => (
+                <i key={i} className={i <= benefitStep ? "active" : ""} />
+              ))}
+            </div>
+            <div className="ap-benefit-heading" key={benefitStep}>
+              <span className="ap-kicker">
+                THE EVERYDAY COMPANION / 0{benefitStep + 1}
+              </span>
+              <h2>{BENEFITS[benefitStep].title}</h2>
+              <p>{BENEFITS[benefitStep].note}</p>
+            </div>
+            <div
+              className="ap-benefit-object"
+              role="img"
+              aria-label="Anticipy pendant rotating through views of its sculpted metal enclosure"
+            >
+              <PendantScene ref={benefitScene} mode="benefits" />
+            </div>
+            <div className="ap-benefit-context" key={"card" + benefitStep}>
+              <span className="ap-kicker">{BENEFITS[benefitStep].label}</span>
+              <div className="ap-benefit-card">
+                <Mark
+                  type={
+                    benefitStep === 0
+                      ? "sound"
+                      : benefitStep === 1
+                        ? "context"
+                        : "check"
+                  }
+                />
+                <div>
+                  <h3>{BENEFITS[benefitStep].title2}</h3>
+                  <p>{BENEFITS[benefitStep].text}</p>
+                </div>
+              </div>
+            </div>
+            <div className="ap-product-bottom">
+              <span>ONE LITTLE OBJECT. A LITTLE MORE HEADSPACE.</span>
+              <div role="group" aria-label="Product story chapters">
+                {BENEFITS.map((_, i) => (
+                  <button
+                    key={i}
+                    onClick={() => chooseProductChapter("benefits", i)}
+                    aria-pressed={benefitStep === i}
+                    aria-label={`Product story ${i + 1}: ${BENEFITS[i].note}`}
+                  >
+                    0{i + 1}
+                  </button>
+                ))}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="ap-lifestyle" data-section-id="worn">
+          <img
+            src="/redesign/pendant-lifestyle-closed.webp"
+            alt="The small silver Anticipy pendant worn on a fine chain with a cream knit top in natural sunlight"
+            width="2688"
+            height="1520"
+            loading="lazy"
+          />
+          <div className="ap-lifestyle-shade" />
+          <div className="ap-lifestyle-top">
+            <span className="ap-kicker">
+              LESS SCREEN TIME.
+              <br />
+              MORE LIFE TIME.
+            </span>
+            <span className="ap-kicker">02 / WORN, NOT NOTICED.</span>
+          </div>
+          <div className="ap-lifestyle-copy ap-reveal">
+            <h2>
+              Keep your head
+              <br />
+              in the real world.
+            </h2>
+            <p>
+              A quiet companion.
+              <br />
+              For a beautifully busy life.
+            </p>
+          </div>
+          <div className="ap-lifestyle-caption">
+            <i /> Just you. And a little backup.
+          </div>
+        </section>
+
+        <section
+          tabIndex={-1}
+          id="pendant"
+          ref={hardware}
+          className="ap-engineering"
+          data-section-id="pendant"
+          aria-label="Explore the pendant"
+        >
+          <div className="ap-engineering-sticky" data-chapter={hardwareStep}>
+            <div className="ap-engineering-top">
+              <span className="ap-kicker">03 / AN OBJECT, CONSIDERED.</span>
+              <span className="ap-kicker">ANTICIPY — FROM EVERY ANGLE</span>
+            </div>
+            <div className="ap-engineering-copy" key={hardwareStep}>
+              <h2>{HARDWARE[hardwareStep].title}</h2>
+              <p>{HARDWARE[hardwareStep].subtitle}</p>
+              <ul>
+                {HARDWARE[hardwareStep].bullets.map((text) => (
+                  <li key={text}>{text}</li>
+                ))}
+              </ul>
+            </div>
+            <div
+              className="ap-engineering-object"
+              role="img"
+              aria-label="Interactive concept study of the pendant: a closed metal enclosure, transparent technical views of its internal board, and a return to the everyday view"
+            >
+              <PendantScene ref={hardwareScene} mode="hardware" />
+            </div>
+            <div className="ap-inspector" aria-hidden="true">
+              <span className="ap-inspector-plus">+</span>
+              <div className="ap-inspector-card">
+                <span>{HARDWARE[hardwareStep].tag}</span>
+                <strong>{HARDWARE[hardwareStep].label}</strong>
+              </div>
+              <div className="ap-inspector-caption">
+                {HARDWARE[hardwareStep].caption}
+              </div>
+            </div>
+            <div
+              className="ap-engineering-index"
+              role="group"
+              aria-label="Pendant views"
+            >
+              {["Shape", "Inside", "Detail", "Everyday"].map((label, i) => (
+                <button
+                  key={label}
+                  onClick={() => chooseProductChapter("hardware", i)}
+                  aria-pressed={hardwareStep === i}
+                >
+                  <span>{label}</span>
+                  <b>0{i + 1}</b>
+                </button>
+              ))}
+            </div>
+            <div className="ap-engineering-bottom">
+              <span>SCROLL TO LOOK CLOSER ↓</span>
+              <span>DESIGN STUDY · INTERNAL LAYOUT IS CONCEPTUAL</span>
+            </div>
+          </div>
+        </section>
+
+        <section
           tabIndex={-1}
           id="privacy"
           className="ap-privacy"
@@ -1135,7 +1163,7 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           aria-label="Made for life beyond the screen"
         >
           <img
-            src="/redesign/pendant-stone.webp"
+            src="/redesign/pendant-stone-closed.webp"
             alt="The silver Anticipy pendant resting on warm pale travertine in natural light"
             width="2752"
             height="1536"
@@ -1151,8 +1179,8 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
               the real world.
             </h2>
             <p>A small companion for everything you have going on.</p>
-            <Button href={STORE + "/pre-orders/purchase"}>
-              Make room for a little less
+            <Button href="#order" ctaId="stone-order">
+              Pre-order your Anticipy
             </Button>
           </div>
           <div className="ap-stone-caption">
@@ -1160,35 +1188,86 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           </div>
         </section>
 
-        <section className="ap-close" id="waitlist" data-section-id="waitlist">
-          <div className="ap-close-top">
-            <span className="ap-kicker">
-              <i /> A LITTLE AHEAD. A LITTLE LIGHTER.
-            </span>
-            <span className="ap-kicker">ANTICIPATION LABS / VANCOUVER</span>
+        <section
+          className="ap-close ap-order"
+          id="order"
+          data-section-id="order"
+        >
+          <div className="ap-order-product">
+            <span className="ap-kicker">YOUR EVERYDAY AI COMPANION</span>
+            <img
+              src="/redesign/pendant-cutout-closed.webp"
+              alt="The seamless Anticipy AI pendant and its fine silver necklace"
+              width="2048"
+              height="1156"
+              loading="lazy"
+            />
+            <div className="ap-order-finish">
+              <span /> Brushed titanium{" "}
+              <span className="ap-order-included">Matching chain included</span>
+            </div>
           </div>
-          <div className="ap-close-main ap-reveal">
+          <div className="ap-order-details">
+            <p className="ap-shop-category">ANTICIPY AI PENDANT</p>
             <h2>
               A little less to do.
               <br />
               <span>A little more you.</span>
             </h2>
-            <div className="ap-close-purchase">
-              <p>Meet your everyday companion.</p>
-              <div className="ap-price">
-                $149.99 <span>$199 at launch</span>
-              </div>
-              <Button href={STORE + "/pre-orders/purchase"}>
-                Pre-order Anticipy
-              </Button>
-              <small>
-                SHIPS Q4 2026 · FREE US & CANADA SHIPPING
-                <br />
-                FULL REFUND ANYTIME BEFORE SHIPPING
-              </small>
+            <div className="ap-order-price">
+              <strong>
+                $149.99 <small>USD</small>
+              </strong>
+              <span>Projected launch price $199</span>
             </div>
+            <p className="ap-order-summary">
+              One pendant. Your words turned into useful next steps.
+            </p>
+            <ul className="ap-order-inclusions">
+              <li>
+                <Mark type="check" /> Titanium pendant & matching chain
+              </li>
+              <li>
+                <Mark type="check" /> Wireless charging pad
+              </li>
+              <li>
+                <Mark type="check" /> First year of AI service
+              </li>
+            </ul>
+            <Button
+              href={STORE + "/pre-orders/purchase"}
+              ctaId="order-checkout"
+            >
+              Pre-order Anticipy · $149.99 USD
+            </Button>
+            <p className="ap-order-payment">
+              Charged today. Estimated shipping Q4 2026.
+            </p>
+            <div className="ap-order-reassurance">
+              <span>
+                <Mark type="check" /> Free US & Canada shipping
+              </span>
+              <span>
+                <Mark type="shield" /> Full refund before shipping
+              </span>
+            </div>
+            <details className="ap-service-terms">
+              <summary>
+                What happens after the first year? <span>+</span>
+              </summary>
+              <p>
+                Your first year of AI service starts when your pendant ships.
+                Continued cloud AI then requires a separate annual opt-in,
+                currently projected at $99 USD/year. You won’t be automatically
+                enrolled.{" "}
+                <a href={STORE + "/pre-orders/agreement"}>
+                  Read the pre-order terms
+                </a>
+                .
+              </p>
+            </details>
           </div>
-          <div className="ap-waitlist">
+          <div className="ap-waitlist" id="waitlist">
             <div>
               <h3>Not quite ready?</h3>
               <p>Keep up with what we’re making.</p>

@@ -41,7 +41,7 @@ export function createPendantScene(
   const pmrem = new THREE.PMREMGenerator(renderer);
   const env = pmrem.fromScene(environment, 0.035);
   scene.environment = env.texture;
-  scene.environmentIntensity = 0.9;
+  scene.environmentIntensity = 0.65;
   environment.dispose();
   pmrem.dispose();
   scene.add(new THREE.HemisphereLight(0xfff8ec, 0x625f59, 0.7));
@@ -57,7 +57,7 @@ export function createPendantScene(
   const silver = new THREE.MeshStandardMaterial({
     color: 0xa7a69f,
     metalness: 1,
-    roughness: 0.31,
+    roughness: 0.48,
     transparent: true,
     side: THREE.DoubleSide,
   });
@@ -94,7 +94,7 @@ export function createPendantScene(
   product.add(front, back, board);
   // A continuous pillow surface avoids the artificial raised border of a bevelled badge.
   const bodyGeometry = new THREE.BufferGeometry();
-  const outline = capsuleShape(1.58, 2.46).getSpacedPoints(160);
+  const outline = capsuleShape(1.58, 2.37).getSpacedPoints(160);
   const positions: number[] = [],
     uvs: number[] = [],
     indices: number[] = [];
@@ -102,13 +102,13 @@ export function createPendantScene(
     rings = 32;
   for (let ring = 0; ring <= rings; ring++) {
     const radius = Math.max(0.0001, ring / rings);
-    const z = 0.42 * Math.sqrt(Math.max(0, 1 - Math.pow(radius, 8)));
+    const z = 0.3 * Math.sqrt(Math.max(0, 1 - Math.pow(radius, 4)));
     for (let i = 0; i <= segments; i++) {
       const point = outline[i % segments];
       positions.push(point.x * radius, point.y * radius, z);
       uvs.push(
         (point.x * radius + 0.79) / 1.58,
-        (point.y * radius + 1.23) / 2.46,
+        (point.y * radius + 1.185) / 2.37,
       );
       if (ring < rings && i < segments) {
         const a = ring * (segments + 1) + i,
@@ -144,11 +144,11 @@ export function createPendantScene(
   silver.bumpMap = rearSilver.bumpMap = grain;
   silver.bumpScale = rearSilver.bumpScale = 0.008;
   const frontMesh = new THREE.Mesh(bodyGeometry, silver);
-  frontMesh.position.z = 0.008;
+  frontMesh.position.z = 0;
   front.add(frontMesh);
   const backMesh = new THREE.Mesh(bodyGeometry, rearSilver);
   backMesh.rotation.y = Math.PI;
-  backMesh.position.z = -0.008;
+  backMesh.position.z = 0;
   back.add(backMesh);
 
   // The prototype has a plain dark aperture; it is not a lens or a separate metal eyelet.
@@ -156,21 +156,9 @@ export function createPendantScene(
     new THREE.CircleGeometry(0.067, 32),
     new THREE.MeshBasicMaterial({ color: 0x161614, side: THREE.DoubleSide }),
   );
-  aperture.position.set(0, 0.65, 0.432);
+  aperture.position.set(0, 0.6, 0.296);
   front.add(aperture);
 
-  const outlinePoints = capsuleShape(1.57, 2.45)
-    .getPoints(100)
-    .map((p) => new THREE.Vector3(p.x, p.y, 0));
-  const seam = new THREE.LineLoop(
-    new THREE.BufferGeometry().setFromPoints(outlinePoints),
-    new THREE.LineBasicMaterial({
-      color: 0x63615c,
-      transparent: true,
-      opacity: 0.55,
-    }),
-  );
-  product.add(seam);
   const wire = new THREE.Group();
   product.add(wire);
   const frontLines = new THREE.LineSegments(
@@ -188,7 +176,7 @@ export function createPendantScene(
   // Sparse construction contours convey the curved shell without a noisy triangulated mesh.
   for (let z = -0.24; z <= 0.24; z += 0.12) {
     const factor = 1 - Math.abs(z) * 0.34;
-    const points = capsuleShape(1.55 * factor, 2.43 * factor)
+    const points = capsuleShape(1.55 * factor, 2.35 * factor)
       .getPoints(90)
       .map((p) => new THREE.Vector3(p.x, p.y, z));
     wire.add(
@@ -318,8 +306,7 @@ export function createPendantScene(
       product.position.y = -0.13;
       board.visible = false;
     } else {
-      const opening = smooth(0.19, 0.39, p) * (1 - smooth(0.78, 0.96, p));
-      const xray = smooth(0.43, 0.53, p) * (1 - smooth(0.69, 0.8, p));
+      const xray = smooth(0.2, 0.35, p) * (1 - smooth(0.74, 0.9, p));
       const turn =
         p < 0.4
           ? THREE.MathUtils.lerp(-0.45, 0.8, smooth(0, 0.4, p))
@@ -330,13 +317,10 @@ export function createPendantScene(
                 -Math.PI * 2 - 0.45,
                 smooth(0.7, 1, p),
               );
-      product.rotation.set(
-        -0.04 + opening * 0.25,
-        turn,
-        -0.18 + opening * 0.23,
-      );
-      front.position.set(opening * 0.4, opening * 0.36, opening * 1.2);
-      back.position.set(-opening * 0.4, -opening * 0.36, -opening * 1.0);
+      product.rotation.set(-0.04 + xray * 0.18, turn, -0.18 + xray * 0.16);
+      // The enclosure stays closed; only its transparency changes for inspection.
+      front.position.set(0, 0, 0);
+      back.position.set(0, 0, 0);
       frontLines.position.set(
         front.position.x,
         front.position.y,
@@ -351,9 +335,8 @@ export function createPendantScene(
       silver.depthWrite = rearSilver.depthWrite = xray < 0.5;
       aperture.visible = xray < 0.65;
       edgeMaterial.opacity = xray * 0.65;
-      board.visible = opening > 0.02;
-      seam.visible = opening < 0.04;
-      product.scale.setScalar(1 - opening * 0.06);
+      board.visible = xray > 0.02;
+      product.scale.setScalar(1);
     }
     renderer.render(scene, camera);
   }

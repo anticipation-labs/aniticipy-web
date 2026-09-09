@@ -66,7 +66,7 @@ export const PendantScene = forwardRef<
     <div ref={host} className={"ap-product-scene" + (ready ? " is-ready" : "")}>
       <img
         className="ap-scene-fallback"
-        src="/redesign/pendant-cutout.webp"
+        src="/redesign/pendant-cutout-closed.webp"
         alt="Silver Anticipy pendant with a domed crown and a small upper aperture"
         width="2048"
         height="1158"
