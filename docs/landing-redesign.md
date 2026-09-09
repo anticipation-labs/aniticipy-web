@@ -1,12 +1,31 @@
 # Anticipy landing redesign
 
-The hero gives “Not a note taker” stronger emphasis with a larger black line. The homepage identifies Anticipy immediately: “Not a note taker. An action taker.” followed by the AI pendant category and email, calendar and task capabilities. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
+The hero centers “Not a note taker. An action taker.” above a new photograph of both pendant finishes. The AI pendant category, concise email/plan/task description, $149.99 USD price and Buy Now action are visible in the first screen at the verified desktop and mobile sizes. The central image has a brief entrance and a small scroll translation, while the headline stays stable. Shipping timing, included AI service and the refund terms remain plainly visible. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
 
 ## Visual direction
 
 The latest user request supersedes the cream page palette. White #FFFFFF now dominates page space, black #111111 anchors text and buttons, and #626262 supports secondary copy. Pale neutral grey is confined to product display surfaces. Anticipy's bronze #705D48 remains in selected states, icons and thin lines; silver/gold product imagery and the warm lifestyle photograph retain their color. The footer uses black. Fine's open white Services section informed spacing and typography: https://fine-n7vljkp34f.peachworlds.com/.
 
 The approved scoop-neck necklace image and its “Keep your head in the real world” composition remain unchanged. No conversion lift has been measured. Earlier research and source qualifications remain in revision-5-research.md; its cream palette and interactive-demo recommendations are superseded here.
+
+## Hero reference synthesis
+
+All eight supplied references informed the hero. Current page content was reviewed where retrievable, alongside the September 8 browser captures used for layout and motion observations. Alexandre’s current page extraction was empty, so its visual observations rely on that capture. These are design interpretations, not evidence of measured conversion performance.
+
+| Reference | Applied principle |
+| --- | --- |
+| [Pocket](https://heypocket.com/pages/pocket) | Centered category/headline, prominent product field, simple Buy Now action. Anticipy keeps the main buying action within the first screen. |
+| [Sensiq](https://sensiq.co/) | Literal product identity, photographic material detail and a direct shopping path. |
+| [Komma](https://kommakomma.is/) | Restrained side copy and a photographic focal point with generous space. |
+| [Mira](https://trymira.com/) | Controlled product highlights and a persistent purchasing action. |
+| [Floema](https://floema.com/en) | Stable oversized typography with breathing room around the object. |
+| [Alexandre Araujo](https://alexandre-araujo.com/) | White/black restraint, thin rules and a quiet secondary action. |
+| [Fine](https://fine-n7vljkp34f.peachworlds.com/) | Depth and restrained continuity as the user scrolls. |
+| [Oryzo](https://oryzo.ai/) | Visual continuity between the central object and the surrounding page. Its fictional product claims and elaborate loading sequence were not adopted. |
+
+The new image, `public/redesign/pendant-duo-hero.webp`, is a reference-guided Higgsfield photographic visualization. Silver sits left and slightly higher, gold right and lower, with complete rounded bodies, one upper aperture each and fine matching chains. Source generation `f9a03392-a985-4f04-aacf-b41c69b13f5d` reported model `nano_banana_2`, using accepted silver/gold references `98395b69-4626-480d-8931-d68a51cd79a2` and `ea28eb3c-40e1-4122-b767-84fb241abf56`. The accepted 2528×1696 source was encoded as 2400×1610 WebP (161,350 bytes). This asset is generated imagery, not a manufactured-unit photograph or dimensional scan.
+
+Hero text enters in 850ms with a small stagger, and the photograph enters in 1150ms. The page motion control and system reduced-motion preference suppress both entrance and scroll movement. There is no autoplaying hero video. The approved lifestyle photograph and technical pendant geometry are unchanged.
 
 ## Photographic pendant story
 
@@ -30,7 +49,7 @@ The small upper aperture follows the new dome with an eight-ring tessellated sur
 
 Both finish variants use the same mesh with an anisotropic physical metal material, deterministic 1024px longitudinal grain, mipmapped bump/roughness texture and broad neutral studio reflections. Existing scroll rotation, X-ray timing, front/rear opening, reassembly, color state, on-demand rendering and resource cleanup remain. Closed shell normals meet at the rim. Scroll anchoring is disabled within the landing page to prevent keyed text changes from moving the viewport away from a selected chapter.
 
-The purchase area uses compact silver/gold swatch controls for choosing the order finish. A separate five-photo gallery supports thumbnails, previous/next navigation, horizontal swipe and native-dialog enlargement. Choosing a finish opens the corresponding worn photograph and updates checkout metadata. Browsing other gallery images does not change the chosen order finish.
+The purchase area uses compact silver/gold swatch controls for choosing the order finish. A separate five-photo gallery supports thumbnails, previous/next navigation, horizontal swipe and native-dialog enlargement. The initial photograph shows both finishes together. Changing the selected finish preserves that paired view; when viewing a finish-specific image, choosing a different finish opens its corresponding worn photograph. The selection also updates checkout metadata. Browsing other gallery images does not change the chosen order finish.
 
 The FAQ displays the existing silver and gold photographic cutouts together at identical scale, staggered diagonally. Both remain visible on mobile. The stone photographs were retouched through Higgsfield GPT Image 2 to remove the perimeter assembly line while retaining the scene and pendant silhouette. Accepted edits: silver `7f12063b-d0b4-41c4-a867-5c658d616be8`; gold `3390ef25-02b8-4e23-8d66-3a2d530bd2e0`.
 
@@ -38,7 +57,7 @@ Static headings, descriptive copy and primary actions enter once with an 800ms o
 
 ## Purchase gallery and offer
 
-The buying section places the photographic gallery beside a literal product title, concise purpose, clearly labeled $149.99 USD pre-order price, projected launch comparison, first-year inclusion, compact finish controls and a full-width pre-order button. Shipping, charge timing, refund terms and optional AI cost remain visible by the purchase action. Detailed service and pre-order terms expand below. Mobile uses the same five visible thumbnails, with the purchase information immediately after the gallery. The replaced context heading is “The meaning behind your words.”
+The buying section places the photographic gallery beside a literal product title, concise purpose, clearly labeled $149.99 USD price, projected launch comparison, first-year inclusion, compact finish controls and a full-width Buy Now button. Shipping, charge timing, refund terms and optional AI cost remain visible by the purchase action. Detailed service and purchase terms expand below. The underlying purchase route and future shipping terms are unchanged; the CTA does not imply immediate shipment. Mobile uses the same five visible thumbnails, with the purchase information immediately after the gallery. The replaced context heading is “The meaning behind your words.”
 
 This structure draws from [Pocket's purchase block](https://heypocket.com/pages/pocket), [Baymard's visible-thumbnail guidance](https://baymard.com/blog/truncating-product-gallery-thumbnails), [product scale research](https://baymard.com/blog/current-state-ecommerce-product-page-ux) and [shipping information placement](https://baymard.com/blog/avoid-banners-only-free-shipping). These informed implementation choices; no Anticipy conversion improvement has yet been measured. No unverified reviews, bundles, payment badges, warranty or countdown were added.
 
@@ -72,3 +91,5 @@ TypeScript, static build and whitespace checks pass. Browser inspection covers t
 Revision 9 verification: TypeScript, the static build and whitespace checks pass. A numerical audit checks 25,440 housing triangles and 720 aperture triangles: no degenerate triangles, reversed winding, non-finite coordinates or reversed normals. All 1,161 aperture samples clear the actual shell mesh by 0.000979–0.001022 units. Browser inspection covers the domed front, near-side angle (progress 0.889), both finishes, open shells and reassembly. The finish swatches and accepted photographic assets are unchanged. Browser error logs are empty. The protected lifestyle image retains Git blob `c887ad44d06fc22965933696fdb2cdf41d76e840`.
 
 Purchase revision verification: TypeScript, static build and whitespace checks pass. Browser inspection at 1275px and 390px found no horizontal overflow. All five images load. Thumbnail navigation, wraparound, swipe, Enter after swiping, dialog arrow keys, Escape, focus restoration, finish-to-gallery synchronization and checkout metadata were exercised. Purchase disclosures expand, browser error logs are empty, and both static routes and their JavaScript contain no em dashes or rejected Friday/Alex copy. The protected lifestyle hash remains unchanged.
+
+Hero revision verification: TypeScript and the static build pass. Desktop at 1440×900 and mobile at 390×844 show the headline, both complete pendants, primary Buy Now action and shipping terms without horizontal overflow. The hero link reaches the buying section with the pair image first (1/5). Gold selection keeps the paired view and sets the existing checkout URL to `finish=gold`; next/previous gallery navigation works independently. No visible pre-order button labels or em dashes remain. The independent code review found no actionable regressions.

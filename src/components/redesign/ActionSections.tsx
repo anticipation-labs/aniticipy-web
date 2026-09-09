@@ -68,8 +68,8 @@ const faqGroups = [
     name: "Orders & shipping",
     items: [
       [
-        "What’s included in the pre-order?",
-        "Your pendant and matching chain, wireless charging pad, and the first year of AI service. The pre-order price is $149.99 USD. Free shipping is included in the US and Canada.",
+        "What’s included with Anticipy?",
+        "Your pendant and matching chain, wireless charging pad, and the first year of AI service. Anticipy is $149.99 USD. Free shipping is included in the US and Canada.",
       ],
       [
         "When will my Anticipy arrive?",
@@ -80,8 +80,8 @@ const faqGroups = [
         "The first year of AI service starts when your pendant ships. Continued cloud AI then requires a separate annual opt-in, currently projected at $99 USD/year. You will not be automatically enrolled.",
       ],
       [
-        "Can I cancel my pre-order?",
-        "Yes. Your pre-order is fully refundable any time before your unit ships. Contact hello@anticipy.ai to request a refund.",
+        "Can I cancel my order?",
+        "Yes. Your order is fully refundable any time before your unit ships. Contact hello@anticipy.ai to request a refund.",
       ],
     ],
   },

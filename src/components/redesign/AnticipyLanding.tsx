@@ -7,9 +7,10 @@ import "./conversion.css";
 import "./action.css";
 import "./clarity.css";
 import "./purchase.css";
+import "./hero.css";
 import { ActionExperience, PrototypeTrust } from "./ActionExperience";
 import { ActionFAQ, ActionManifesto, FinishPicker } from "./ActionSections";
-import { FINISHES, PENDANT, type PendantFinish } from "./pendant-design";
+import { FINISHES, type PendantFinish } from "./pendant-design";
 import { PendantScene, type PendantSceneHandle } from "./PendantScene";
 import { PhotorealPendantScene } from "./PhotorealPendantScene";
 import { PurchaseGallery } from "./PurchaseGallery";
@@ -336,7 +337,7 @@ export function AnticipyLanding({
     ).filter(
       (node) =>
         !node.closest(
-          ".ap-lifestyle, .ap-reveal, .ap-benefit-heading, .ap-benefit-context, .ap-engineering-copy, .ap-faq-list",
+          ".ap-launch-hero, .ap-lifestyle, .ap-reveal, .ap-benefit-heading, .ap-benefit-context, .ap-engineering-copy, .ap-faq-list",
         ),
     );
     const groups = new Map<Element, number>();
@@ -498,7 +499,7 @@ export function AnticipyLanding({
             data-cta-id="nav-order"
             data-cta-type="anchor"
           >
-            Pre-order <span>· $149.99</span> <Arrow diagonal />
+            Buy Now <Arrow diagonal />
           </a>
           <button
             ref={menuButton}
@@ -554,119 +555,69 @@ export function AnticipyLanding({
       </dialog>
       {campaign && <ActionManifesto />}
       <main tabIndex={-1} id="main" className="ap-page">
-        <section className="ap-shop-hero" data-section-id="hero">
-          <div className="ap-shop-copy">
-            <div className="ap-shop-mobile-product" aria-hidden="true">
-              <img
-                src={FINISHES[finish].image}
-                alt=""
-                width="2048"
-                height="1156"
-              />
-            </div>
-            <h1>
-              <span className="ap-hero-contrast">Not a note taker.</span>
-              An action taker.
-            </h1>
-            <p className="ap-shop-description">
-              <strong>The AI pendant that gets things done.</strong>
-              Turn conversations into emails, calendar events and tasks with
-              your approval.
+        <section
+          className="ap-launch-hero"
+          data-section-id="hero"
+          aria-labelledby="ap-launch-title"
+        >
+          <div className="ap-launch-heading">
+            <p className="ap-launch-category">
+              ANTICIPY · YOUR PERSONAL AI PENDANT
             </p>
-            <FinishPicker
-              finish={finish}
-              onChange={setFinish}
-              label="Choose your finish"
-            />
-            <div className="ap-shop-actions">
+            <h1 id="ap-launch-title">
+              <span className="ap-launch-notes">Not a note taker.</span>
+              <span className="ap-launch-action">An action taker.</span>
+            </h1>
+          </div>
+          <div className="ap-launch-stage">
+            <figure className="ap-launch-product">
+              <div className="ap-launch-photo">
+                <img
+                  src="/redesign/pendant-duo-hero.webp"
+                  alt="Silver and gold Anticipy AI pendants on their matching fine chains, with softly rounded brushed metal bodies"
+                  width="2400"
+                  height="1610"
+                  loading="eager"
+                  decoding="async"
+                />
+              </div>
+              <figcaption>
+                Titanium silver & gold. Matching chain included.
+              </figcaption>
+            </figure>
+            <div className="ap-launch-context">
+              <p className="ap-launch-promise">
+                You live your life.
+                <br />
+                Anticipy follows through.
+              </p>
+              <p>
+                Turn conversations into emails, plans and tasks. You have the
+                final say.
+              </p>
+            </div>
+            <div className="ap-launch-commerce">
+              <span className="ap-launch-price">
+                $149.99 <small>USD</small>
+              </span>
               <Button href="#order" ctaId="hero-order">
-                Pre-order · $149.99 USD
+                Buy Now
               </Button>
+              <p>First year of AI included</p>
               <a
                 href="#experience"
-                className="ap-shop-demo"
+                className="ap-launch-explore"
                 data-cta-id="hero-demo"
                 data-cta-type="anchor"
               >
                 See how it works <Arrow />
               </a>
             </div>
-            <p className="ap-shop-delivery">
-              Estimated shipping Q4 2026 · Free US & Canada shipping
-            </p>
-            <div className="ap-shop-assurances">
-              <span>
-                <Mark type="check" /> First year of AI included
-              </span>
-              <span>
-                <Mark type="shield" /> Refundable before shipping
-              </span>
-            </div>
           </div>
-          <div className="ap-shop-visual">
-            <div className="ap-shop-backdrop" />
-            <svg
-              className="ap-pendant-intro"
-              viewBox="0 0 2048 1158"
-              preserveAspectRatio="xMidYMid meet"
-              fill="none"
-              aria-hidden="true"
-            >
-              <rect
-                className="ap-pendant-guide"
-                x="765"
-                y="255"
-                width="531"
-                height={(531 * PENDANT.height) / PENDANT.width}
-                rx={531 / 2}
-              />
-              <circle
-                cx="1030.5"
-                cy={
-                  255 +
-                  ((PENDANT.height / 2 - PENDANT.apertureY) * 531) /
-                    PENDANT.width
-                }
-                r={(PENDANT.apertureRadius * 531) / PENDANT.width}
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              <path d="M705 255H1356M705 1051H1356M765 195V1111M1296 195V1111" />
-              <path d="M765 305V255H815M1246 255H1296V305M765 1001V1051H815M1246 1051H1296V1001" />
-            </svg>
-            <span className="ap-shop-material">
-              {FINISHES[finish].label} · Matching chain included
-            </span>
-            <img
-              src={FINISHES[finish].image}
-              alt={
-                FINISHES[finish].label +
-                " Anticipy AI action taker on a fine necklace"
-              }
-              width="2048"
-              height="1156"
-              loading="eager"
-            />
-            <div
-              className="ap-hero-capabilities"
-              aria-label="What Anticipy does"
-            >
-              <span>
-                <Mark type="context" /> Send emails
-              </span>
-              <span>
-                <Mark type="check" /> Schedule plans
-              </span>
-              <span>
-                <Mark type="sound" /> Set reminders
-              </span>
-            </div>
-          </div>
-          <div className="ap-shop-foot">
-            <span>LESS ON YOUR MIND. MORE IN YOUR LIFE.</span>
-            <a href="#experience">
-              Explore the possibilities <span>↓</span>
-            </a>
+          <div className="ap-launch-details">
+            <span>Estimated shipping Q4 2026</span>
+            <span>Free US & Canada shipping</span>
+            <span>Fully refundable before shipping</span>
           </div>
         </section>
 
@@ -932,7 +883,7 @@ export function AnticipyLanding({
             </h2>
             <p>A small companion for everything you have going on.</p>
             <Button href="#order" ctaId="stone-order">
-              Pre-order your Anticipy
+              Buy Now
             </Button>
           </div>
           <div className="ap-stone-caption">
@@ -962,14 +913,14 @@ export function AnticipyLanding({
               </p>
               <div className="ap-purchase-offer">
                 <div className="ap-purchase-price">
-                  <span>Pre-order price</span>
+                  <span>Your price</span>
                   <strong>
                     $149.99 <small>USD</small>
                   </strong>
                 </div>
                 <div className="ap-purchase-saving">
                   <span>Projected launch price $199</span>
-                  <strong>$49.01 less at pre-order</strong>
+                  <strong>$49.01 below projected launch price</strong>
                 </div>
                 <p>
                   <Mark type="check" /> First year of AI service included
@@ -991,7 +942,7 @@ export function AnticipyLanding({
                 href={STORE + "/pre-orders/purchase?finish=" + finish}
                 ctaId="order-checkout"
               >
-                Pre-order Anticipy · $149.99
+                Buy Now
               </Button>
               <p className="ap-purchase-payment">
                 Charged today. Estimated shipping Q4 2026.
@@ -1016,7 +967,7 @@ export function AnticipyLanding({
               </p>
               <details className="ap-purchase-terms">
                 <summary>
-                  Good to know before you pre-order <span>+</span>
+                  Shipping & purchase details <span>+</span>
                 </summary>
                 <div>
                   <p>
@@ -1028,7 +979,7 @@ export function AnticipyLanding({
                   <p>
                     Cancel for a full refund any time before shipping.{" "}
                     <a href={STORE + "/pre-orders/agreement"}>
-                      Read the pre-order terms
+                      Read the purchase terms
                     </a>{" "}
                     or <a href={STORE + "/refund"}>refund policy</a>.
                   </p>

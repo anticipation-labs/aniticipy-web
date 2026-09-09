@@ -5,6 +5,12 @@ import type { PendantFinish } from "./pendant-design";
 
 const PHOTOS = [
   {
+    src: "/redesign/purchase-both-finishes.webp",
+    label: "Two finishes. One Anticipy.",
+    alt: "Equally sized titanium silver and gold Anticipy pendants with their matching chains on a light surface",
+    finish: "both",
+  },
+  {
     src: "/redesign/purchase-silver-worn.webp",
     label: "Worn in titanium silver",
     alt: "Titanium silver Anticipy pendant on a fine chain, worn with a white T-shirt outdoors",
@@ -16,12 +22,7 @@ const PHOTOS = [
     alt: "Gold Anticipy pendant worn with a dark top in natural window light",
     finish: "gold",
   },
-  {
-    src: "/redesign/purchase-both-finishes.webp",
-    label: "Two finishes. One Anticipy.",
-    alt: "Equally sized titanium silver and gold Anticipy pendants with their matching chains on a light surface",
-    finish: "both",
-  },
+
   {
     src: "/redesign/purchase-silver-hand.webp",
     label: "A little perspective",
@@ -57,9 +58,7 @@ function Chevron({ previous = false }: { previous?: boolean }) {
 }
 
 export function PurchaseGallery({ finish }: { finish: PendantFinish }) {
-  const [selected, setSelected] = useState(() =>
-    PHOTOS.findIndex((image) => image.finish === finish),
-  );
+  const [selected, setSelected] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const openButton = useRef<HTMLButtonElement>(null);
@@ -73,7 +72,11 @@ export function PurchaseGallery({ finish }: { finish: PendantFinish }) {
   useEffect(() => {
     if (previousFinish.current === finish) return;
     previousFinish.current = finish;
-    setSelected(PHOTOS.findIndex((image) => image.finish === finish));
+    setSelected((current) =>
+      PHOTOS[current].finish === "both"
+        ? current
+        : PHOTOS.findIndex((image) => image.finish === finish),
+    );
   }, [finish]);
 
   useEffect(() => {
