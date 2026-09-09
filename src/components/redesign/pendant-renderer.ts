@@ -1,5 +1,11 @@
 import * as THREE from "three";
 import { PENDANT, FINISHES, type PendantFinish } from "./pendant-design";
+import {
+  photographicStudio,
+  photographicAperture,
+  recessAperture,
+  photographicBrushing,
+} from "./pendant-photoreal";
 
 const clamp = THREE.MathUtils.clamp;
 const smooth = (a: number, b: number, p: number) =>
@@ -99,7 +105,9 @@ export function createPendantScene(
   softbox(3, 5, [3, 0, 3], 0.7);
   softbox(4, 0.6, [0, 4, 1], 1.2);
   const pmrem = new THREE.PMREMGenerator(renderer);
-  const env = pmrem.fromScene(studio, 0.02);
+  const photoStudio = mode === "hero" ? photographicStudio() : null;
+  const env = pmrem.fromScene(photoStudio?.scene ?? studio, 0.02);
+  photoStudio?.dispose();
   scene.environment = env.texture;
   scene.environmentIntensity = 1.1;
   lightCards.forEach((card) => {
@@ -309,6 +317,44 @@ export function createPendantScene(
   silver.bumpMap = rearSilver.bumpMap = grain;
   silver.roughnessMap = rearSilver.roughnessMap = grain;
   silver.bumpScale = rearSilver.bumpScale = 0.0015;
+  // The hero uses one photographic scalar texture. No product photos or body
+  // geometry are rescaled; technical and everyday renderers retain their material.
+  let photoGrain: THREE.Texture | undefined;
+  if (mode === "hero") {
+    silver.anisotropy = rearSilver.anisotropy = 0.15;
+    photoGrain = new THREE.TextureLoader().load(
+      "/redesign/hero-titanium-grain.webp",
+      (texture) => {
+        if (disposed) return;
+        for (const material of [
+          silver,
+          rearSilver,
+          twinMaterial,
+          twinRearMaterial,
+        ]) {
+          material.bumpMap = material.roughnessMap = texture;
+          material.bumpScale = 0.004;
+          material.roughness = 0.8;
+          material.needsUpdate = true;
+        }
+        requestRender();
+      },
+      undefined,
+      () => {
+        /* Preserve the existing material if the optional texture fails. */
+      },
+    );
+    photoGrain.wrapS = photoGrain.wrapT = THREE.MirroredRepeatWrapping;
+    photoGrain.repeat.set(1, 1);
+    photoGrain.anisotropy = Math.min(
+      8,
+      renderer.capabilities.getMaxAnisotropy(),
+    );
+    // Scalar data uses no sRGB conversion. Its color never tints either finish.
+    photographicBrushing(silver);
+    photographicBrushing(rearSilver);
+    recessAperture(silver);
+  }
   const frontMesh = new THREE.Mesh(bodyGeometry, silver);
   frontMesh.position.z = 0;
   front.add(frontMesh);
@@ -344,10 +390,17 @@ export function createPendantScene(
     new THREE.Float32BufferAttribute(aperturePoints, 3),
   );
   apertureGeometry.setIndex(apertureIndices);
-  const aperture = new THREE.Mesh(
-    apertureGeometry,
-    new THREE.MeshBasicMaterial({ color: 0x161614, side: THREE.DoubleSide }),
-  );
+  const aperture =
+    mode === "hero"
+      ? photographicAperture(faceZ)
+      : new THREE.Mesh(
+          apertureGeometry,
+          new THREE.MeshBasicMaterial({
+            color: 0x161614,
+            side: THREE.DoubleSide,
+          }),
+        );
+  if (mode === "hero") apertureGeometry.dispose();
   aperture.position.y = PENDANT.apertureY;
   front.add(aperture);
 
@@ -546,9 +599,13 @@ export function createPendantScene(
   drawing.visible = false;
   const heroTwin = new THREE.Group();
   const twinMaterial = silver.clone();
+  const twinRearMaterial = rearSilver.clone();
   if (mode === "hero") {
+    photographicBrushing(twinMaterial);
+    photographicBrushing(twinRearMaterial);
+    recessAperture(twinMaterial);
     const face = new THREE.Mesh(bodyGeometry, twinMaterial);
-    const rear = new THREE.Mesh(bodyGeometry, twinMaterial);
+    const rear = new THREE.Mesh(bodyGeometry, twinRearMaterial);
     rear.rotation.y = Math.PI;
     const mic = aperture.clone();
     heroTwin.add(face, rear, mic);
@@ -632,8 +689,9 @@ export function createPendantScene(
       twinMaterial.color.setHex(
         FINISHES[heroFinish === "silver" ? "gold" : "silver"].color,
       );
-      twinMaterial.opacity = twinReveal;
-      twinMaterial.depthWrite = twinReveal > 0.95;
+      twinRearMaterial.color.copy(twinMaterial.color);
+      twinMaterial.opacity = twinRearMaterial.opacity = twinReveal;
+      twinMaterial.depthWrite = twinRearMaterial.depthWrite = twinReveal > 0.95;
       drawing.visible = heroIntro < 0.82;
       drawingMaterial.opacity = 1 - smooth(0.61, 0.82, heroIntro);
       for (let i = 0; i < contours.length; i++) {
@@ -774,8 +832,10 @@ export function createPendantScene(
       geometries.forEach((g) => g.dispose());
       materials.add(drawingMaterial);
       materials.add(twinMaterial);
+      materials.add(twinRearMaterial);
       materials.forEach((m) => m.dispose());
       grain.dispose();
+      photoGrain?.dispose();
       env.dispose();
       renderer.dispose();
     },

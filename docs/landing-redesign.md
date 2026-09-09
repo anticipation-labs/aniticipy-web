@@ -1,12 +1,16 @@
 # Anticipy landing redesign
 
-The hero keeps the approved asymmetric left typography and now uses a live pendant construction reveal instead of the reused film. Its actual housing outline is drawn, the closed brushed-metal body appears in registration, and scrolling carries the same object through a full turn into a silver-and-gold pair. Buy Now remains prominent; pricing and offer details stay in the purchase section. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
+The hero keeps the approved asymmetric left typography and live pendant construction reveal. Its surface now uses photographic metal grain, softened studio reflections and a recessed aperture, while retaining the exact prior housing dimensions, outer vertices, camera, positions, scale and animation. Its actual housing outline is drawn, the closed brushed-metal body appears in registration, and scrolling carries the same object through a full turn into a silver-and-gold pair. Buy Now remains prominent; pricing and offer details stay in the purchase section. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
 
 ## Visual direction
 
 The latest user request supersedes the cream page palette. White #FFFFFF now dominates page space, black #111111 anchors text and buttons, and #626262 supports secondary copy. Pale neutral grey is confined to product display surfaces. Anticipy's bronze #705D48 remains in selected states, icons and thin lines; silver/gold product imagery and the warm lifestyle photograph retain their color. The footer uses black. Fine's open white Services section informed spacing and typography: https://fine-n7vljkp34f.peachworlds.com/.
 
 The approved scoop-neck necklace image and its “Keep your head in the real world” composition remain unchanged. No conversion lift has been measured. Earlier research and source qualifications remain in revision-5-research.md; its cream palette and interactive-demo recommendations are superseded here.
+
+## Hero surface realism
+
+Revision 16 improves only the hero material and aperture treatment. See [revision16-hero-material.md](revision16-hero-material.md) for asset provenance, preserved geometry and validation. All pre-existing photographs and videos are byte-for-byte unchanged. The technical renderer keeps its prior materials.
 
 ## Hero reference synthesis
 
@@ -77,4 +81,4 @@ Revision 9 verification: TypeScript, the static build and whitespace checks pass
 
 Purchase revision verification: TypeScript, static build and whitespace checks pass. Browser inspection at 1275px and 390px found no horizontal overflow. All five images load. Thumbnail navigation, wraparound, swipe, Enter after swiping, dialog arrow keys, Escape, focus restoration, finish-to-gallery synchronization and checkout metadata were exercised. Purchase disclosures expand, browser error logs are empty, and both static routes and their JavaScript contain no em dashes or rejected Friday/Alex copy. The protected lifestyle hash remains unchanged.
 
-Current hero verification: TypeScript, static build and whitespace checks pass. Desktop at 1440×900 and mobile at 390×844 show the new composition without horizontal overflow. Eighteen successive local screenshots cover its staged opening and full film loop. Film pause/resume, offscreen pause, reduced motion and Buy Now navigation were exercised. No price or offer details appear in the hero. The purchase gallery still opens with the paired image. An independent code review identified a failed-media control issue, which was fixed by retaining the poster and hiding the unavailable film control.
+Historical revision 14 hero verification: TypeScript, static build and whitespace checks pass. Desktop at 1440×900 and mobile at 390×844 show the new composition without horizontal overflow. Eighteen successive local screenshots cover its staged opening and full film loop. Film pause/resume, offscreen pause, reduced motion and Buy Now navigation were exercised. No price or offer details appear in the hero. The purchase gallery still opens with the paired image. An independent code review identified a failed-media control issue, which was fixed by retaining the poster and hiding the unavailable film control.
