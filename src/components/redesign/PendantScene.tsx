@@ -7,19 +7,25 @@ import {
   useRef,
   useState,
 } from "react";
+import { FINISHES, type PendantFinish } from "./pendant-design";
 
 export type PendantSceneHandle = { setProgress: (progress: number) => void };
-type Controller = { update: (progress: number) => void; dispose: () => void };
+type Controller = {
+  update: (progress: number) => void;
+  setFinish: (finish: PendantFinish) => void;
+  dispose: () => void;
+};
 
 /** Load the renderer near the product chapter; retain the photograph if WebGL is unavailable. */
 export const PendantScene = forwardRef<
   PendantSceneHandle,
-  { mode: "benefits" | "hardware" }
->(function PendantScene({ mode }, ref) {
+  { mode: "benefits" | "hardware"; finish: PendantFinish }
+>(function PendantScene({ mode, finish }, ref) {
   const host = useRef<HTMLDivElement>(null);
   const canvas = useRef<HTMLCanvasElement>(null);
   const controller = useRef<Controller | null>(null);
   const position = useRef(0);
+  const selectedFinish = useRef(finish);
   const [ready, setReady] = useState(false);
 
   useImperativeHandle(
@@ -45,6 +51,7 @@ export const PendantScene = forwardRef<
           const { createPendantScene } = await import("./pendant-renderer");
           if (cancelled || !canvas.current) return;
           controller.current = createPendantScene(canvas.current, mode);
+          controller.current.setFinish(selectedFinish.current);
           controller.current.update(position.current);
           setReady(true);
         } catch {
@@ -62,12 +69,20 @@ export const PendantScene = forwardRef<
     };
   }, [mode]);
 
+  useEffect(() => {
+    selectedFinish.current = finish;
+    controller.current?.setFinish(finish);
+  }, [finish]);
+
   return (
     <div ref={host} className={"ap-product-scene" + (ready ? " is-ready" : "")}>
       <img
         className="ap-scene-fallback"
-        src="/redesign/pendant-cutout-closed.webp"
-        alt="Silver Anticipy pendant with a domed crown and a small upper aperture"
+        src={FINISHES[finish].image}
+        alt={
+          FINISHES[finish].label +
+          " Anticipy pendant with a domed crown and a small upper aperture"
+        }
         width="2048"
         height="1158"
         loading="lazy"

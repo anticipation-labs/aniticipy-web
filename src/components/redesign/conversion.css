@@ -693,12 +693,12 @@
   }
   .ap-site .ap-shop-mobile-product img {
     position: absolute;
-    width: 320%;
+    width: 360%;
     max-width: none;
     height: 140%;
-    left: -110%;
+    left: -130%;
     top: -22%;
-    object-fit: cover;
+    object-fit: contain;
   }
   .ap-site .ap-shop-copy h1 {
     font-size: clamp(35px, 6.8vw, 49px);

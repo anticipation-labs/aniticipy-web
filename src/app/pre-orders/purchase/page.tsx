@@ -1,3 +1,4 @@
+import { parsePendantFinish } from "@/lib/pendant-finish";
 import Link from "next/link";
 import { PurchaseForm } from "./PurchaseForm";
 import { Gallery } from "./Gallery";
@@ -37,8 +38,9 @@ const jsonLdProduct = {
 export default function PreOrderPurchasePage({
   searchParams,
 }: {
-  searchParams: { canceled?: string };
+  searchParams: { canceled?: string; finish?: string };
 }) {
+  const initialFinish = parsePendantFinish(searchParams?.finish) ?? "silver";
   const canceled = searchParams?.canceled === "1";
 
   return (
@@ -126,8 +128,8 @@ export default function PreOrderPurchasePage({
               style={{ color: "var(--text-on-light-muted)" }}
             >
               The ambient AI wearable that listens to your day and quietly
-              handles what needs handling. Books, drafts, schedules, follows
-              up. You wear it. You forget it is there. Things get done.
+              handles what needs handling. Books, drafts, schedules, follows up.
+              You wear it. You forget it is there. Things get done.
             </p>
 
             <div className="flex items-baseline gap-4 mb-3">
@@ -159,13 +161,19 @@ export default function PreOrderPurchasePage({
               className="rounded-card p-6 mb-8"
               style={{ background: "var(--cream-muted)" }}
             >
-              <h2 className="font-serif text-[18px] mb-3" style={{ color: "var(--text-on-light)" }}>
+              <h2
+                className="font-serif text-[18px] mb-3"
+                style={{ color: "var(--text-on-light)" }}
+              >
                 What is included
               </h2>
-              <ul className="space-y-2 text-[15px] font-light" style={{ color: "var(--text-on-light-muted)" }}>
+              <ul
+                className="space-y-2 text-[15px] font-light"
+                style={{ color: "var(--text-on-light-muted)" }}
+              >
                 <li className="flex items-start gap-2">
                   <span style={{ color: "var(--gold)" }}>&bull;</span>
-                  <span>Brushed titanium pendant. 8 grams. Silver finish.</span>
+                  <span>Anticipy pendant. Titanium silver or gold finish.</span>
                 </li>
                 <li className="flex items-start gap-2">
                   <span style={{ color: "var(--gold)" }}>&bull;</span>
@@ -181,35 +189,84 @@ export default function PreOrderPurchasePage({
                 </li>
                 <li className="flex items-start gap-2">
                   <span style={{ color: "var(--gold)" }}>&bull;</span>
-                  <span>Your first year of AI service, starting when your pendant ships.</span>
+                  <span>
+                    Your first year of AI service, starting when your pendant
+                    ships.
+                  </span>
                 </li>
               </ul>
-              <p className="text-[14px] leading-relaxed mt-5" style={{ color: "var(--text-on-light-muted)" }}>
-                After the first year, continued cloud AI requires a separate annual
-                opt-in, currently projected at $99 USD/year. You won&apos;t be
-                automatically enrolled. See the{" "}
-                <Link href="/pre-orders/agreement" className="underline hover:text-[var(--gold)]">
+              <p
+                className="text-[14px] leading-relaxed mt-5"
+                style={{ color: "var(--text-on-light-muted)" }}
+              >
+                After the first year, continued cloud AI requires a separate
+                annual opt-in, currently projected at $99 USD/year. You
+                won&apos;t be automatically enrolled. See the{" "}
+                <Link
+                  href="/pre-orders/agreement"
+                  className="underline hover:text-[var(--gold)]"
+                >
                   pre-order terms
-                </Link>.
+                </Link>
+                .
               </p>
             </div>
 
             <div className="grid grid-cols-3 gap-4 mb-8">
-              <div className="text-center p-4 rounded-card" style={{ background: "var(--cream-muted)" }}>
-                <div className="text-[11px] uppercase tracking-[0.12em] mb-1" style={{ color: "var(--text-on-light-muted)" }}>Est. ship date</div>
-                <div className="font-serif text-[16px]" style={{ color: "var(--text-on-light)" }}>Q4 2026</div>
+              <div
+                className="text-center p-4 rounded-card"
+                style={{ background: "var(--cream-muted)" }}
+              >
+                <div
+                  className="text-[11px] uppercase tracking-[0.12em] mb-1"
+                  style={{ color: "var(--text-on-light-muted)" }}
+                >
+                  Est. ship date
+                </div>
+                <div
+                  className="font-serif text-[16px]"
+                  style={{ color: "var(--text-on-light)" }}
+                >
+                  Q4 2026
+                </div>
               </div>
-              <div className="text-center p-4 rounded-card" style={{ background: "var(--cream-muted)" }}>
-                <div className="text-[11px] uppercase tracking-[0.12em] mb-1" style={{ color: "var(--text-on-light-muted)" }}>Shipping</div>
-                <div className="font-serif text-[16px]" style={{ color: "var(--text-on-light)" }}>Free</div>
+              <div
+                className="text-center p-4 rounded-card"
+                style={{ background: "var(--cream-muted)" }}
+              >
+                <div
+                  className="text-[11px] uppercase tracking-[0.12em] mb-1"
+                  style={{ color: "var(--text-on-light-muted)" }}
+                >
+                  Shipping
+                </div>
+                <div
+                  className="font-serif text-[16px]"
+                  style={{ color: "var(--text-on-light)" }}
+                >
+                  Free
+                </div>
               </div>
-              <div className="text-center p-4 rounded-card" style={{ background: "var(--cream-muted)" }}>
-                <div className="text-[11px] uppercase tracking-[0.12em] mb-1" style={{ color: "var(--text-on-light-muted)" }}>Weight</div>
-                <div className="font-serif text-[16px]" style={{ color: "var(--text-on-light)" }}>8 g</div>
+              <div
+                className="text-center p-4 rounded-card"
+                style={{ background: "var(--cream-muted)" }}
+              >
+                <div
+                  className="text-[11px] uppercase tracking-[0.12em] mb-1"
+                  style={{ color: "var(--text-on-light-muted)" }}
+                >
+                  Weight
+                </div>
+                <div
+                  className="font-serif text-[16px]"
+                  style={{ color: "var(--text-on-light)" }}
+                >
+                  8 g
+                </div>
               </div>
             </div>
 
-            <PurchaseForm canceled={canceled} />
+            <PurchaseForm canceled={canceled} initialFinish={initialFinish} />
           </div>
         </div>
 
@@ -260,10 +317,10 @@ export default function PreOrderPurchasePage({
               a={
                 <>
                   Your audio is processed for the explicit purpose of running
-                  the AI service, with on-device and ephemeral cloud
-                  processing. We do not sell personal data, do not run
-                  third-party ad networks, and do not train shared models on
-                  your transcripts. Full details are in the{" "}
+                  the AI service, with on-device and ephemeral cloud processing.
+                  We do not sell personal data, do not run third-party ad
+                  networks, and do not train shared models on your transcripts.
+                  Full details are in the{" "}
                   <Link
                     href="/privacy"
                     className="underline hover:text-[var(--gold)]"
@@ -279,7 +336,10 @@ export default function PreOrderPurchasePage({
         </section>
 
         <section className="max-w-3xl mx-auto mt-24 text-center">
-          <p className="text-[15px] font-light mb-4" style={{ color: "var(--text-on-light-muted)" }}>
+          <p
+            className="text-[15px] font-light mb-4"
+            style={{ color: "var(--text-on-light-muted)" }}
+          >
             Not ready to pre-order?
           </p>
           <Link
@@ -300,13 +360,27 @@ export default function PreOrderPurchasePage({
         className="px-6 py-12 border-t mt-24"
         style={{ borderColor: "var(--cream-border)" }}
       >
-        <div className="max-w-container mx-auto flex flex-col md:flex-row gap-4 items-center justify-between text-[13px]" style={{ color: "var(--text-on-light-muted)" }}>
+        <div
+          className="max-w-container mx-auto flex flex-col md:flex-row gap-4 items-center justify-between text-[13px]"
+          style={{ color: "var(--text-on-light-muted)" }}
+        >
           <div>&copy; 2026 Anticipation Labs Inc.</div>
           <div className="flex gap-6">
-            <Link href="/privacy" className="hover:text-[var(--text-on-light)]">Privacy</Link>
-            <Link href="/terms" className="hover:text-[var(--text-on-light)]">Terms</Link>
-            <Link href="/refund" className="hover:text-[var(--text-on-light)]">Refund</Link>
-            <Link href="/pre-orders/agreement" className="hover:text-[var(--text-on-light)]">Pre-Order Agreement</Link>
+            <Link href="/privacy" className="hover:text-[var(--text-on-light)]">
+              Privacy
+            </Link>
+            <Link href="/terms" className="hover:text-[var(--text-on-light)]">
+              Terms
+            </Link>
+            <Link href="/refund" className="hover:text-[var(--text-on-light)]">
+              Refund
+            </Link>
+            <Link
+              href="/pre-orders/agreement"
+              className="hover:text-[var(--text-on-light)]"
+            >
+              Pre-Order Agreement
+            </Link>
           </div>
         </div>
       </footer>

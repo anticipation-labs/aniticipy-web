@@ -4,6 +4,15 @@ import { FormEvent, useEffect, useRef, useState } from "react";
 import "./landing.css";
 import "./revision.css";
 import "./conversion.css";
+import "./action.css";
+import {
+  ActionHub,
+  ActionDifference,
+  ActionFAQ,
+  ActionManifesto,
+  FinishPicker,
+} from "./ActionSections";
+import { FINISHES, PENDANT, type PendantFinish } from "./pendant-design";
 import { PendantScene, type PendantSceneHandle } from "./PendantScene";
 
 const STORE = "https://www.anticipy.ai";
@@ -90,11 +99,11 @@ const HARDWARE = [
         within.
       </>
     ),
-    subtitle: "One closed form. A closer look beneath it.",
+    subtitle: "A closer look at what makes it possible.",
     bullets: [
-      "A continuous, closed enclosure",
+      "A sculpted shell that opens in this view",
       "The intelligence at its centre",
-      "A technical view beneath the surface",
+      "Each layer revealed as you scroll",
     ],
     tag: "THE INSIDE",
     label: "Beneath the surface",
@@ -136,32 +145,6 @@ const HARDWARE = [
     label: "Made to be with you",
     caption: "Less on your mind. More in your life.",
   },
-];
-const FAQ = [
-  [
-    "What is Anticipy?",
-    "Anticipy is a titanium AI pendant built to turn spoken commitments into completed actions. It helps capture what you mean to do, prepares the next step, asks for your approval, and keeps a verified record of the result.",
-  ],
-  [
-    "What’s included in the pre-order?",
-    "The titanium pendant, matching necklace chain, wireless charging pad, and your first year of AI service. The current pre-order is $149.99 USD, with free shipping in the US and Canada. The projected launch price is $199.",
-  ],
-  [
-    "Is there an AI service subscription?",
-    "Your first year is included, starting when your pendant ships. After that, continued cloud AI service requires a separate annual opt-in, currently projected at $99 USD/year. You will not be automatically enrolled.",
-  ],
-  [
-    "When will my Anticipy arrive?",
-    "The current shipping window is Q4 2026. You’ll receive an order number after purchase, build updates along the way, and tracking when your unit ships.",
-  ],
-  [
-    "Who decides what it can do?",
-    "You do. Actions are shown to you before they happen. You set the rules for your audio, and you can see, export, or delete your information. Visit the privacy policy for the details.",
-  ],
-  [
-    "Can I change my mind?",
-    "Yes. Pre-orders are fully refundable any time before shipping. Contact hello@anticipy.ai to request a refund.",
-  ],
 ];
 
 function Arrow({ diagonal = false }: { diagonal?: boolean }) {
@@ -245,7 +228,13 @@ function Button({
   );
 }
 
-export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
+export function AnticipyLanding({
+  preview = false,
+  campaign = false,
+}: {
+  preview?: boolean;
+  campaign?: boolean;
+}) {
   const root = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
@@ -254,6 +243,7 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
   const benefits = useRef<HTMLElement>(null);
   const hardwareScene = useRef<PendantSceneHandle>(null);
   const benefitScene = useRef<PendantSceneHandle>(null);
+  const [finish, setFinish] = useState<PendantFinish>("silver");
   const [benefitStep, setBenefitStep] = useState(0);
   const [hardwareStep, setHardwareStep] = useState(0);
   const [menu, setMenu] = useState(false);
@@ -294,6 +284,14 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
       frame = 0;
       const h = window.innerHeight;
       el.classList.toggle("ap-scrolled", window.scrollY > 90);
+      const manifesto = el.querySelector(".ap-manifesto");
+      if (manifesto) {
+        const rect = manifesto.getBoundingClientRect();
+        el.style.setProperty(
+          "--manifesto-progress",
+          String(motion ? clamp(-rect.top / Math.max(1, rect.height - h)) : 1),
+        );
+      }
       const heroProgress = clamp(window.scrollY / h);
       el.style.setProperty(
         "--hero-progress",
@@ -468,97 +466,13 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
         "ap-site " +
         (intro ? "ap-entering" : "ap-ready") +
         (menu ? " ap-menu-open" : "") +
+        (campaign ? " ap-campaign" : "") +
         (!motion ? " ap-reduced" : "")
       }
     >
       <a className="ap-skip" href="#main" onClick={navigateHome}>
         Skip to content
       </a>
-      <div className="ap-intro" aria-hidden="true">
-        <svg className="ap-construction" viewBox="0 0 800 800" fill="none">
-          <defs>
-            <pattern
-              id="ap-grid"
-              width="100"
-              height="100"
-              patternUnits="userSpaceOnUse"
-            >
-              <path
-                d="M100 0H0V100"
-                stroke="currentColor"
-                strokeOpacity=".1"
-                strokeDasharray="3 6"
-              />
-            </pattern>
-          </defs>
-          <rect width="800" height="800" fill="url(#ap-grid)" />
-          <rect
-            className="ap-drawn-pendant"
-            x="280"
-            y="220"
-            width="240"
-            height="360"
-            rx="120"
-            stroke="currentColor"
-            strokeWidth="1.5"
-            strokeDasharray="3 5"
-          />
-          <g className="ap-construction-ring">
-            <circle
-              cx="400"
-              cy="400"
-              r="240"
-              fill="currentColor"
-              fillOpacity=".035"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeDasharray="3 5"
-            />
-            <circle
-              cx="400"
-              cy="400"
-              r="112"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeDasharray="3 5"
-            />
-          </g>
-          {[160, 288, 512, 640].map((line, index) => (
-            <g
-              className="ap-construction-handle"
-              key={line}
-              style={{ animationDelay: `${index * 0.08}s` }}
-            >
-              <path
-                d={`M${line} 310v180M310 ${line}h180`}
-                stroke="currentColor"
-                strokeWidth="2"
-              />
-              {[310, 490].map((v) => (
-                <g key={v}>
-                  <circle cx={line} cy={v} r="4" fill="currentColor" />
-                  <circle cx={v} cy={line} r="4" fill="currentColor" />
-                </g>
-              ))}
-              <rect
-                x={line - 4}
-                y="396"
-                width="8"
-                height="8"
-                fill="currentColor"
-              />
-              <rect
-                x="396"
-                y={line - 4}
-                width="8"
-                height="8"
-                fill="currentColor"
-              />
-            </g>
-          ))}
-        </svg>
-        <p>ANTICIPATION LABS · A LITTLE AHEAD</p>
-      </div>
       <noscript>
         <style>
           {
@@ -641,30 +555,35 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           Vancouver, Canada.
         </p>
       </dialog>
+      {campaign && <ActionManifesto />}
       <main tabIndex={-1} id="main" className="ap-page">
         <section className="ap-shop-hero" data-section-id="hero">
           <div className="ap-shop-copy">
             <p className="ap-shop-category">
-              <span /> MEET ANTICIPY
+              <span /> MEET ANTICIPY · MADE TO GET IT DONE
             </p>
             <div className="ap-shop-mobile-product" aria-hidden="true">
               <img
-                src="/redesign/pendant-cutout-closed.webp"
+                src={FINISHES[finish].image}
                 alt=""
                 width="2048"
                 height="1156"
               />
             </div>
             <h1>
-              The AI pendant <br />
-              that turns words
-              <br />
-              into action.
+              Your personal <br />
+              AI action taker.
             </h1>
             <p className="ap-shop-description">
-              Capture a conversation. Draft the follow-up. Schedule the next
-              step. Anticipy helps get it done, with your approval.
+              A wearable AI pendant designed to turn your conversations into
+              completed tasks. Send the follow-up. Schedule the next step. You
+              approve. Anticipy follows through.
             </p>
+            <FinishPicker
+              finish={finish}
+              onChange={setFinish}
+              label="Two finishes. One action taker."
+            />
             <div className="ap-shop-actions">
               <Button href="#order" ctaId="hero-order">
                 Pre-order · $149.99 USD
@@ -692,12 +611,42 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           </div>
           <div className="ap-shop-visual">
             <div className="ap-shop-backdrop" />
-            <span className="ap-shop-material">
-              BRUSHED TITANIUM / MADE TO WEAR
-            </span>
+            <svg
+              className="ap-pendant-intro"
+              viewBox="0 0 2048 1158"
+              preserveAspectRatio="xMidYMid meet"
+              fill="none"
+              aria-hidden="true"
+            >
+              <rect
+                className="ap-pendant-guide"
+                x="765"
+                y="255"
+                width="531"
+                height={(531 * PENDANT.height) / PENDANT.width}
+                rx={531 / 2}
+              />
+              <circle
+                cx="1030.5"
+                cy={
+                  255 +
+                  ((PENDANT.height / 2 - PENDANT.apertureY) * 531) /
+                    PENDANT.width
+                }
+                r={(PENDANT.apertureRadius * 531) / PENDANT.width}
+                stroke="currentColor"
+                strokeWidth="2"
+              />
+              <path d="M705 255H1356M705 1051H1356M765 195V1111M1296 195V1111" />
+              <path d="M765 305V255H815M1246 255H1296V305M765 1001V1051H815M1246 1051H1296V1001" />
+            </svg>
+            <span className="ap-shop-material">SAY IT. APPROVE IT. DONE.</span>
             <img
-              src="/redesign/pendant-cutout-closed.webp"
-              alt="Anticipy: a compact, seamless silver AI pendant on a fine necklace"
+              src={FINISHES[finish].image}
+              alt={
+                FINISHES[finish].label +
+                " Anticipy AI action taker on a fine necklace"
+              }
               width="2048"
               height="1156"
               loading="eager"
@@ -705,13 +654,13 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
             <div className="ap-hero-result">
               <div className="ap-hero-result-top">
                 <Mark type="context" />
-                <span>FROM YOUR CONVERSATION</span>
-                <span className="ap-result-status">Draft ready</span>
+                <span>FROM WORDS TO DONE</span>
+                <span className="ap-result-status">Example receipt</span>
               </div>
               <h2>“Send Marcus the notes tonight.”</h2>
               <div className="ap-hero-result-bottom">
-                <span>Follow-up email prepared</span>
-                <span>You review. You approve.</span>
+                <span>Email sent · receipt saved</span>
+                <span>After your approval.</span>
               </div>
             </div>
           </div>
@@ -722,6 +671,9 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
             </a>
           </div>
         </section>
+
+        <ActionDifference />
+        <ActionHub finish={finish} />
 
         <section
           ref={story}
@@ -740,9 +692,9 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
             <div className="ap-story-layout">
               <div className="ap-story-copy">
                 <h2>
-                  A good thought.
+                  Say it. Approve it.
                   <br />
-                  <em>A next step.</em>
+                  <em>Done.</em>
                 </h2>
                 <div
                   className="ap-step-index"
@@ -948,7 +900,11 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
               role="img"
               aria-label="Anticipy pendant rotating through views of its sculpted metal enclosure"
             >
-              <PendantScene ref={benefitScene} mode="benefits" />
+              <PendantScene
+                ref={benefitScene}
+                mode="benefits"
+                finish={finish}
+              />
             </div>
             <div className="ap-benefit-context" key={"card" + benefitStep}>
               <span className="ap-kicker">{BENEFITS[benefitStep].label}</span>
@@ -1045,9 +1001,13 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
             <div
               className="ap-engineering-object"
               role="img"
-              aria-label="Interactive concept study of the pendant: a closed metal enclosure, transparent technical views of its internal board, and a return to the everyday view"
+              aria-label="Interactive concept study of the pendant: a closed metal enclosure, an exploded technical view of its internal board, and a return to the everyday view"
             >
-              <PendantScene ref={hardwareScene} mode="hardware" />
+              <PendantScene
+                ref={hardwareScene}
+                mode="hardware"
+                finish={finish}
+              />
             </div>
             <div className="ap-inspector" aria-hidden="true">
               <span className="ap-inspector-plus">+</span>
@@ -1075,6 +1035,13 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
                 </button>
               ))}
             </div>
+            <div className="ap-engineering-finishes">
+              <FinishPicker
+                finish={finish}
+                onChange={setFinish}
+                label="Finish"
+              />
+            </div>
             <div className="ap-engineering-bottom">
               <span>SCROLL TO LOOK CLOSER ↓</span>
               <span>DESIGN STUDY · INTERNAL LAYOUT IS CONCEPTUAL</span>
@@ -1088,83 +1055,71 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           className="ap-privacy"
           data-section-id="privacy"
         >
-          <div className="ap-privacy-title ap-reveal">
-            <span className="ap-kicker">
-              <i /> 04 / YOU’RE IN CHARGE.
-            </span>
-            <h2>
-              Close to you.
+          <div className="ap-centered-heading ap-reveal">
+            <span className="ap-kicker">CLOSE TO YOU. ON YOUR TERMS.</span>
+            <h2>Your life stays yours.</h2>
+            <p>
+              Personal help should feel personal.
               <br />
-              <span>On your terms.</span>
-            </h2>
-            <a href={STORE + "/privacy"} className="ap-text-link">
-              Our approach to privacy <Arrow diagonal />
-            </a>
+              Clear choices about your words, your data, and your actions.
+            </p>
           </div>
-          <div className="ap-privacy-rows">
+          <div className="ap-privacy-symbol">
+            <Mark type="shield" />
+          </div>
+          <div className="ap-privacy-pills">
+            <span>On-phone audio processing</span>
+            <span>No stored raw audio</span>
+            <span>Personal information never sold</span>
+            <span>Your approval comes first</span>
+          </div>
+          <div className="ap-privacy-grid">
             {[
               [
-                "01",
-                "Your words. Your rules.",
-                "You decide how your audio is used. See, export, or delete your information.",
+                "Processed on your phone",
+                "Audio is processed locally on your smartphone to identify what needs doing. The cloud action engine receives a short text instruction.",
+                "context",
               ],
               [
-                "02",
-                "Your approval comes first.",
-                "Every action is previewed. Nothing goes ahead without your say.",
+                "No saved recordings",
+                "Raw audio is discarded within seconds of processing. Anticipy’s privacy policy describes an ephemeral audio stream, with no stored recording.",
+                "sound",
               ],
               [
-                "03",
-                "Done means verified.",
-                "A receipt for every completed action. A clear record you can come back to.",
+                "Your information is not for sale",
+                "We don’t sell your personal information or share it with third parties for their own marketing.",
+                "shield",
               ],
-            ].map(([n, title, text]) => (
-              <article className="ap-privacy-row ap-reveal" key={n}>
-                <span>{n}</span>
-                <div>
-                  <h3>{title}</h3>
-                  <p>{text}</p>
-                </div>
-                <Mark
-                  type={
-                    n === "01" ? "shield" : n === "02" ? "context" : "check"
-                  }
-                />
+              [
+                "Access, export, delete",
+                "Request access to, correction of, or deletion of your information. The privacy policy explains your choices and any retention exceptions.",
+                "check",
+              ],
+            ].map(([title, text, icon]) => (
+              <article className="ap-privacy-tile" key={title}>
+                <Mark type={icon as "context" | "sound" | "shield" | "check"} />
+                <h3>{title}</h3>
+                <p>{text}</p>
               </article>
             ))}
           </div>
+          <a href={STORE + "/privacy"} className="ap-privacy-policy">
+            Read our full privacy policy <Arrow diagonal />
+          </a>
         </section>
 
-        <section className="ap-faq" id="questions">
-          <div className="ap-faq-heading">
-            <span className="ap-kicker">
-              A FEW THINGS YOU MIGHT BE WONDERING.
-            </span>
-            <h2>Good questions.</h2>
-            <a href={STORE + "/book"} className="ap-text-link">
-              Ask us anything <Arrow diagonal />
-            </a>
-          </div>
-          <div className="ap-faq-list">
-            {FAQ.map(([q, a]) => (
-              <details key={q}>
-                <summary>
-                  <span>{q}</span>
-                  <b>+</b>
-                </summary>
-                <p>{a}</p>
-              </details>
-            ))}
-          </div>
-        </section>
+        <ActionFAQ finish={finish} />
 
         <section
           className="ap-stone"
           aria-label="Made for life beyond the screen"
         >
           <img
-            src="/redesign/pendant-stone-closed.webp"
-            alt="The silver Anticipy pendant resting on warm pale travertine in natural light"
+            src={FINISHES[finish].stone}
+            alt={
+              FINISHES[finish].label +
+              " Anticipy pendant resting on warm pale travertine in natural light"
+            }
             width="2752"
             height="1536"
             loading="lazy"
@@ -1184,7 +1139,7 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
             </Button>
           </div>
           <div className="ap-stone-caption">
-            BRUSHED TITANIUM. EVERYDAY POSSIBILITY.
+            TITANIUM SILVER. GOLD. EVERYDAY POSSIBILITY.
           </div>
         </section>
 
@@ -1194,35 +1149,47 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           data-section-id="order"
         >
           <div className="ap-order-product">
-            <span className="ap-kicker">YOUR EVERYDAY AI COMPANION</span>
+            <span className="ap-kicker">YOUR PERSONAL AI ACTION TAKER</span>
             <img
-              src="/redesign/pendant-cutout-closed.webp"
-              alt="The seamless Anticipy AI pendant and its fine silver necklace"
+              src={FINISHES[finish].image}
+              alt={
+                "The seamless " +
+                FINISHES[finish].label +
+                " Anticipy AI pendant and its matching fine necklace"
+              }
               width="2048"
               height="1156"
               loading="lazy"
             />
             <div className="ap-order-finish">
-              <span /> Brushed titanium{" "}
+              <span className={"ap-swatch-" + finish} />{" "}
+              {FINISHES[finish].label}{" "}
               <span className="ap-order-included">Matching chain included</span>
             </div>
           </div>
           <div className="ap-order-details">
             <p className="ap-shop-category">ANTICIPY AI PENDANT</p>
             <h2>
-              A little less to do.
+              Your early start.
               <br />
-              <span>A little more you.</span>
+              <span>A little less to do.</span>
             </h2>
             <div className="ap-order-price">
               <strong>
                 $149.99 <small>USD</small>
               </strong>
-              <span>Projected launch price $199</span>
+              <span>
+                Projected launch price $199
+                <br />
+                <b className="ap-offer-saving">
+                  $49.01 below projected launch price
+                </b>
+              </span>
             </div>
             <p className="ap-order-summary">
-              One pendant. Your words turned into useful next steps.
+              Your personal action taker, ready for life as it happens.
             </p>
+            <FinishPicker finish={finish} onChange={setFinish} />
             <ul className="ap-order-inclusions">
               <li>
                 <Mark type="check" /> Titanium pendant & matching chain
@@ -1235,7 +1202,7 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
               </li>
             </ul>
             <Button
-              href={STORE + "/pre-orders/purchase"}
+              href={STORE + "/pre-orders/purchase?finish=" + finish}
               ctaId="order-checkout"
             >
               Pre-order Anticipy · $149.99 USD
@@ -1315,6 +1282,9 @@ export function AnticipyLanding({ preview = false }: { preview?: boolean }) {
           <div className="ap-footer-links">
             <p>Made for life as it happens.</p>
             <nav aria-label="Footer navigation">
+              <a href="/action-taker/">
+                The action-taker manifesto <Arrow diagonal />
+              </a>
               <a href={STORE + "/app"}>
                 The app <Arrow diagonal />
               </a>

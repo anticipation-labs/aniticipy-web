@@ -1,3 +1,4 @@
+import { parsePendantFinish } from "@/lib/pendant-finish";
 import { NextRequest, NextResponse } from "next/server";
 import Stripe from "stripe";
 import { stripe } from "@/lib/stripe";
@@ -8,7 +9,6 @@ import {
 } from "@/lib/email";
 import { captureServer, emailHashServer } from "@/lib/analytics-server";
 import { PAY as UGC_PAY } from "@/app/ugc/program";
-
 
 const CREATOR_SHARE_PCT = UGC_PAY.purchaseSharePct;
 
@@ -22,7 +22,7 @@ export async function POST(request: NextRequest) {
   if (!sig || !secret) {
     return NextResponse.json(
       { error: "Missing signature or webhook secret." },
-      { status: 400 }
+      { status: 400 },
     );
   }
 
@@ -41,7 +41,7 @@ export async function POST(request: NextRequest) {
     switch (event.type) {
       case "checkout.session.completed":
         await handleCheckoutCompleted(
-          event.data.object as Stripe.Checkout.Session
+          event.data.object as Stripe.Checkout.Session,
         );
         break;
       case "charge.refunded":
@@ -64,9 +64,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
   if (session.payment_status !== "paid") return;
 
   const email =
-    session.customer_details?.email ??
-    session.customer_email ??
-    null;
+    session.customer_details?.email ?? session.customer_email ?? null;
 
   if (!email) {
     console.error("Pre-order completed without email:", session.id);
@@ -107,6 +105,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     marketing_opt_in: session.metadata?.marketing_opt_in === "true",
     agreement_version: session.metadata?.agreement_version ?? "v1-2026-05-27",
     metadata: {
+      pendant_finish: parsePendantFinish(session.metadata?.pendant_finish),
       // Creator attribution, frozen at payment time. The rate is stored
       // alongside the ref rather than looked up later, so raising the
       // program's share never silently restates what was already owed.
@@ -180,6 +179,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
       amount: row.amount_total,
       currency: row.currency,
       sessionId: session.id,
+      finish: row.metadata.pendant_finish,
       paymentIntent: row.stripe_payment_intent_id,
       shippingCity: row.shipping_address_city,
       shippingState: row.shipping_address_state,
@@ -202,6 +202,7 @@ async function handleCheckoutCompleted(session: Stripe.Checkout.Session) {
     amount: row.amount_total,
     currency: row.currency,
     sessionId: session.id,
+    finish: row.metadata.pendant_finish,
   });
 }
 

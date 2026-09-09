@@ -1,3 +1,8 @@
+import {
+  type PendantFinish,
+  parsePendantFinish,
+  pendantFinishLabel,
+} from "@/lib/pendant-finish";
 import Link from "next/link";
 import type { Metadata } from "next";
 import { stripe } from "@/lib/stripe";
@@ -7,11 +12,13 @@ export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
   title: "Pre-order confirmed",
-  description: "Your Anticipy pre-order is confirmed. Thank you for being early.",
+  description:
+    "Your Anticipy pre-order is confirmed. Thank you for being early.",
   robots: { index: false, follow: false },
 };
 
 type Session = {
+  finish: PendantFinish | null;
   email: string | null;
   amount: number;
   currency: string;
@@ -20,13 +27,16 @@ type Session = {
   state: string | null;
 };
 
-async function loadSession(sessionId: string | undefined): Promise<Session | null> {
+async function loadSession(
+  sessionId: string | undefined,
+): Promise<Session | null> {
   if (!sessionId || !sessionId.startsWith("cs_")) return null;
   try {
     const session = await stripe.checkout.sessions.retrieve(sessionId, {
       expand: ["customer_details"],
     });
     return {
+      finish: parsePendantFinish(session.metadata?.pendant_finish),
       email: session.customer_details?.email ?? session.customer_email ?? null,
       amount: session.amount_total ?? 0,
       currency: session.currency ?? "usd",
@@ -34,7 +44,8 @@ async function loadSession(sessionId: string | undefined): Promise<Session | nul
         session.customer_details?.name ??
         session.collected_information?.shipping_details?.name ??
         null,
-      city: session.collected_information?.shipping_details?.address?.city ?? null,
+      city:
+        session.collected_information?.shipping_details?.address?.city ?? null,
       state:
         session.collected_information?.shipping_details?.address?.state ?? null,
     };
@@ -112,22 +123,32 @@ export default async function PreOrderSuccessPage({
             <strong style={{ color: "var(--text-on-light)" }}>
               ${amountDisplay} {currencyDisplay}
             </strong>
-            . You locked in $50 off the $199 retail price.
+            . Projected launch price: $199.
           </p>
 
+          {session?.finish && (
+            <p className="mb-6">
+              Finish: <strong>{pendantFinishLabel(session.finish)}</strong>
+            </p>
+          )}
           <div
             className="rounded-card p-6 mb-10 text-left"
             style={{ background: "var(--cream-muted)" }}
           >
-            <p className="text-[14px] font-light leading-[1.7]" style={{ color: "var(--text-on-light-muted)" }}>
-              <strong style={{ color: "var(--text-on-light)" }}>What is next.</strong>
-              {" "}
-              We are targeting shipping for Q4 2026. As the date approaches we will email{" "}
+            <p
+              className="text-[14px] font-light leading-[1.7]"
+              style={{ color: "var(--text-on-light-muted)" }}
+            >
+              <strong style={{ color: "var(--text-on-light)" }}>
+                What is next.
+              </strong>{" "}
+              We are targeting shipping for Q4 2026. As the date approaches we
+              will email{" "}
               <strong style={{ color: "var(--text-on-light)" }}>
                 {session?.email ?? "your inbox"}
-              </strong>
-              {" "}
-              to confirm the shipping address and answer any questions. Stripe also emailed a receipt for your records.
+              </strong>{" "}
+              to confirm the shipping address and answer any questions. Stripe
+              also emailed a receipt for your records.
             </p>
           </div>
 

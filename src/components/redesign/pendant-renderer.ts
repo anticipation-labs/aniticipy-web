@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import { RoomEnvironment } from "three/addons/environments/RoomEnvironment.js";
+import { PENDANT, FINISHES, type PendantFinish } from "./pendant-design";
 
 const clamp = THREE.MathUtils.clamp;
 const smooth = (a: number, b: number, p: number) =>
@@ -94,7 +95,9 @@ export function createPendantScene(
   product.add(front, back, board);
   // A continuous pillow surface avoids the artificial raised border of a bevelled badge.
   const bodyGeometry = new THREE.BufferGeometry();
-  const outline = capsuleShape(1.58, 2.37).getSpacedPoints(160);
+  const outline = capsuleShape(PENDANT.width, PENDANT.height).getSpacedPoints(
+    160,
+  );
   const positions: number[] = [],
     uvs: number[] = [],
     indices: number[] = [];
@@ -102,13 +105,14 @@ export function createPendantScene(
     rings = 32;
   for (let ring = 0; ring <= rings; ring++) {
     const radius = Math.max(0.0001, ring / rings);
-    const z = 0.3 * Math.sqrt(Math.max(0, 1 - Math.pow(radius, 4)));
+    const z =
+      PENDANT.halfDepth * Math.sqrt(Math.max(0, 1 - Math.pow(radius, 4)));
     for (let i = 0; i <= segments; i++) {
       const point = outline[i % segments];
       positions.push(point.x * radius, point.y * radius, z);
       uvs.push(
-        (point.x * radius + 0.79) / 1.58,
-        (point.y * radius + 1.185) / 2.37,
+        (point.x * radius + PENDANT.width / 2) / PENDANT.width,
+        (point.y * radius + PENDANT.height / 2) / PENDANT.height,
       );
       if (ring < rings && i < segments) {
         const a = ring * (segments + 1) + i,
@@ -153,10 +157,10 @@ export function createPendantScene(
 
   // The prototype has a plain dark aperture; it is not a lens or a separate metal eyelet.
   const aperture = new THREE.Mesh(
-    new THREE.CircleGeometry(0.067, 32),
+    new THREE.CircleGeometry(PENDANT.apertureRadius, 32),
     new THREE.MeshBasicMaterial({ color: 0x161614, side: THREE.DoubleSide }),
   );
-  aperture.position.set(0, 0.6, 0.296);
+  aperture.position.set(0, PENDANT.apertureY, PENDANT.halfDepth - 0.004);
   front.add(aperture);
 
   const wire = new THREE.Group();
@@ -175,8 +179,11 @@ export function createPendantScene(
   wire.add(frontLines, backLines);
   // Sparse construction contours convey the curved shell without a noisy triangulated mesh.
   for (let z = -0.24; z <= 0.24; z += 0.12) {
-    const factor = 1 - Math.abs(z) * 0.34;
-    const points = capsuleShape(1.55 * factor, 2.35 * factor)
+    const factor = Math.pow(
+      Math.max(0, 1 - (z / PENDANT.halfDepth) ** 2),
+      0.25,
+    );
+    const points = capsuleShape(PENDANT.width * factor, PENDANT.height * factor)
       .getPoints(90)
       .map((p) => new THREE.Vector3(p.x, p.y, z));
     wire.add(
@@ -318,9 +325,10 @@ export function createPendantScene(
                 smooth(0.7, 1, p),
               );
       product.rotation.set(-0.04 + xray * 0.18, turn, -0.18 + xray * 0.16);
-      // The enclosure stays closed; only its transparency changes for inspection.
-      front.position.set(0, 0, 0);
-      back.position.set(0, 0, 0);
+      // Only the technical chapter opens. Both shells return to the identical closed geometry.
+      const open = smooth(0.18, 0.34, p) * (1 - smooth(0.48, 0.65, p));
+      front.position.set(-open * 0.36, open * 0.1, open * 0.72);
+      back.position.set(open * 0.36, -open * 0.1, -open * 0.72);
       frontLines.position.set(
         front.position.x,
         front.position.y,
@@ -331,7 +339,7 @@ export function createPendantScene(
         back.position.y,
         back.position.z - 0.008,
       );
-      silver.opacity = rearSilver.opacity = 1 - xray * 0.94;
+      silver.opacity = rearSilver.opacity = 1 - xray * 0.88 * (1 - open * 0.92);
       silver.depthWrite = rearSilver.depthWrite = xray < 0.5;
       aperture.visible = xray < 0.65;
       edgeMaterial.opacity = xray * 0.65;
@@ -366,6 +374,16 @@ export function createPendantScene(
   document.addEventListener("visibilitychange", requestRender);
   resize();
   return {
+    setFinish(finish: PendantFinish) {
+      silver.color.setHex(FINISHES[finish].color);
+      rearSilver.color.setHex(FINISHES[finish].color);
+      chain.children.forEach((object) => {
+        (
+          (object as THREE.Mesh).material as THREE.MeshStandardMaterial
+        ).color.setHex(FINISHES[finish].chain);
+      });
+      requestRender();
+    },
     update(progress: number) {
       if (target !== progress || current < 0) {
         target = progress;

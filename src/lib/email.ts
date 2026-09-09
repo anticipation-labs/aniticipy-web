@@ -1,3 +1,4 @@
+import { type PendantFinish, pendantFinishLabel } from "./pendant-finish";
 import { escapeHtml, sanitizeHeader } from "./escape";
 import {
   preorderConfirmationHtml,
@@ -58,7 +59,7 @@ interface SendArgs {
 async function sendMail(args: SendArgs): Promise<string> {
   if (!RESEND_API_KEY) {
     throw new Error(
-      "RESEND_API_KEY is not set — refusing to silently drop mail."
+      "RESEND_API_KEY is not set — refusing to silently drop mail.",
     );
   }
 
@@ -172,7 +173,8 @@ export async function sendPreorderConfirmation(
     amount: number;
     currency: string;
     sessionId: string;
-  }
+    finish?: PendantFinish | null;
+  },
 ) {
   // The template escapes the name for HTML; this strips control chars first.
   const rawFirstName = sanitizeHeader(opts.name?.split(" ")[0] || "", 60);
@@ -190,6 +192,7 @@ export async function sendPreorderConfirmation(
       amountDisplay,
       currencyDisplay,
       sessionId: opts.sessionId,
+      finish: opts.finish,
     }),
   });
 }
@@ -198,7 +201,13 @@ export async function sendPreorderConfirmation(
 // Fires every time someone joins the waitlist. High-priority headers.
 export async function sendOwnerWaitlistNotification(
   email: string,
-  opts: { name?: string | null; source?: string; ip?: string | null; ua?: string | null; referrer?: string | null }
+  opts: {
+    name?: string | null;
+    source?: string;
+    ip?: string | null;
+    ua?: string | null;
+    referrer?: string | null;
+  },
 ) {
   const safeEmail = escapeHtml(email);
   const safeName = escapeHtml(opts.name?.trim() || "(no name)");
@@ -248,11 +257,12 @@ export async function sendOwnerPreorderNotification(
     amount: number;
     currency: string;
     sessionId: string;
+    finish?: PendantFinish | null;
     paymentIntent?: string | null;
     shippingCity?: string | null;
     shippingState?: string | null;
     shippingCountry?: string | null;
-  }
+  },
 ) {
   const safeEmail = escapeHtml(email);
   const safeName = escapeHtml(opts.name?.trim() || "(no name)");
@@ -263,7 +273,7 @@ export async function sendOwnerPreorderNotification(
   const safeShip = escapeHtml(
     [opts.shippingCity, opts.shippingState, opts.shippingCountry]
       .filter(Boolean)
-      .join(", ") || "(no address yet)"
+      .join(", ") || "(no address yet)",
   );
 
   return sendMail({
@@ -285,6 +295,7 @@ export async function sendOwnerPreorderNotification(
     <tr><td style="padding: 6px 12px 6px 0; color: #6b635b; vertical-align: top;">Name</td><td style="padding: 6px 0;">${safeName}</td></tr>
     <tr><td style="padding: 6px 12px 6px 0; color: #6b635b; vertical-align: top;">Email</td><td style="padding: 6px 0;"><a href="mailto:${safeEmail}" style="color: #C9A227;">${safeEmail}</a></td></tr>
     <tr><td style="padding: 6px 12px 6px 0; color: #6b635b; vertical-align: top;">Amount</td><td style="padding: 6px 0;"><strong>$${amountDisplay} ${currencyDisplay}</strong></td></tr>
+    <tr><td style="padding:6px 12px 6px 0;">Finish</td><td>${pendantFinishLabel(opts.finish)}</td></tr>
     <tr><td style="padding: 6px 12px 6px 0; color: #6b635b; vertical-align: top;">Shipping</td><td style="padding: 6px 0;">${safeShip}</td></tr>
     <tr><td style="padding: 6px 12px 6px 0; color: #6b635b; vertical-align: top;">Session</td><td style="padding: 6px 0; font-family: monospace; font-size: 11px;">${safeSession}</td></tr>
     <tr><td style="padding: 6px 12px 6px 0; color: #6b635b; vertical-align: top;">Payment Intent</td><td style="padding: 6px 0; font-family: monospace; font-size: 11px;">${safePI}</td></tr>
@@ -364,7 +375,7 @@ export async function sendApplicationNotification(a: {
     ? a.files
         .map(
           (f) =>
-            `<p style="margin:0 0 6px 0;font-size:14px;"><a href="${e(f.url)}" style="color:#C9A227;font-weight:600;">${e(f.filename)}</a></p>`
+            `<p style="margin:0 0 6px 0;font-size:14px;"><a href="${e(f.url)}" style="color:#C9A227;font-weight:600;">${e(f.filename)}</a></p>`,
         )
         .join("")
     : "";
@@ -385,7 +396,7 @@ export async function sendApplicationNotification(a: {
          ${(a.links ?? [])
            .map(
              (l) =>
-               `<p style="margin:0 0 5px 0;font-size:14px;"><a href="${e(l)}" style="color:#C9A227;" rel="noopener noreferrer">${e(l)}</a></p>`
+               `<p style="margin:0 0 5px 0;font-size:14px;"><a href="${e(l)}" style="color:#C9A227;" rel="noopener noreferrer">${e(l)}</a></p>`,
            )
            .join("")}
        </div>`
@@ -488,7 +499,7 @@ export async function sendApplicantReceipt(
     startDate?: string;
     vancouver?: string;
     attachmentNames?: string[];
-  }
+  },
 ) {
   const first = escapeHtml(sanitizeHeader(name.split(" ")[0] || "", 60));
   const e = escapeHtml;
@@ -515,15 +526,17 @@ export async function sendApplicantReceipt(
   <div style="margin: 0 0 20px;">
     <p style="font-size: 13px; color: #6b635b; margin: 0 0 5px;">${e(ans.question)}</p>
     <p style="font-size: 15px; line-height: 1.65; margin: 0;">${para(ans.answer)}</p>
-  </div>`
+  </div>`,
     )
     .join("")}
   ${
     (copy?.links ?? []).length
-      ? `<div style="margin: 0 0 20px;"><p style="font-size: 13px; color: #6b635b; margin: 0 0 5px;">Links</p>${(copy?.links ?? [])
+      ? `<div style="margin: 0 0 20px;"><p style="font-size: 13px; color: #6b635b; margin: 0 0 5px;">Links</p>${(
+          copy?.links ?? []
+        )
           .map(
             (l) =>
-              `<p style="margin:0 0 4px;font-size:14px;"><a href="${e(l)}" style="color:#C9A227;" rel="noopener noreferrer">${e(l)}</a></p>`
+              `<p style="margin:0 0 4px;font-size:14px;"><a href="${e(l)}" style="color:#C9A227;" rel="noopener noreferrer">${e(l)}</a></p>`,
           )
           .join("")}</div>`
       : ""
@@ -604,7 +617,7 @@ export async function sendUgcNotification(a: {
   const socialRows = Object.entries(a.socials)
     .map(
       ([k, v]) =>
-        `<p style="margin:0 0 5px 0;font-size:14px;"><span style="color:#8a8a8a;text-transform:capitalize;">${e(k)}:</span> ${e(v)}</p>`
+        `<p style="margin:0 0 5px 0;font-size:14px;"><span style="color:#8a8a8a;text-transform:capitalize;">${e(k)}:</span> ${e(v)}</p>`,
     )
     .join("");
 
@@ -615,7 +628,7 @@ export async function sendUgcNotification(a: {
   <div style="margin: 0 0 26px 0;">
     <p style="font-size: 11px; text-transform: uppercase; letter-spacing: 0.12em; color: #C9A227; font-weight: 600; margin: 0 0 6px 0;">${e(x.question)}</p>
     <p style="font-size: 15px; line-height: 1.65; color: #1a1a1a; margin: 0;">${para(x.answer)}</p>
-  </div>`
+  </div>`,
     )
     .join("");
 
@@ -668,7 +681,11 @@ export async function sendUgcNotification(a: {
   });
 }
 
-export async function sendUgcWelcome(email: string, name: string, handle: string) {
+export async function sendUgcWelcome(
+  email: string,
+  name: string,
+  handle: string,
+) {
   const first = escapeHtml(sanitizeHeader(name.split(" ")[0] || "", 60));
   const h = escapeHtml(handle);
   const link = `https://anticipy.ai/c/${h}`;

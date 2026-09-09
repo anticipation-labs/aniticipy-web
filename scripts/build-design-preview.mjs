@@ -13,7 +13,7 @@ await mkdir(temporary, { recursive: true });
 await build({
   stdin: {
     contents:
-      'import React from "react"; import {renderToString} from "react-dom/server"; import {AnticipyLanding} from "./src/components/redesign/AnticipyLanding"; export const html=renderToString(<AnticipyLanding preview />);',
+      'import React from "react"; import {renderToString} from "react-dom/server"; import {AnticipyLanding} from "./src/components/redesign/AnticipyLanding"; export const html=renderToString(<AnticipyLanding preview />); export const campaignHtml=renderToString(<AnticipyLanding preview campaign />);',
     resolveDir: base,
     loader: "tsx",
   },
@@ -25,7 +25,7 @@ await build({
   jsx: "automatic",
   loader: { ".css": "empty" },
 });
-const { html } = createRequire(import.meta.url)(
+const { html, campaignHtml } = createRequire(import.meta.url)(
   path.join(temporary, "render.cjs"),
 );
 await build({
@@ -46,9 +46,10 @@ await build({
 await cp("public/redesign", "dist/redesign", { recursive: true });
 await cp("public/og.png", "dist/og.png");
 await cp("src/app/icon.svg", "dist/icon.svg");
-await writeFile(
-  "dist/index.html",
-  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#faf8f4"><meta name="robots" content="noindex"><title>Anticipy — Life, a little lighter.</title><meta name="description" content="Meet Anticipy, the titanium AI pendant that turns the things you say into the things you get done."><meta property="og:title" content="Anticipy — Life, a little lighter."><meta property="og:description" content="A quiet companion for a beautifully busy life."><meta property="og:image" content="/og.png"><link rel="icon" href="/icon.svg"><link rel="preload" href="/redesign/fonts/dm-sans-regular.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/assets/site.css"><style>html{scroll-behavior:auto}body{margin:0}button,input{font:inherit}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style></head><body><div id="root">${html}</div><script type="module" src="/assets/site.js"></script></body></html>`,
-);
+const document = (content, campaign = false) =>
+  `<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#faf8f4"><meta name="robots" content="noindex"><title>Anticipy — Your personal AI action taker.</title><meta name="description" content="Meet Anticipy, the titanium AI pendant that turns the things you say into the things you get done."><meta property="og:title" content="Anticipy — Your personal AI action taker."><meta property="og:description" content="A quiet companion for a beautifully busy life."><meta property="og:image" content="/og.png"><link rel="icon" href="/icon.svg"><link rel="preload" href="/redesign/fonts/dm-sans-regular.ttf" as="font" type="font/ttf" crossorigin><link rel="stylesheet" href="/assets/site.css"><style>html{scroll-behavior:auto}body{margin:0}button,input{font:inherit}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}</style></head><body><div id="root">${content}</div><script type="module" src="/assets/site.js"></script></body></html>`;
+await writeFile("dist/index.html", document(html));
+await mkdir("dist/action-taker", { recursive: true });
+await writeFile("dist/action-taker/index.html", document(campaignHtml, true));
 await writeFile("dist/robots.txt", "User-agent: *\nDisallow: /\n");
 console.log("Static review build ready in dist/");

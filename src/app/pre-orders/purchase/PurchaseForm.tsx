@@ -10,9 +10,18 @@ import {
   emailDomainClass,
 } from "@/lib/analytics";
 
+import { type PendantFinish, pendantFinishLabel } from "@/lib/pendant-finish";
+
 type FormState = "idle" | "loading" | "error";
 
-export function PurchaseForm({ canceled }: { canceled: boolean }) {
+export function PurchaseForm({
+  canceled,
+  initialFinish = "silver",
+}: {
+  canceled: boolean;
+  initialFinish?: PendantFinish;
+}) {
+  const [finish, setFinish] = useState<PendantFinish>(initialFinish);
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [ageConfirmed, setAgeConfirmed] = useState(false);
@@ -76,17 +85,26 @@ export function PurchaseForm({ canceled }: { canceled: boolean }) {
     const trimmedEmail = email.trim();
     if (!trimmedEmail || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(trimmedEmail)) {
       setError("Enter a valid email address.");
-      capture("checkout_validation_failed", { field: "email", reason: "invalid_format" });
+      capture("checkout_validation_failed", {
+        field: "email",
+        reason: "invalid_format",
+      });
       return;
     }
     if (!ageConfirmed) {
       setError("You must confirm that you are at least 18 years old.");
-      capture("checkout_validation_failed", { field: "age_confirmed", reason: "unchecked" });
+      capture("checkout_validation_failed", {
+        field: "age_confirmed",
+        reason: "unchecked",
+      });
       return;
     }
     if (!agreed) {
       setError("Accept the Pre-Order Agreement to continue.");
-      capture("checkout_validation_failed", { field: "agreement", reason: "unchecked" });
+      capture("checkout_validation_failed", {
+        field: "agreement",
+        reason: "unchecked",
+      });
       return;
     }
 
@@ -107,7 +125,7 @@ export function PurchaseForm({ canceled }: { canceled: boolean }) {
       {
         first_seen_at: new Date().toISOString(),
         first_intent: "purchase",
-      }
+      },
     );
 
     capture("checkout_email_submitted", {
@@ -128,6 +146,7 @@ export function PurchaseForm({ canceled }: { canceled: boolean }) {
         body: JSON.stringify({
           email: trimmedEmail,
           name: name.trim(),
+          finish,
           ageConfirmed: true,
           agreementAccepted: true,
           marketingOptIn,
@@ -158,16 +177,38 @@ export function PurchaseForm({ canceled }: { canceled: boolean }) {
     } catch {
       setState("error");
       setError("Network error. Try again.");
-      capture("checkout_validation_failed", { field: "network", reason: "fetch_failed" });
+      capture("checkout_validation_failed", {
+        field: "network",
+        reason: "fetch_failed",
+      });
     }
   };
 
   return (
-    <form
-      onSubmit={onSubmit}
-      className="flex flex-col gap-4"
-      noValidate
-    >
+    <form onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
+      <fieldset className="flex flex-col gap-2 mb-3">
+        <legend className="text-[13px] uppercase tracking-[0.12em] mb-2">
+          Choose your finish
+        </legend>
+        <div className="flex gap-3">
+          {(["silver", "gold"] as const).map((value) => (
+            <label
+              key={value}
+              className="flex items-center gap-2 border rounded-lg px-4 py-3 cursor-pointer"
+              style={{ borderColor: finish === value ? "#795c3e" : "#8a7b68" }}
+            >
+              <input
+                type="radio"
+                name="finish"
+                value={value}
+                checked={finish === value}
+                onChange={() => setFinish(value)}
+              />
+              {pendantFinishLabel(value)}
+            </label>
+          ))}
+        </div>
+      </fieldset>
       {showCanceled && (
         <motion.div
           initial={{ opacity: 0, y: -8 }}
@@ -271,11 +312,11 @@ export function PurchaseForm({ canceled }: { canceled: boolean }) {
           >
             Privacy Policy
           </a>
-          . I understand the estimated ship date is Q4 2026, that
-          I can cancel for a full refund any time before my unit ships,
-          and that the Pre-Order Agreement
-          contains a binding arbitration clause and class action waiver in
-          Section 14 that affect my legal rights (with a 30-day opt-out).
+          . I understand the estimated ship date is Q4 2026, that I can cancel
+          for a full refund any time before my unit ships, and that the
+          Pre-Order Agreement contains a binding arbitration clause and class
+          action waiver in Section 14 that affect my legal rights (with a 30-day
+          opt-out).
         </span>
       </label>
 
@@ -287,14 +328,12 @@ export function PurchaseForm({ canceled }: { canceled: boolean }) {
           className="mt-1 w-4 h-4 accent-[var(--text-on-light)]"
         />
         <span>
-          (Optional) Send me product updates and shipping notifications. You
-          can unsubscribe at any time using the link in every email.
+          (Optional) Send me product updates and shipping notifications. You can
+          unsubscribe at any time using the link in every email.
         </span>
       </label>
 
-      {error && (
-        <p className="text-[14px] text-red-700">{error}</p>
-      )}
+      {error && <p className="text-[14px] text-red-700">{error}</p>}
 
       <button
         type="submit"

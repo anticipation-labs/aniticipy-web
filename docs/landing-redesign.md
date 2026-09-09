@@ -1,58 +1,48 @@
-# Anticipy landing redesign — revision 3
+# Anticipy landing redesign — revision 4
 
-The homepage uses the original Anticipy cream, charcoal, sand and quiet gold palette. The hero identifies Anticipy as an AI pendant and gives concrete jobs: capture a conversation, draft a follow-up, and schedule a next step with approval. The action walkthrough now follows immediately, before the rotating product story, “Keep your head in the real world” photograph, engineering study, privacy, FAQ, pale-stone scene and explicit pre-order module.
+The homepage now identifies Anticipy as “Your personal AI action taker.” It explains the wearable, the proposed jobs and the approval step in the main copy, then shows a conversation-to-action network, an illustrative before/after workflow, product motion, the preserved lifestyle scene, privacy, categorized FAQs and a pre-order module. The optional `/action-taker/` campaign uses “Screw busywork.” and a scroll reveal from NOTE TAKER to ACTION TAKER. It is a separate URL, not an automatically assigned experiment.
 
-## Run and review
+## Run and publication boundary
 
-- `npm ci` then `npm run dev` serves the full Next.js application.
-- `npm run build:design` produces a standalone, server-rendered review build in `dist/`, from the same `AnticipyLanding` component as the Next.js homepage.
-- The static review links to the existing purchase, app, privacy, contact and waitlist pages. The Next.js homepage retains the existing `/api/waitlist` form integration.
-- The owner-private Sites publication packages only the static review. It does not deploy the repository backend or replace anticipy.ai.
+- `npm ci` then `npm run dev` serves the Next.js application.
+- `npm run build:design` produces the server-rendered static review in `dist/`, including both `/` and `/action-taker/`, using the same components as Next.js.
+- The owner-private Sites publication hosts this static review. It does not deploy the backend or replace anticipy.ai.
+- Static preview purchase, waitlist, app, contact and policy links point to the existing production site. The production checkout will honor the new finish selection after this PR is deployed there. The Next.js homepage retains its existing waitlist API integration.
 
-## Purchase journey
+## Positioning and reference decisions
 
-The persistent navigation, hero and stone scene lead to one on-page pre-order summary. It groups the $149.99 USD paid-now price, projected $199 launch price, pendant and chain, wireless pad, first year of AI service, estimated Q4 2026 delivery, free US/Canada shipping and full refund before shipment. Its primary button opens the existing purchase flow. The following disclosure explains the separate annual opt-in after the first year, currently projected at $99 USD/year, with no automatic enrollment. These terms were checked against the published pre-order agreement and refund policy on September 8, 2026.
+Pocket's explicit category, centered outcome story, connected-tool diagram, grouped privacy assurances, categorized FAQ and adjacent buying information informed the layout. Anticipy uses its own copy and assets. Mira informed the rotating solid/interior/detail/everyday sequence and moving inspection frames. Sensiq informed the central product, recommendation cards and pale stone composition. Oryzo informed the construction-to-material transition; Floema and Fine informed image scale and pacing.
 
-On phones the hero places the product beside the headline and the purchase module places the decision details before the repeated product photograph. Distinct `data-cta-id` values feed the existing analytics handler for navigation, hero, demonstration, stone and checkout intent. This does not imply a measured conversion improvement.
+The latest official Plaud One and Pocket pages already market actions through connected tools. This implementation makes no first-to-market or named-competitor-only-transcribes claim. The hero says “designed to,” and example receipts are labeled illustrative; the demo is not evidence of a shipped integration. No reviews, customer counts, scarcity timers or measured conversion gains were invented.
 
-Two existing checkout statements described refunds as discretionary, contradicting the published agreement's full-refund-before-shipment clause. The FAQ and acceptance checkbox now reflect that clause. The agreement itself is unchanged. The destination checkout also discloses the included first year and later annual opt-in, and no longer publishes a past offer-expiry date. These checkout corrections are in the repository PR; the static Site links to the currently deployed checkout.
+The approved lifestyle photograph defines the site palette: ivory #FAF8F4, warm white #FFFDF9, linen #F0EBE2, sand #E6DED1, brown-charcoal #302C26, taupe #675F54 and restrained bronze #795C3E. Primary actions use dark charcoal; text, checkmarks and visible warm outlines reinforce state. Cool blue backgrounds and accents are removed. The UI uses light tints of the photograph’s hue family rather than reproducing its darker shadow pixels. This is a design hypothesis, not a universal claim about color psychology. The research brief separately recommends testing message comprehension, trust and qualified pre-orders, with a challenger headline as an experiment.
 
-## Motion implementation
+## Pendant geometry and images
 
-The opening grows dotted rings and tangent controls, then overlaps the construction drawing with the physical pendant. It is localized to the product half so the headline is immediately readable. It exits after 1.3 seconds, with a CSS safety exit, a mobile bypass and reduced-motion bypass.
+`pendant-design.ts` is the shared visual specification for both finishes. Relative dimensions are width 1.58, height 2.37 and depth 0.60; the width:height ratio is 1:1.50. The procedural shell, aperture, technical contours and drawing derive from these values. Changing silver to gold changes material color, not geometry, camera progress or layout. All static images show a continuous closed enclosure; the whole shell separates only inside the rotating technical sequence and rejoins for the everyday view. There is no transverse lower-cap split.
 
-`PendantScene` lazy-loads Three.js near the product sections. `pendant-renderer` creates a continuous closed curved enclosure, an aperture, chain, component board and technical contours. The first native-scroll stage rotates the product through a full turn while benefits and recommendation cards change together. The engineering stage rotates, reveals the board through a transparent X-ray view and returns to the solid everyday view. The casing stays closed throughout, with no layer separation or seam line. A rectangular inspection frame and annotation cards move between chapters. All stages are reversible and directly selectable.
+The hero construction guide is a pendant-shaped rounded oblong, dissolving into the material image. On narrow screens the product is immediately visible beside the headline. The warm scoop-neck lifestyle composition and “Keep your head in the real world” treatment remain in place. The gold cutout and stone images were generated with GPT Image 2 using the accepted silver master as a reference, then optimized as WebP assets.
 
-The renderer draws only on scroll, resize or visibility changes, pauses offscreen, caps pixel ratio and disposes its GPU resources. A photograph remains if WebGL initialization fails. The heavy renderer is a separate ES-module chunk.
+The supplied photographs and PCB screenshots support visual reconstruction, not physical measurements. Generated images are not guaranteed geometrically identical to a CAD model. The procedural model and internal board are design studies, not manufacturing CAD or Blender deliverables; the interior is labeled conceptual. No dimensioned mechanical source was supplied for this revision. Source prototype photographs and temporary generation artifacts are not committed.
 
-Phones retain the product stages, with adjusted framing. Below 680px viewport height, these stages become normal-flow selectable chapters so copy cannot be pinned outside the visible screen. Reduced motion does the same and preserves direct chapter selection. The OS preference is authoritative; the footer also offers a motion toggle. The three-step action walkthrough is selectable and scroll-driven on suitable desktops. Its approval example is illustrative and sends no email.
+## Motion, accessibility and performance
 
-The menu uses a native dialog with focus containment, Escape dismissal and destination focus. FAQ items are native disclosures. Native page scrolling is retained. The pre-existing discount popup remains suppressed only on this homepage.
+The renderer is lazy-loaded near each product section, uses on-demand rendering, pauses offscreen, caps pixel ratio and disposes GPU resources. An image remains if WebGL fails. Native scroll drives reversible chapters, also available through direct buttons. Low-height screens and reduced-motion mode use selectable normal-flow chapters. The OS reduced-motion setting is honored; a footer control also disables animation. The campaign immediately exposes its result in reduced motion.
 
-## Reference decisions
+The native-dialog menu contains focus and closes with Escape. FAQ disclosures are native `details` elements. Finish controls use labeled fieldsets and pressed state; changing a network example updates an aria-live receipt. A scoped campaign header background preserves navigation contrast. No extra image or animation framework was added.
 
-- [Pocket](https://heypocket.com/pages/pocket): explicit product category and outcome, a consistent purchase destination, input-to-output explanation, and offer details beside the purchase decision. Eight desktop states were captured; mobile behavior was inspected in served CSS and DOM. No conversion analytics were available.
-- [Oryzo](https://oryzo.ai/): timed construction-to-material overlap and continuous product emphasis, adapted to keep the purchase message visible.
-- [Sensiq](https://sensiq.co/): central rotating product, left benefit copy, right recommendation, continuous bent hairline and pale stone composition.
-- [Mira](https://trymira.com/): actual viewpoint changes, solid/technical stages, moving rectangular frame, annotation cards and chapter rail. The latest closed-casing direction replaces the earlier exploded treatment.
-- [Floema](https://floema.com/en): photographic scale, spare typography and clear image boundaries.
-- [Fine](https://fine-n7vljkp34f.peachworlds.com/): persistent sculptural object and quiet pacing.
-- [Komma](https://kommakomma.is/): displaced-page menu and editorial scale.
-- [Alexandre Araujo](https://alexandre-araujo.com/): restrained navigation and hairline structure.
+## Purchase and fulfillment
 
-The earlier study includes 57 captured reference states, including timed Oryzo opening samples. These are sampled observations, not a claim to have inspected every encoded frame or recovered original animation curves.
+The offer shows $149.99 USD charged today, projected $199 launch price, estimated Q4 2026 shipping, included chain/charging pad/first year of AI service, free US/Canada delivery and full refunds before shipment. The projected price difference is correctly $49.01. Continued cloud AI after the first year requires a separate annual opt-in, currently projected at $99 USD/year, with no automatic enrollment. Published agreement/refund terms were checked September 8, 2026.
 
-## Images, shape and fidelity
-
-All 11 unique supplied pendant photos were inspected; repeat filenames were byte-identical duplicates. Shape decisions emphasize the continuous domed crown, straight middle sides, broad rounded lower end, rolled face and small plain upper aperture. A shared frontal width-to-height target of 1:1.50 guides the hero, stone scene, lifestyle pendant and procedural shell. This is a visual reconstruction; perspective photographs do not establish precise physical dimensions.
-
-Revision 3 removes the apparent lower cap and transverse reflection band. Higgsfield GPT Image 2 was selected after Seedream and Nano Banana edits retained the unwanted ridge. The hero master guides the stone and on-body pendant edits. The warm scoop-neck lifestyle composition is retained while the pendant is corrected to the same proportions and closed casing. Assets are optimized WebP files.
-
-The 3D shell is a visual reconstruction, not measured CAD. The board layout is conceptual and labeled on the page. Generated imagery and the procedural model are design visualizations rather than engineering verification. Source prototype photos are not committed. Locally hosted DM Sans retains its SIL Open Font License in `public/redesign/fonts/OFL.txt`.
+Silver/gold selection is allowlisted at the purchase page and checkout API. The selected finish is stored in Stripe Checkout and PaymentIntent metadata, retained in the cancellation URL, copied to existing order JSON metadata by the paid webhook, and displayed on success and customer/owner confirmations. Missing finish defaults to silver for existing checkout clients; malformed values are rejected before Stripe. Existing pricing, eligible discounts, consents and fulfillment guards remain. No database migration is needed.
 
 ## Verification
 
-- TypeScript and static review build checks are run for each delivered revision.
-- Browser checks cover desktop and phone layouts, product framing, menu navigation, FAQ and service disclosure, reverse scrolling, direct hardware chapters, reduced motion, image loading, and horizontal overflow. Purchase links are verified without submitting an order.
-- The previous full Next.js compilation/type validation passed, but prerendering the existing `/admin/offers` route requires the project's missing Supabase configuration (`supabaseUrl is required`). This remains an environment limitation; no substitute credentials were introduced.
-- No real purchases, waitlist submissions or email actions were performed during verification.
+- Static build and TypeScript pass.
+- `node tests/pendant-finish.mjs` passes mocked route-to-fulfillment contract checks for silver/gold, cancellation, metadata, confirmations, malformed inputs, legacy default and unpaid guard. It makes no external requests.
+- Browser checks cover 1440px desktop and 639px, 390px and 320px layouts, both finishes, mobile navigation, action-card selection, privacy, FAQ categories, purchase links, whole-shell opening and closed return, campaign reveal and reduced motion. No horizontal overflow at tested widths; no broken loaded images or console errors in the final campaign session.
+- Full Next.js prerendering requires the project's existing Supabase configuration at `/admin/offers`; no placeholder credentials were introduced.
+- No real purchases, waitlist entries or email sends were performed.
+
+The final warm-palette audit checked 208 settled text nodes without a failing solid-background pair; 20 photographic/gradient/transitional nodes were excluded. Palette text pairs exceed 4.5:1 and the #8A7B68 control boundary exceeds 3:1 on warm white. The footer uses a light focus outline. This bounded audit is not full accessibility certification.
