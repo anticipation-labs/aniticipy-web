@@ -8,6 +8,10 @@ The latest user request supersedes the cream page palette. White #FFFFFF now dom
 
 The approved scoop-neck necklace image and its “Keep your head in the real world” composition remain unchanged. No conversion lift has been measured. Earlier research and source qualifications remain in revision-5-research.md; its cream palette and interactive-demo recommendations are superseded here.
 
+## Consistent loading
+
+Revision 17 removes the old photographic loading placeholders from both live 3D sections. An inline contour appears in the initial HTML, and each canvas is revealed only after its first drawable frame. See [revision17-loading.md](revision17-loading.md) for the lifecycle changes and delayed-load verification.
+
 ## Hero surface realism
 
 Revision 16 improves only the hero material and aperture treatment. See [revision16-hero-material.md](revision16-hero-material.md) for asset provenance, preserved geometry and validation. All pre-existing photographs and videos are byte-for-byte unchanged. The technical renderer keeps its prior materials.

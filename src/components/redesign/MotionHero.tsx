@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { FINISHES, type PendantFinish } from "./pendant-design";
+import { PendantOutline } from "./PendantOutline";
 
 type HeroController = {
   setHeroFrame: (
@@ -167,7 +168,7 @@ export function MotionHero({
               },
             );
           } catch {
-            // The full photographic opening remains readable when WebGL is unavailable.
+            // Keep the inline contour and purchase content if WebGL is unavailable.
             resetPresentation();
             return;
           }
@@ -241,14 +242,7 @@ export function MotionHero({
           role="img"
           aria-label={`${FINISHES[finish].label} Anticipy pendant with a continuous rounded body in brushed metal`}
         >
-          <img
-            className="ap-motion-fallback"
-            src={FINISHES[finish].image}
-            width="2048"
-            height="1158"
-            alt=""
-            loading="eager"
-          />
+          <PendantOutline className="ap-motion-outline" />
           <canvas ref={canvas} aria-hidden="true" />
         </div>
         <div

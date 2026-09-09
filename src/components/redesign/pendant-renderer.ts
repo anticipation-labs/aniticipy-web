@@ -744,7 +744,12 @@ export function createPendantScene(
       product.scale.setScalar(1 - open * 0.14);
     }
     renderer.render(scene, camera);
-    if (firstRender) {
+    // The hero's zero-time canvas is empty. Keep its inline contour until the
+    // first visible stroke (or the selected reduced-motion frame) is drawn.
+    if (
+      firstRender &&
+      (mode !== "hero" || contours[0].geometry.drawRange.count >= 2)
+    ) {
       firstRender = false;
       onFirstRender?.();
     }

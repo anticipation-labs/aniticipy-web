@@ -31,14 +31,19 @@
 .ap-site .is-ready .ap-motion-art canvas {
   opacity: 1;
 }
-.ap-site .ap-motion-fallback {
+.ap-site .ap-motion-outline {
   position: absolute;
-  inset: 13% 0 12% 43%;
-  width: 54%;
-  height: 75%;
-  object-fit: contain;
+  left: 73.5%;
+  top: 50.26%;
+  /* Match the quarter-scale contour at the start of the existing 3D opening. */
+  height: 13.75%;
+  width: auto;
+  transform: translate(-50%, -50%);
+  color: #9a825a;
+  opacity: 0.5;
+  transition: opacity 160ms ease-out;
 }
-.ap-site .is-ready .ap-motion-fallback {
+.ap-site .is-ready .ap-motion-outline {
   opacity: 0;
 }
 .ap-site .ap-motion-dark {
@@ -430,10 +435,10 @@
     margin: -3px -6% -15px;
     z-index: 0;
   }
-  .ap-site .ap-motion-fallback {
-    inset: -10% -20%;
-    height: 120%;
-    width: 140%;
+  .ap-site .ap-motion-outline {
+    left: 50%;
+    top: 50%;
+    height: 18.1%;
   }
   .ap-site .ap-motion-finishes {
     grid-area: finishes;
