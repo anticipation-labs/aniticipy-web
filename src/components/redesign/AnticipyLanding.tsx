@@ -961,29 +961,6 @@ export function AnticipyLanding({
               {FINISHES[finish].label}{" "}
               <span className="ap-order-included">Matching chain included</span>
             </div>
-            <div
-              className="ap-finish-gallery"
-              role="group"
-              aria-label="Preview a finish"
-            >
-              {(Object.keys(FINISHES) as PendantFinish[]).map((value) => (
-                <button
-                  key={value}
-                  aria-pressed={finish === value}
-                  onClick={() => setFinish(value)}
-                >
-                  <img
-                    src={FINISHES[value].image}
-                    alt=""
-                    width="2048"
-                    height="1158"
-                    loading="lazy"
-                  />
-                  <span>{FINISHES[value].label}</span>
-                  <i aria-hidden="true">{finish === value ? "✓" : "+"}</i>
-                </button>
-              ))}
-            </div>
           </div>
           <div className="ap-order-details">
             <p className="ap-shop-category">ANTICIPY AI PENDANT</p>

@@ -1,4 +1,4 @@
-# Anticipy landing redesign — revision 7
+# Anticipy landing redesign — revision 8
 
 The hero gives “Not a note taker” stronger emphasis with a larger black line. The homepage identifies Anticipy immediately: “Not a note taker. An action taker.” followed by the AI pendant category and email, calendar and task capabilities. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
 
@@ -15,6 +15,7 @@ The “Wear it. Get on with your day.” scene now uses reference-based Higgsfie
 These are AI-generated photographic visualizations, not footage of a physical unit or measured 3D scans. The separate rotating technical/exploded scene remains a labeled concept study, as previously requested. The shared relative specification is width 1.58, height 2.37, depth 0.36; photographs are not guaranteed dimensionally identical to a procedural model. No manufacturing CAD/Blender file is created.
 
 Accepted Higgsfield jobs:
+
 - Silver reference turn: ef964d60-28c6-4c7e-8bdb-0919a827310c; final white-background edit: fddaee27-55c0-4afc-bf89-2778066e708a.
 - Gold finish edit of that turn: 467a3f1a-3255-4ff0-9371-c2481bc97870; final white-background edit: 73537ef2-16b8-4b8e-b6f9-83daa20db229.
 - Models: Seedance 2.0 for the reference turn, Seedance 2.5 for finish/background edits.
@@ -23,7 +24,11 @@ The final eight-second videos are encoded at 1600×900, 24fps with frequent keyf
 
 ## Consistent product geometry and motion
 
-The technical renderer retains the accepted 1:1.5 front proportion and reduces thickness by 40% (half-depth 0.30 to 0.18 in relative units). Angular shell sampling with 64 rings and shared rim/wrap normals remove the faceted edge and lighting crease. Internal component depths fit the slimmer body; the aperture follows the shell surface. X-ray contours disappear before the final everyday chapter, leaving that entire rotation opaque and closed. The separate exploded view still opens the front and rear shells.
+The technical renderer preserves the accepted approximately 1:1.5 front proportion and 0.36 relative depth. The previous radially scaled pillow is replaced by a slightly narrower elliptical crown, fuller base, a broad shallow face, a localized elliptical perimeter fillet and a constant 0.08-deep sidewall band. This keeps thickness through the body instead of tapering the complete height into a blade. The aperture is repositioned to match the photographic master and follows the actual face surface; construction contours use the same geometry. These are photograph-based proportions, not measured manufacturing dimensions.
+
+Both finish variants use the same mesh with an anisotropic physical metal material, deterministic 1024px longitudinal grain, mipmapped bump/roughness texture and broad neutral studio reflections. Existing scroll rotation, X-ray timing, front/rear opening, reassembly, color state, on-demand rendering and resource cleanup remain. Closed shell normals meet at the rim. Scroll anchoring is disabled within the landing page to prevent keyed text changes from moving the viewport away from a selected chapter.
+
+“Choose your Anticipy” now offers only compact silver/gold swatch controls beside its purchase details. The duplicate photo selection tiles are removed. One large selected-finish photograph remains, and its image, selected state and checkout finish parameter update together.
 
 The FAQ displays the existing silver and gold photographic cutouts together at identical scale, staggered diagonally. Both remain visible on mobile. The stone photographs were retouched through Higgsfield GPT Image 2 to remove the perimeter assembly line while retaining the scene and pendant silhouette. Accepted edits: silver `7f12063b-d0b4-41c4-a867-5c658d616be8`; gold `3390ef25-02b8-4e23-8d66-3a2d530bd2e0`.
 
@@ -42,6 +47,6 @@ The offer remains $149.99 USD charged today, projected $199 launch price, estima
 
 ## Verification
 
-TypeScript, static build and whitespace checks pass. Browser inspection covers the new editorial section at 1440px and 390px, white surface/black heading computed colors, and no horizontal overflow at those sizes. The new photographic scene loads correctly; native scroll and chapter controls seek forward and backward. The final lifestyle asset hash matches the prior commit exactly. The previous mocked finish-to-fulfillment contract tests remain unchanged; no backend changes were made in revision 7.
+TypeScript, static build and whitespace checks pass. Browser inspection covers the new editorial section at 1440px and 390px, white surface/black heading computed colors, and no horizontal overflow at those sizes. The new photographic scene loads correctly; native scroll and chapter controls seek forward and backward. The final lifestyle asset hash matches the prior commit exactly. The previous mocked finish-to-fulfillment contract tests remain unchanged; no backend changes were made in revision 8.
 
-Revision 7 verification: desktop (1440×900) and mobile (390×844) hero/FAQ layouts have no horizontal overflow; both FAQ finishes load and their complete silhouettes are visible. Native FAQ expansion, gold finish selection, internal separation and final closed side profile were inspected. The final profile at progress 0.881 is slim and has no construction overlay. With motion disabled there are no pending hidden text nodes, chapter text animation is none, and no photographic video element loads. Browser error log is empty. The protected lifestyle image retains Git blob `c887ad44d06fc22965933696fdb2cdf41d76e840`.
+Revision 8 verification: TypeScript, the static build and whitespace checks pass. Numerical geometry inspection finds no reversed normals, degenerate triangles, non-finite values or inset self-intersections; the aperture clears the actual face mesh throughout. Browser inspection covers desktop front, near-side (progress 0.889), open and reassembled poses, silver/gold switching, stable chapter navigation, and desktop/mobile purchase controls. There are no purchase photo tiles, and selecting Gold updates the main photograph and checkout URL to `finish=gold`. Browser error logs are empty. The protected lifestyle image retains Git blob `c887ad44d06fc22965933696fdb2cdf41d76e840`.
