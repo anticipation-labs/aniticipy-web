@@ -1,6 +1,6 @@
 # Anticipy landing redesign
 
-The hero centers “Not a note taker. An action taker.” above a new photograph of both pendant finishes. The AI pendant category, concise email/plan/task description, $149.99 USD price and Buy Now action are visible in the first screen at the verified desktop and mobile sizes. The central image has a brief entrance and a small scroll translation, while the headline stays stable. Shipping timing, included AI service and the refund terms remain plainly visible. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
+The hero now uses a full-screen asymmetric composition with a large photographic pendant film and masked typography. “Not a note taker. An action taker.” resolves in stages while the pendant pulls back, turns and changes between silver and gold. The hero has a Buy Now action, with pricing and offer details kept in the purchase section. The rejected simulated conversation/calendar/email walkthrough has been removed. Its replacement, “Turn words into action,” uses open typography, three capability descriptions and a purchase anchor. It contains no fake application interface or simulated completion states.
 
 ## Visual direction
 
@@ -10,22 +10,7 @@ The approved scoop-neck necklace image and its “Keep your head in the real wor
 
 ## Hero reference synthesis
 
-All eight supplied references informed the hero. Current page content was reviewed where retrievable, alongside the September 8 browser captures used for layout and motion observations. Alexandre’s current page extraction was empty, so its visual observations rely on that capture. These are design interpretations, not evidence of measured conversion performance.
-
-| Reference | Applied principle |
-| --- | --- |
-| [Pocket](https://heypocket.com/pages/pocket) | Centered category/headline, prominent product field, simple Buy Now action. Anticipy keeps the main buying action within the first screen. |
-| [Sensiq](https://sensiq.co/) | Literal product identity, photographic material detail and a direct shopping path. |
-| [Komma](https://kommakomma.is/) | Restrained side copy and a photographic focal point with generous space. |
-| [Mira](https://trymira.com/) | Controlled product highlights and a persistent purchasing action. |
-| [Floema](https://floema.com/en) | Stable oversized typography with breathing room around the object. |
-| [Alexandre Araujo](https://alexandre-araujo.com/) | White/black restraint, thin rules and a quiet secondary action. |
-| [Fine](https://fine-n7vljkp34f.peachworlds.com/) | Depth and restrained continuity as the user scrolls. |
-| [Oryzo](https://oryzo.ai/) | Visual continuity between the central object and the surrounding page. Its fictional product claims and elaborate loading sequence were not adopted. |
-
-The new image, `public/redesign/pendant-duo-hero.webp`, is a reference-guided Higgsfield photographic visualization. Silver sits left and slightly higher, gold right and lower, with complete rounded bodies, one upper aperture each and fine matching chains. Source generation `f9a03392-a985-4f04-aacf-b41c69b13f5d` reported model `nano_banana_2`, using accepted silver/gold references `98395b69-4626-480d-8931-d68a51cd79a2` and `ea28eb3c-40e1-4122-b767-84fb241abf56`. The accepted 2528×1696 source was encoded as 2400×1610 WebP (161,350 bytes). This asset is generated imagery, not a manufactured-unit photograph or dimensional scan.
-
-Hero text enters in 850ms with a small stagger, and the photograph enters in 1150ms. The page motion control and system reduced-motion preference suppress both entrance and scroll movement. There is no autoplaying hero video. The approved lifestyle photograph and technical pendant geometry are unchanged.
+All eight supplied reference heroes were freshly sampled and inspected. See [revision14-motion-study.md](revision14-motion-study.md) for observed motion, source links, implementation timing, film provenance and evidence limits. The current hero replaces the previous centered still-photo layout. It uses the accepted photographic turns in a 14.5-second silent loop, a meaningful poster, staged line masks, a close-up-to-rest entrance and native-scroll parallax. The page remains white and black, with metal finishes supplying color. Pricing and purchase terms remain in the order section.
 
 ## Photographic pendant story
 
@@ -92,4 +77,4 @@ Revision 9 verification: TypeScript, the static build and whitespace checks pass
 
 Purchase revision verification: TypeScript, static build and whitespace checks pass. Browser inspection at 1275px and 390px found no horizontal overflow. All five images load. Thumbnail navigation, wraparound, swipe, Enter after swiping, dialog arrow keys, Escape, focus restoration, finish-to-gallery synchronization and checkout metadata were exercised. Purchase disclosures expand, browser error logs are empty, and both static routes and their JavaScript contain no em dashes or rejected Friday/Alex copy. The protected lifestyle hash remains unchanged.
 
-Hero revision verification: TypeScript and the static build pass. Desktop at 1440×900 and mobile at 390×844 show the headline, both complete pendants, primary Buy Now action and shipping terms without horizontal overflow. The hero link reaches the buying section with the pair image first (1/5). Gold selection keeps the paired view and sets the existing checkout URL to `finish=gold`; next/previous gallery navigation works independently. No visible pre-order button labels or em dashes remain. The independent code review found no actionable regressions.
+Current hero verification: TypeScript, static build and whitespace checks pass. Desktop at 1440×900 and mobile at 390×844 show the new composition without horizontal overflow. Eighteen successive local screenshots cover its staged opening and full film loop. Film pause/resume, offscreen pause, reduced motion and Buy Now navigation were exercised. No price or offer details appear in the hero. The purchase gallery still opens with the paired image. An independent code review identified a failed-media control issue, which was fixed by retaining the poster and hiding the unavailable film control.

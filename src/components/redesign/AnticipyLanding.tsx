@@ -14,6 +14,7 @@ import { FINISHES, type PendantFinish } from "./pendant-design";
 import { PendantScene, type PendantSceneHandle } from "./PendantScene";
 import { PhotorealPendantScene } from "./PhotorealPendantScene";
 import { PurchaseGallery } from "./PurchaseGallery";
+import { MotionHero } from "./MotionHero";
 
 const STORE = "https://www.anticipy.ai";
 const BENEFITS = [
@@ -275,7 +276,8 @@ export function AnticipyLanding({
           String(motion ? clamp(-rect.top / Math.max(1, rect.height - h)) : 1),
         );
       }
-      const heroProgress = clamp(window.scrollY / h);
+      const hero = el.querySelector('[data-section-id="hero"]');
+      const heroProgress = clamp(-(hero?.getBoundingClientRect().top ?? 0) / h);
       el.style.setProperty(
         "--hero-progress",
         motion ? String(heroProgress) : "0",
@@ -337,7 +339,7 @@ export function AnticipyLanding({
     ).filter(
       (node) =>
         !node.closest(
-          ".ap-launch-hero, .ap-lifestyle, .ap-reveal, .ap-benefit-heading, .ap-benefit-context, .ap-engineering-copy, .ap-faq-list",
+          ".ap-motion-hero, .ap-lifestyle, .ap-reveal, .ap-benefit-heading, .ap-benefit-context, .ap-engineering-copy, .ap-faq-list",
         ),
     );
     const groups = new Map<Element, number>();
@@ -555,71 +557,7 @@ export function AnticipyLanding({
       </dialog>
       {campaign && <ActionManifesto />}
       <main tabIndex={-1} id="main" className="ap-page">
-        <section
-          className="ap-launch-hero"
-          data-section-id="hero"
-          aria-labelledby="ap-launch-title"
-        >
-          <div className="ap-launch-heading">
-            <p className="ap-launch-category">
-              ANTICIPY · YOUR PERSONAL AI PENDANT
-            </p>
-            <h1 id="ap-launch-title">
-              <span className="ap-launch-notes">Not a note taker.</span>
-              <span className="ap-launch-action">An action taker.</span>
-            </h1>
-          </div>
-          <div className="ap-launch-stage">
-            <figure className="ap-launch-product">
-              <div className="ap-launch-photo">
-                <img
-                  src="/redesign/pendant-duo-hero.webp"
-                  alt="Silver and gold Anticipy AI pendants on their matching fine chains, with softly rounded brushed metal bodies"
-                  width="2400"
-                  height="1610"
-                  loading="eager"
-                  decoding="async"
-                />
-              </div>
-              <figcaption>
-                Titanium silver & gold. Matching chain included.
-              </figcaption>
-            </figure>
-            <div className="ap-launch-context">
-              <p className="ap-launch-promise">
-                You live your life.
-                <br />
-                Anticipy follows through.
-              </p>
-              <p>
-                Turn conversations into emails, plans and tasks. You have the
-                final say.
-              </p>
-            </div>
-            <div className="ap-launch-commerce">
-              <span className="ap-launch-price">
-                $149.99 <small>USD</small>
-              </span>
-              <Button href="#order" ctaId="hero-order">
-                Buy Now
-              </Button>
-              <p>First year of AI included</p>
-              <a
-                href="#experience"
-                className="ap-launch-explore"
-                data-cta-id="hero-demo"
-                data-cta-type="anchor"
-              >
-                See how it works <Arrow />
-              </a>
-            </div>
-          </div>
-          <div className="ap-launch-details">
-            <span>Estimated shipping Q4 2026</span>
-            <span>Free US & Canada shipping</span>
-            <span>Fully refundable before shipping</span>
-          </div>
-        </section>
+        <MotionHero motion={motion} />
 
         <PrototypeTrust />
         <ActionExperience motion={motion} />
