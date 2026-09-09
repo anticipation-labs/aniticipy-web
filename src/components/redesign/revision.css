@@ -156,35 +156,6 @@
 .ap-button-pale:hover {
   background: #ecdfce;
 }
-.ap-story {
-  background: #292724;
-}
-.ap-demo-stage {
-  background: #e6ded1;
-  transform: none;
-  border-radius: 3px;
-}
-.ap-story-copy em {
-  color: #d8bd98;
-}
-.ap-step-index button.active {
-  color: #fff9ef;
-}
-.ap-story-progress i {
-  background: #c8a97e;
-}
-.ap-demo-top > .ap-kicker {
-  color: #625a4e;
-}
-.ap-quote span {
-  color: #8b775e;
-}
-.ap-wave i {
-  background: #8a6b44;
-}
-.ap-focus-corner {
-  border-color: #bda582;
-}
 .ap-product-scene {
   position: absolute;
   inset: 0;
@@ -1145,41 +1116,5 @@
   }
   .ap-hero-art img {
     object-fit: contain;
-  }
-}
-@media (min-width: 801px) and (min-height: 680px) and (max-height: 779px) {
-  .ap-story {
-    height: 230svh;
-  }
-  .ap-story-sticky {
-    height: 100svh;
-    min-height: 680px;
-    position: sticky;
-    top: 0;
-    padding: 87px 5% 25px;
-  }
-  .ap-story-layout {
-    padding: 20px 0;
-  }
-  .ap-demo-stage {
-    min-height: 490px;
-    padding: 20px 28px;
-  }
-  .ap-demo-card {
-    min-height: 325px;
-    margin: 25px auto 15px;
-  }
-  .ap-story-copy h2 {
-    font-size: 44px;
-    margin-bottom: 28px;
-  }
-  .ap-step-index button {
-    padding: 14px 0;
-  }
-  .ap-story-progress {
-    display: block;
-  }
-  .ap-quote {
-    font-size: 40px;
   }
 }

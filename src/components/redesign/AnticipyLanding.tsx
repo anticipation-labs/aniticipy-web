@@ -5,70 +5,51 @@ import "./landing.css";
 import "./revision.css";
 import "./conversion.css";
 import "./action.css";
-import {
-  ActionHub,
-  ActionDifference,
-  ActionFAQ,
-  ActionManifesto,
-  FinishPicker,
-} from "./ActionSections";
+import "./clarity.css";
+import { ActionDemonstration, PrototypeTrust } from "./ActionDemonstration";
+import { ActionFAQ, ActionManifesto, FinishPicker } from "./ActionSections";
 import { FINISHES, PENDANT, type PendantFinish } from "./pendant-design";
 import { PendantScene, type PendantSceneHandle } from "./PendantScene";
 
 const STORE = "https://www.anticipy.ai";
-const STEPS = [
-  {
-    title: "You say it.",
-    subtitle: "No new habit required.",
-    text: "A promise over coffee. An idea on a walk. Talk naturally. Anticipy catches the things you mean to do.",
-  },
-  {
-    title: "It connects the dots.",
-    subtitle: "Context makes the difference.",
-    text: "The person, the timing, the correction you made halfway through. Your words become a clear next step, ready for your review.",
-  },
-  {
-    title: "You give the go-ahead.",
-    subtitle: "Your say. Every step of the way.",
-    text: "Review the action. Approve it when it’s right. Anticipy follows through and keeps a receipt, so you know it’s done.",
-  },
-];
 const BENEFITS = [
   {
     title: (
       <>
-        A thought.
-        <br />A little follow-through.
+        Wear it.
+        <br />
+        Get on with your day.
       </>
     ),
-    label: "A MOMENT, REMEMBERED",
-    title2: "Send Marcus the notes.",
-    text: "The promise you made over coffee, ready when you are.",
-    note: "Catch the things you mean to do.",
+    label: "BUILT AROUND YOUR DAY",
+    title2: "A pendant. Not another screen.",
+    text: "Keep the conversation going while Anticipy prepares the next step.",
+    note: "Made for life as it happens.",
   },
   {
     title: (
       <>
-        Your words.
+        The details
         <br />
-        The whole picture.
+        make the difference.
       </>
     ),
     label: "THE CONTEXT MATTERS",
-    title2: "Leave out the budget slide.",
-    text: "The small correction that makes the next step the right one.",
-    note: "Keep the detail that makes it yours.",
+    title2: "Friday. At seven. With Alex.",
+    text: "An action needs the right person, timing and context—not just a transcript.",
+    note: "The context goes with the task.",
   },
   {
     title: (
       <>
-        Your decision.
-        <br />A little less to do.
+        You choose.
+        <br />
+        Anticipy acts.
       </>
     ),
     label: "READY FOR YOUR REVIEW",
-    title2: "Looks right? Give it the go-ahead.",
-    text: "Review the action, approve it, and keep a record of the result.",
+    title2: "You have the final say.",
+    text: "Check what will happen before it happens. Edit or approve the proposed action.",
     note: "You stay in charge. Always.",
   },
 ];
@@ -101,9 +82,9 @@ const HARDWARE = [
     ),
     subtitle: "A closer look at what makes it possible.",
     bullets: [
-      "A sculpted shell that opens in this view",
-      "The intelligence at its centre",
-      "Each layer revealed as you scroll",
+      "Compact electronics inside the enclosure",
+      "Connected to the Anticipy app",
+      "Actions in the tools you connect",
     ],
     tag: "THE INSIDE",
     label: "Beneath the surface",
@@ -238,7 +219,6 @@ export function AnticipyLanding({
   const root = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);
-  const story = useRef<HTMLElement>(null);
   const hardware = useRef<HTMLElement>(null);
   const benefits = useRef<HTMLElement>(null);
   const hardwareScene = useRef<PendantSceneHandle>(null);
@@ -248,8 +228,7 @@ export function AnticipyLanding({
   const [hardwareStep, setHardwareStep] = useState(0);
   const [menu, setMenu] = useState(false);
   const [intro, setIntro] = useState(true);
-  const [step, setStep] = useState(0);
-  const [approved, setApproved] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const [email, setEmail] = useState("");
   const [formState, setFormState] = useState("idle");
   const [motion, setMotion] = useState(true);
@@ -283,7 +262,7 @@ export function AnticipyLanding({
     const update = () => {
       frame = 0;
       const h = window.innerHeight;
-      el.classList.toggle("ap-scrolled", window.scrollY > 90);
+      setScrolled(window.scrollY > 90);
       const manifesto = el.querySelector(".ap-manifesto");
       if (manifesto) {
         const rect = manifesto.getBoundingClientRect();
@@ -297,17 +276,6 @@ export function AnticipyLanding({
         "--hero-progress",
         motion ? String(heroProgress) : "0",
       );
-      if (
-        story.current &&
-        motion &&
-        window.innerWidth > 800 &&
-        window.innerHeight >= 680
-      ) {
-        const rect = story.current.getBoundingClientRect();
-        const p = clamp(-rect.top / Math.max(1, rect.height - h));
-        setStep(Math.min(2, Math.floor(p * 3)));
-        story.current.style.setProperty("--story-progress", String(p));
-      }
       for (const [section, scene, count, setStage, property] of [
         [benefits, benefitScene, 3, setBenefitStep, "--benefit-progress"],
         [hardware, hardwareScene, 4, setHardwareStep, "--hardware-progress"],
@@ -389,23 +357,6 @@ export function AnticipyLanding({
     window.scrollTo({ top: 0, behavior: "auto" });
     window.history.replaceState(null, "", "#main");
   };
-  const chooseStep = (index: number) => {
-    setStep(index);
-    setApproved(false);
-    if (
-      story.current &&
-      motion &&
-      window.innerWidth > 800 &&
-      window.innerHeight >= 680
-    ) {
-      const y =
-        window.scrollY +
-        story.current.getBoundingClientRect().top +
-        (story.current.offsetHeight - window.innerHeight) *
-          ((index + 0.35) / 3);
-      window.scrollTo({ top: y, behavior: "smooth" });
-    }
-  };
   const chooseProductChapter = (
     kind: "benefits" | "hardware",
     index: number,
@@ -465,6 +416,7 @@ export function AnticipyLanding({
       className={
         "ap-site " +
         (intro ? "ap-entering" : "ap-ready") +
+        (scrolled ? " ap-scrolled" : "") +
         (menu ? " ap-menu-open" : "") +
         (campaign ? " ap-campaign" : "") +
         (!motion ? " ap-reduced" : "")
@@ -559,9 +511,6 @@ export function AnticipyLanding({
       <main tabIndex={-1} id="main" className="ap-page">
         <section className="ap-shop-hero" data-section-id="hero">
           <div className="ap-shop-copy">
-            <p className="ap-shop-category">
-              <span /> MEET ANTICIPY · MADE TO GET IT DONE
-            </p>
             <div className="ap-shop-mobile-product" aria-hidden="true">
               <img
                 src={FINISHES[finish].image}
@@ -571,18 +520,18 @@ export function AnticipyLanding({
               />
             </div>
             <h1>
-              Your personal <br />
-              AI action taker.
+              <span className="ap-hero-contrast">Not a note taker.</span>
+              An action taker.
             </h1>
             <p className="ap-shop-description">
-              A wearable AI pendant designed to turn your conversations into
-              completed tasks. Send the follow-up. Schedule the next step. You
-              approve. Anticipy follows through.
+              <strong>The AI pendant that gets things done.</strong>
+              Turn conversations into emails, calendar events and tasks—with
+              your approval.
             </p>
             <FinishPicker
               finish={finish}
               onChange={setFinish}
-              label="Two finishes. One action taker."
+              label="Choose your finish"
             />
             <div className="ap-shop-actions">
               <Button href="#order" ctaId="hero-order">
@@ -640,7 +589,9 @@ export function AnticipyLanding({
               <path d="M705 255H1356M705 1051H1356M765 195V1111M1296 195V1111" />
               <path d="M765 305V255H815M1246 255H1296V305M765 1001V1051H815M1246 1051H1296V1001" />
             </svg>
-            <span className="ap-shop-material">SAY IT. APPROVE IT. DONE.</span>
+            <span className="ap-shop-material">
+              {FINISHES[finish].label} · Matching chain included
+            </span>
             <img
               src={FINISHES[finish].image}
               alt={
@@ -651,230 +602,31 @@ export function AnticipyLanding({
               height="1156"
               loading="eager"
             />
-            <div className="ap-hero-result">
-              <div className="ap-hero-result-top">
-                <Mark type="context" />
-                <span>FROM WORDS TO DONE</span>
-                <span className="ap-result-status">Example receipt</span>
-              </div>
-              <h2>“Send Marcus the notes tonight.”</h2>
-              <div className="ap-hero-result-bottom">
-                <span>Email sent · receipt saved</span>
-                <span>After your approval.</span>
-              </div>
+            <div
+              className="ap-hero-capabilities"
+              aria-label="What Anticipy does"
+            >
+              <span>
+                <Mark type="context" /> Send emails
+              </span>
+              <span>
+                <Mark type="check" /> Schedule plans
+              </span>
+              <span>
+                <Mark type="sound" /> Set reminders
+              </span>
             </div>
           </div>
           <div className="ap-shop-foot">
             <span>LESS ON YOUR MIND. MORE IN YOUR LIFE.</span>
             <a href="#experience">
-              From your words to your next step <span>↓</span>
+              Try an action <span>↓</span>
             </a>
           </div>
         </section>
 
-        <ActionDifference />
-        <ActionHub finish={finish} />
-
-        <section
-          ref={story}
-          tabIndex={-1}
-          className="ap-story"
-          id="experience"
-          data-section-id="experience"
-        >
-          <div className="ap-story-sticky" id="how-it-works">
-            <div className="ap-section-line">
-              <span className="ap-kicker">
-                <i /> FROM A FEW WORDS TO A LITTLE LESS WORK.
-              </span>
-              <span className="ap-kicker">ANTICIPY IN ACTION</span>
-            </div>
-            <div className="ap-story-layout">
-              <div className="ap-story-copy">
-                <h2>
-                  Say it. Approve it.
-                  <br />
-                  <em>Done.</em>
-                </h2>
-                <div
-                  className="ap-step-index"
-                  role="group"
-                  aria-label="How Anticipy works"
-                >
-                  {STEPS.map((item, index) => (
-                    <button
-                      id={"ap-step-" + index}
-                      key={item.title}
-                      aria-pressed={step === index}
-                      aria-controls="ap-step-content"
-                      onClick={() => chooseStep(index)}
-                      className={step === index ? "active" : ""}
-                    >
-                      <span>{"0" + (index + 1)}</span>
-                      {item.title}
-                      <Arrow />
-                    </button>
-                  ))}
-                </div>
-                <div
-                  id="ap-step-content"
-                  role="region"
-                  aria-labelledby={"ap-step-" + step}
-                  className="ap-step-description"
-                  key={step}
-                >
-                  <h3>{STEPS[step].subtitle}</h3>
-                  <p>{STEPS[step].text}</p>
-                </div>
-              </div>
-              <div className="ap-demo-stage">
-                <div className="ap-demo-top">
-                  <span className="ap-kicker">A MOMENT, IN MOTION</span>
-                  <span className="ap-kicker">
-                    {step === 0
-                      ? "LISTENING"
-                      : step === 1
-                        ? "MAKING SENSE"
-                        : "READY WHEN YOU ARE"}
-                    <i />
-                  </span>
-                </div>
-                <div className="ap-demo-card" key={step}>
-                  {step === 0 ? (
-                    <>
-                      <div className="ap-demo-icon">
-                        <Mark type="sound" />
-                      </div>
-                      <p className="ap-quote">
-                        “I’ll send Marcus
-                        <br />
-                        the notes tonight.
-                        <br />
-                        <span>
-                          Leave out the
-                          <br />
-                          budget slide.”
-                        </span>
-                      </p>
-                      <div className="ap-wave" aria-hidden="true">
-                        {Array.from({ length: 43 }, (_, i) => (
-                          <i
-                            key={i}
-                            style={{
-                              height:
-                                Math.round(8 + Math.sin(i * 1.7) ** 2 * 34) +
-                                "px",
-                              animationDelay: (i * 0.045).toFixed(3) + "s",
-                            }}
-                          />
-                        ))}
-                      </div>
-                      <div className="ap-demo-footer">
-                        <span>ON YOUR WALK HOME</span>
-                        <span>00:08</span>
-                      </div>
-                    </>
-                  ) : step === 1 ? (
-                    <>
-                      <div className="ap-demo-icon">
-                        <Mark type="context" />
-                      </div>
-                      <span className="ap-small-label">COMMITMENT CAUGHT</span>
-                      <h3>
-                        Send the notes.
-                        <br />
-                        Keep the context.
-                      </h3>
-                      <dl className="ap-context-list">
-                        <div>
-                          <dt>To</dt>
-                          <dd>Marcus</dd>
-                        </div>
-                        <div>
-                          <dt>When</dt>
-                          <dd>Tonight</dd>
-                        </div>
-                        <div>
-                          <dt>Include</dt>
-                          <dd>Meeting notes</dd>
-                        </div>
-                        <div>
-                          <dt>Leave out</dt>
-                          <dd>Budget slide</dd>
-                        </div>
-                      </dl>
-                      <div className="ap-demo-footer">
-                        <span>YOUR CORRECTION, REMEMBERED.</span>
-                        <Mark type="check" />
-                      </div>
-                    </>
-                  ) : (
-                    <>
-                      <div className="ap-demo-icon">
-                        <Mark type={approved ? "check" : "context"} />
-                      </div>
-                      <span className="ap-small-label">
-                        {approved ? "RECEIPT SAVED" : "YOUR REVIEW"}
-                      </span>
-                      <h3>
-                        {approved ? (
-                          <>
-                            One less thing
-                            <br />
-                            on your mind.
-                          </>
-                        ) : (
-                          <>
-                            Ready to send.
-                            <br />
-                            Only if you say so.
-                          </>
-                        )}
-                      </h3>
-                      <div className="ap-email-preview">
-                        <span>To: Marcus</span>
-                        <strong>Notes from today</strong>
-                        <p>Here are the meeting notes we discussed.</p>
-                        <span className="ap-attachment">
-                          ↗ &nbsp; meeting-notes.pdf
-                        </span>
-                      </div>
-                      <button
-                        className={
-                          "ap-approve " + (approved ? "is-approved" : "")
-                        }
-                        onClick={() => setApproved(!approved)}
-                      >
-                        {approved
-                          ? "✓  Sent & verified · view again"
-                          : "Approve example"}
-                        {!approved && <Arrow />}
-                      </button>
-                      <div className="ap-demo-footer">
-                        <span>
-                          {approved
-                            ? "EXAMPLE COMPLETED"
-                            : "NOTHING HAPPENS WITHOUT YOUR SAY."}
-                        </span>
-                      </div>
-                    </>
-                  )}
-                </div>
-                <div className="ap-demo-bottom">
-                  <span>ILLUSTRATIVE WALKTHROUGH</span>
-                  <span>YOUR WORDS. YOUR CONTROL.</span>
-                </div>
-                <div className="ap-focus-corner tl" />
-                <div className="ap-focus-corner tr" />
-                <div className="ap-focus-corner bl" />
-                <div className="ap-focus-corner br" />
-              </div>
-            </div>
-            <div className="ap-story-progress">
-              <i />
-            </div>
-          </div>
-        </section>
+        <PrototypeTrust />
+        <ActionDemonstration motion={motion} />
 
         <section
           ref={benefits}
@@ -925,7 +677,7 @@ export function AnticipyLanding({
               </div>
             </div>
             <div className="ap-product-bottom">
-              <span>ONE LITTLE OBJECT. A LITTLE MORE HEADSPACE.</span>
+              <span>MADE FOR LIFE AS IT HAPPENS.</span>
               <div role="group" aria-label="Product story chapters">
                 {BENEFITS.map((_, i) => (
                   <button
@@ -1166,13 +918,36 @@ export function AnticipyLanding({
               {FINISHES[finish].label}{" "}
               <span className="ap-order-included">Matching chain included</span>
             </div>
+            <div
+              className="ap-finish-gallery"
+              role="group"
+              aria-label="Preview a finish"
+            >
+              {(Object.keys(FINISHES) as PendantFinish[]).map((value) => (
+                <button
+                  key={value}
+                  aria-pressed={finish === value}
+                  onClick={() => setFinish(value)}
+                >
+                  <img
+                    src={FINISHES[value].image}
+                    alt=""
+                    width="2048"
+                    height="1158"
+                    loading="lazy"
+                  />
+                  <span>{FINISHES[value].label}</span>
+                  <i aria-hidden="true">{finish === value ? "✓" : "+"}</i>
+                </button>
+              ))}
+            </div>
           </div>
           <div className="ap-order-details">
             <p className="ap-shop-category">ANTICIPY AI PENDANT</p>
             <h2>
-              Your early start.
+              Choose your
               <br />
-              <span>A little less to do.</span>
+              <span>Anticipy.</span>
             </h2>
             <div className="ap-order-price">
               <strong>
@@ -1187,7 +962,7 @@ export function AnticipyLanding({
               </span>
             </div>
             <p className="ap-order-summary">
-              Your personal action taker, ready for life as it happens.
+              One pendant. Your everyday conversations, put to work.
             </p>
             <FinishPicker finish={finish} onChange={setFinish} />
             <ul className="ap-order-inclusions">
@@ -1205,7 +980,7 @@ export function AnticipyLanding({
               href={STORE + "/pre-orders/purchase?finish=" + finish}
               ctaId="order-checkout"
             >
-              Pre-order Anticipy · $149.99 USD
+              Pre-order {FINISHES[finish].label} · $149.99 USD
             </Button>
             <p className="ap-order-payment">
               Charged today. Estimated shipping Q4 2026.
@@ -1218,6 +993,11 @@ export function AnticipyLanding({
                 <Mark type="shield" /> Full refund before shipping
               </span>
             </div>
+            <p className="ap-order-service-cost">
+              After year one: optional AI service, projected at $99 USD/year. No
+              automatic enrollment. Requires a compatible smartphone and
+              connected tools.
+            </p>
             <details className="ap-service-terms">
               <summary>
                 What happens after the first year? <span>+</span>

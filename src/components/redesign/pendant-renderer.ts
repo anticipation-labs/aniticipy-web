@@ -327,8 +327,8 @@ export function createPendantScene(
       product.rotation.set(-0.04 + xray * 0.18, turn, -0.18 + xray * 0.16);
       // Only the technical chapter opens. Both shells return to the identical closed geometry.
       const open = smooth(0.18, 0.34, p) * (1 - smooth(0.48, 0.65, p));
-      front.position.set(-open * 0.36, open * 0.1, open * 0.72);
-      back.position.set(open * 0.36, -open * 0.1, -open * 0.72);
+      front.position.set(open * 0.75, open * 0.1, open * 0.85);
+      back.position.set(-open * 0.75, -open * 0.1, -open * 0.85);
       frontLines.position.set(
         front.position.x,
         front.position.y,
@@ -344,7 +344,7 @@ export function createPendantScene(
       aperture.visible = xray < 0.65;
       edgeMaterial.opacity = xray * 0.65;
       board.visible = xray > 0.02;
-      product.scale.setScalar(1);
+      product.scale.setScalar(1 - open * 0.14);
     }
     renderer.render(scene, camera);
   }
