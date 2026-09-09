@@ -37,7 +37,7 @@ const BENEFITS = [
     ),
     label: "THE CONTEXT MATTERS",
     title2: "Friday. At seven. With Alex.",
-    text: "An action needs the right person, timing and context—not just a transcript.",
+    text: "An action needs the right person, timing and context, not just a transcript.",
     note: "The context goes with the task.",
   },
   {
@@ -568,7 +568,7 @@ export function AnticipyLanding({
             </h1>
             <p className="ap-shop-description">
               <strong>The AI pendant that gets things done.</strong>
-              Turn conversations into emails, calendar events and tasks—with
+              Turn conversations into emails, calendar events and tasks with
               your approval.
             </p>
             <FinishPicker
@@ -782,7 +782,7 @@ export function AnticipyLanding({
           <div className="ap-engineering-sticky" data-chapter={hardwareStep}>
             <div className="ap-engineering-top">
               <span className="ap-kicker">03 / AN OBJECT, CONSIDERED.</span>
-              <span className="ap-kicker">ANTICIPY — FROM EVERY ANGLE</span>
+              <span className="ap-kicker">ANTICIPY FROM EVERY ANGLE</span>
             </div>
             <div className="ap-engineering-copy" key={hardwareStep}>
               <h2>{HARDWARE[hardwareStep].title}</h2>
