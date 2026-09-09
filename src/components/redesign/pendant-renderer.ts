@@ -14,16 +14,8 @@ function capsuleShape(width: number, height: number) {
     cap = height * 0.3,
     k = 0.5522848;
   const shape = new THREE.Shape();
-  shape.moveTo(-bottom, -shoulder);
-  shape.lineTo(-top, shoulder);
-  shape.bezierCurveTo(
-    -top,
-    shoulder + cap * k,
-    -top * k,
-    height / 2,
-    0,
-    height / 2,
-  );
+  // Start at the crown so equal-distance sampling is exactly mirror-symmetric.
+  shape.moveTo(0, height / 2);
   shape.bezierCurveTo(
     top * k,
     height / 2,
@@ -48,6 +40,15 @@ function capsuleShape(width: number, height: number) {
     -shoulder - cap * k,
     -bottom,
     -shoulder,
+  );
+  shape.lineTo(-top, shoulder);
+  shape.bezierCurveTo(
+    -top,
+    shoulder + cap * k,
+    -top * k,
+    height / 2,
+    0,
+    height / 2,
   );
   return shape;
 }
@@ -155,11 +156,12 @@ export function createPendantScene(
     back = new THREE.Group(),
     board = new THREE.Group();
   product.add(front, back, board);
-  // A single continuously convex volume: the accepted front outline, with an oval depth profile.
-  // Circular radial falloff avoids a flat face, bevel shoulder or constant-width perimeter band.
+  // The photographs show a broad caplet face with full upper/lower shoulders.
+  // Preserve that front perimeter while controlling longitudinal and transverse
+  // curvature separately; shrinking the complete contour through depth creates a lens.
   const bodyGeometry = new THREE.BufferGeometry();
-  const segments = 160,
-    rings = 80;
+  const segments = 192,
+    rings = 120;
   const outline = capsuleShape(PENDANT.width, PENDANT.height).getSpacedPoints(
     segments,
   );
@@ -168,8 +170,37 @@ export function createPendantScene(
       next = outline[(i + 1) % segments];
     return new THREE.Vector2(prev.y - next.y, next.x - prev.x).normalize();
   });
-  const faceZ = (radius: number) =>
-    PENDANT.halfDepth * Math.sqrt(Math.max(0, 1 - radius * radius));
+  const widthAtY = (y: number) => {
+    let halfWidth = 0;
+    for (let i = 0; i < segments; i++) {
+      const a = outline[i],
+        b = outline[i + 1];
+      if (y < Math.min(a.y, b.y) || y > Math.max(a.y, b.y)) continue;
+      const span = b.y - a.y;
+      if (Math.abs(span) < 1e-10) {
+        halfWidth = Math.max(halfWidth, Math.abs(a.x), Math.abs(b.x));
+      } else {
+        halfWidth = Math.max(
+          halfWidth,
+          Math.abs(a.x + ((b.x - a.x) * (y - a.y)) / span),
+        );
+      }
+    }
+    return halfWidth;
+  };
+  const faceZ = (x: number, y: number) => {
+    const halfWidth = widthAtY(y);
+    if (halfWidth < 1e-8) return 0;
+    const across = clamp(Math.abs(x) / halfWidth, 0, 1);
+    const along = clamp(Math.abs(y) / (PENDANT.height / 2), 0, 1);
+    return (
+      PENDANT.halfDepth *
+      Math.sqrt(
+        (1 - Math.pow(along, PENDANT.shoulderPower)) *
+          (1 - Math.pow(across, PENDANT.facePower)),
+      )
+    );
+  };
   const positions: number[] = [],
     uvs: number[] = [],
     indices: number[] = [];
@@ -180,7 +211,7 @@ export function createPendantScene(
       const theta = ((ring / rings) * Math.PI) / 2;
       const radius = Math.sin(theta);
       const point = outline[i].clone().multiplyScalar(radius);
-      const z = PENDANT.halfDepth * Math.cos(theta);
+      const z = ring === rings ? 0 : faceZ(point.x, point.y);
       positions.push(point.x, point.y, z);
       uvs.push(
         (point.x + PENDANT.width / 2) / PENDANT.width,
@@ -276,7 +307,7 @@ export function createPendantScene(
   grain.needsUpdate = true;
   silver.bumpMap = rearSilver.bumpMap = grain;
   silver.roughnessMap = rearSilver.roughnessMap = grain;
-  silver.bumpScale = rearSilver.bumpScale = 0.007;
+  silver.bumpScale = rearSilver.bumpScale = 0.0015;
   const frontMesh = new THREE.Mesh(bodyGeometry, silver);
   frontMesh.position.z = 0;
   front.add(frontMesh);
@@ -287,20 +318,6 @@ export function createPendantScene(
 
   // The plain aperture follows the curved body. A tessellated surface avoids the clipping
   // a single flat circle would cause on the fuller dome; no raised eyelet is introduced.
-  const radialCoordinate = (x: number, y: number) => {
-    for (let j = 0; j < segments; j++) {
-      const a = outline[j],
-        b = outline[j + 1],
-        dx = b.x - a.x,
-        dy = b.y - a.y;
-      const denominator = x * dy - y * dx;
-      if (Math.abs(denominator) < 0.000001) continue;
-      const distance = (a.x * dy - a.y * dx) / denominator;
-      const along = (a.x * y - a.y * x) / denominator;
-      if (distance > 0 && along >= 0 && along <= 1) return 1 / distance;
-    }
-    return 0;
-  };
   const apertureGeometry = new THREE.BufferGeometry();
   const aperturePoints: number[] = [],
     apertureIndices: number[] = [];
@@ -312,11 +329,7 @@ export function createPendantScene(
       const angle = (i / apertureSegments) * Math.PI * 2;
       const x = Math.cos(angle) * radius,
         y = Math.sin(angle) * radius;
-      aperturePoints.push(
-        x,
-        y,
-        faceZ(radialCoordinate(x, y + PENDANT.apertureY)) + 0.001,
-      );
+      aperturePoints.push(x, y, faceZ(x, y + PENDANT.apertureY) + 0.001);
       if (ring < apertureRings && i < apertureSegments) {
         const a = ring * (apertureSegments + 1) + i,
           b = a + apertureSegments + 1;
