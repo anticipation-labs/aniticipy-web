@@ -3,6 +3,12 @@
 @tailwind utilities;
 
 :root {
+  --anticipy-paper: #ffffff;
+  --anticipy-ink: #111111;
+  --anticipy-muted: #626262;
+  --anticipy-line: #dedede;
+  --anticipy-bronze: #705d48;
+  --anticipy-font: "Anticipy Sans", Arial, sans-serif;
   /* Dark palette */
   --dark: #0C0C0C;
   --dark-elevated: #161616;

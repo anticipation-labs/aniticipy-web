@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -25,5 +26,5 @@ export default function EngineLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <CustomerFrame className="ac-application"><main id="page-content" tabIndex={-1} className="ac-workspace">{children}</main></CustomerFrame>;
 }

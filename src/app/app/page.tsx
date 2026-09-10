@@ -78,26 +78,8 @@ function isUsableAudioDevice(device: AudioDevice): boolean {
 
 type OnboardingTurn = { question: string; answer?: string };
 
-function Shell({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className="min-h-screen bg-dark text-cream font-sans relative overflow-hidden"
-      style={{
-        backgroundImage:
-          "radial-gradient(60rem 40rem at 50% -10%, rgba(200,169,126,0.10), transparent 70%)",
-      }}
-    >
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-      <div className="relative z-10">{children}</div>
-    </div>
-  );
+function Shell({children}:{children:React.ReactNode}) {
+  return <div className="ac-app-shell">{children}</div>;
 }
 
 function Label({ children }: { children: React.ReactNode }) {
@@ -1073,9 +1055,8 @@ export default function AnticipyApp() {
                   : "Need an account? Create one"}
               </button>
               <p className="text-[11.5px] text-cream/30 leading-relaxed mt-2">
-                Real account, real Supabase. We never use your Google or
-                personal credentials and never auto-create third-party
-                accounts.
+                Use your email to create an Anticipy account. Connect your
+                other apps later, when you’re ready.
               </p>
               <p className="text-[11.5px] text-cream/30 leading-relaxed mt-2">
                 Mac install note: Gatekeeper may show an unverified developer

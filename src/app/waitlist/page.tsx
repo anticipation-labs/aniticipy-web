@@ -1,177 +1,154 @@
 "use client";
-
-import { useState, FormEvent } from "react";
-import { motion } from "motion/react";
-import { ease } from "@/lib/animation";
+import { useEffect, useRef, useState, type FormEvent } from "react";
 import Link from "next/link";
-
+import { CustomerFrame, Arrow } from "@/components/customer/CustomerFrame";
 type FormState = "idle" | "loading" | "success" | "duplicate" | "error";
-
 export default function WaitlistPage() {
   const [email, setEmail] = useState("");
   const [state, setState] = useState<FormState>("idle");
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return;
-
+  const [error, setError] = useState("");
+  const confirmationRef = useRef<HTMLHeadingElement>(null);
+  const done = state === "success" || state === "duplicate";
+  useEffect(() => {
+    if (done) confirmationRef.current?.focus();
+  }, [done]);
+  async function handleSubmit(event: FormEvent) {
+    event.preventDefault();
+    const value = email.trim().toLowerCase();
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(value)) {
+      setError("Enter a valid email address.");
+      setState("error");
+      return;
+    }
     setState("loading");
-
+    setError("");
     try {
-      const res = await fetch("/api/waitlist", {
+      const response = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+        body: JSON.stringify({ email: value }),
       });
-
-      if (res.ok) {
-        setState("success");
-      } else if (res.status === 409) {
-        setState("duplicate");
-      } else {
+      if (response.ok) setState("success");
+      else if (response.status === 409) setState("duplicate");
+      else {
         setState("error");
+        setError(
+          response.status === 429
+            ? "Too many attempts. Please try again later."
+            : "We couldn’t add you just now. Please try again.",
+        );
       }
     } catch {
       setState("error");
+      setError("We couldn’t connect. Check your connection and try again.");
     }
-  };
-
+  }
   return (
-    <div
-      className="min-h-screen flex flex-col items-center justify-center px-6"
-      style={{ background: "var(--dark)" }}
-    >
-      <motion.div
-        className="max-w-lg w-full text-center"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8, ease }}
-      >
-        {/* Logo */}
-        <Link href="/" className="inline-block mb-12">
-          <span className="font-serif text-[28px] text-[var(--text-on-dark)] hover:text-gold transition-colors">
-            Anticipy
-          </span>
-        </Link>
-
-        {state === "success" ? (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.5, ease }}
-          >
-            <div className="w-16 h-16 rounded-full mx-auto mb-6 flex items-center justify-center" style={{ background: "var(--gold-dim)" }}>
-              <svg
-                className="w-8 h-8 text-gold"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
+    <CustomerFrame>
+      <main id="page-content" tabIndex={-1} className="ac-split-page ac-enter">
+        <div className="ac-split-copy">
+          <p className="ac-eyebrow">A little ahead. Together.</p>
+          {done ? (
+            <div role="status">
+              <div
+                className="ac-success-mark"
+                style={{ marginTop: 28 }}
+                aria-hidden="true"
               >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M5 13l4 4L19 7"
-                />
-              </svg>
-            </div>
-            <h1 className="font-serif text-[clamp(32px,5vw,48px)] text-[var(--text-on-dark)] leading-[1.15] mb-4">
-              You&apos;re on the list.
-            </h1>
-            <p className="text-[17px] text-[var(--text-on-dark-muted)] font-light leading-[1.7] mb-8">
-              We&apos;ll reach out when Anticipy is ready to ship. In the meantime,
-              you can close this tab and go live your life. That is kind of the whole point.
-            </p>
-            <Link
-              href="/"
-              className="text-gold text-[15px] hover:underline"
-            >
-              Back to anticipy.ai
-            </Link>
-          </motion.div>
-        ) : (
-          <>
-            <h1 className="font-serif italic text-[clamp(36px,6vw,56px)] text-[var(--text-on-dark)] leading-[1.1] mb-4">
-              Vibe your life.
-            </h1>
-            <p className="text-[17px] text-[var(--text-on-dark-muted)] font-light leading-[1.7] mb-3">
-              Anticipy is an AI wearable that listens to your day and handles
-              what needs handling. Booking, canceling, disputing, scheduling. All without
-              you lifting a finger.
-            </p>
-            <p className="text-[17px] text-[var(--text-on-dark-muted)] font-light leading-[1.7] mb-10">
-              We&apos;re building it now. Leave your email and we&apos;ll let you know
-              the moment it&apos;s ready.
-            </p>
-
-            {state === "duplicate" ? (
-              <div className="text-[var(--text-on-dark-muted)] text-[17px] mb-6">
-                <p>You&apos;re already on the list. We&apos;ve got your email.</p>
-                <Link
-                  href="/"
-                  className="text-gold text-[15px] hover:underline mt-4 inline-block"
-                >
-                  Learn more about Anticipy
+                ✓
+              </div>
+              <h1 ref={confirmationRef} tabIndex={-1}>
+                {state === "duplicate"
+                  ? "Already in good company."
+                  : "You’re on the list."}
+              </h1>
+              <p className="ac-lead">
+                {state === "duplicate"
+                  ? "We already have your email. You’ll hear from us when there’s news to share."
+                  : "We’ll keep you close to what’s next: product news, launch updates and the moments that matter."}
+              </p>
+              <div className="ac-action-row">
+                <Link href="/" className="ac-button">
+                  Explore Anticipy <Arrow />
                 </Link>
               </div>
-            ) : (
+            </div>
+          ) : (
+            <>
+              <h1>
+                Be part of
+                <br />
+                what’s next.
+              </h1>
+              <p className="ac-lead">
+                Meet the pendant that turns your words into action. Leave your
+                email for updates as we bring Anticipy into the world.
+              </p>
               <form
+                className="ac-form"
                 onSubmit={handleSubmit}
-                className="flex flex-col sm:flex-row gap-3 mb-6"
+                noValidate
+                aria-busy={state === "loading"}
               >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  placeholder="your@email.com"
-                  required
-                  className="flex-1 px-6 py-4 rounded-pill text-[15px] font-light outline-none transition-colors duration-300 focus:border-gold"
-                  style={{
-                    background: "var(--dark-elevated)",
-                    border: "1px solid var(--dark-border)",
-                    color: "var(--text-on-dark)",
-                  }}
-                />
+                <label className="ac-field">
+                  Email address
+                  <input
+                    type="email"
+                    name="email"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    autoComplete="email"
+                    placeholder="you@example.com"
+                    required
+                    aria-invalid={state === "error"}
+                    aria-describedby={
+                      error ? "waitlist-error" : "waitlist-privacy"
+                    }
+                  />
+                </label>
+                {error && (
+                  <p
+                    id="waitlist-error"
+                    className="ac-status ac-status-error"
+                    role="alert"
+                  >
+                    {error}
+                  </p>
+                )}
                 <button
                   type="submit"
+                  className="ac-button"
                   disabled={state === "loading"}
-                  className="px-8 py-4 rounded-pill text-[15px] font-medium transition-all duration-300 hover:bg-gold disabled:opacity-60"
-                  style={{
-                    background: "var(--text-on-dark)",
-                    color: "var(--dark)",
-                  }}
                 >
-                  {state === "loading" ? (
-                    <span className="inline-block w-5 h-5 border-2 border-dark border-t-transparent rounded-full animate-spin" />
-                  ) : (
-                    "Join Waitlist"
-                  )}
+                  {state === "loading" ? "Joining…" : "Join the waitlist"}
+                  <Arrow />
                 </button>
+                <p id="waitlist-privacy" className="ac-form-note">
+                  Product and launch updates. Unsubscribe any time. Read our{" "}
+                  <Link href="/privacy">privacy policy</Link>.
+                </p>
               </form>
-            )}
-
-            {state === "error" && (
-              <p className="text-red-400/70 text-[15px] mb-4">
-                Something went wrong. Give it another try.
+              <p className="ac-aside-link">
+                Ready to make it yours?
+                <br />
+                <Link href="/pre-orders/purchase">Choose your Anticipy ↗</Link>
               </p>
-            )}
-
-            <p className="text-[13px] text-[var(--text-on-dark-muted)] font-light mt-8">
-              $199 retail, $149.99 pre-order · Brushed titanium · 8 grams · Specifications subject to change
-            </p>
-            <p className="text-[13px] text-[var(--text-on-dark-muted)] font-light mt-3">
-              Want it sooner? <Link href="/pre-orders/purchase" className="text-gold hover:underline">Pre-order now and lock in $50 off</Link>.
-            </p>
-          </>
-        )}
-      </motion.div>
-
-      {/* Footer */}
-      <div className="absolute bottom-8 text-center">
-        <p className="text-[13px] text-[var(--text-on-dark-muted)]">
-          &copy; 2026 Anticipy
-        </p>
-      </div>
-    </div>
+            </>
+          )}
+        </div>
+        <figure className="ac-split-photo">
+          <img
+            src="/redesign/purchase-gold-worn.webp"
+            alt="Gold Anticipy pendant worn on a fine chain with a dark top in natural window light"
+            width="1600"
+            height="1600"
+          />
+          <figcaption>
+            <span>Personal AI. Worn.</span>
+            <span>Gold finish</span>
+          </figcaption>
+        </figure>
+      </main>
+    </CustomerFrame>
   );
 }

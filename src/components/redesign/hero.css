@@ -1,0 +1,533 @@
+/* A registered contour-to-metal opening and one continuous scroll composition. */
+.ap-site .ap-motion-hero {
+  position: relative;
+  color: #111;
+  background: #fff;
+  overflow: visible;
+}
+.ap-site .ap-motion-stage {
+  position: relative;
+  min-height: 760px;
+  height: 100svh;
+  max-height: 1100px;
+  display: flex;
+  align-items: center;
+  padding: 126px 6% 116px;
+  isolation: isolate;
+}
+.ap-site .ap-motion-art {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: var(--hero-object, 1);
+}
+.ap-site .ap-motion-art canvas {
+  width: 100%;
+  height: 100%;
+  display: block;
+  opacity: 0;
+}
+.ap-site .is-ready .ap-motion-art canvas {
+  opacity: 1;
+}
+.ap-site .ap-motion-outline {
+  position: absolute;
+  left: 73.5%;
+  top: 50.26%;
+  /* Match the quarter-scale contour at the start of the existing 3D opening. */
+  height: 13.75%;
+  width: auto;
+  transform: translate(-50%, -50%);
+  color: #9a825a;
+  opacity: 0.5;
+  transition: opacity 160ms ease-out;
+}
+.ap-site .is-ready .ap-motion-outline {
+  opacity: 0;
+}
+.ap-site .ap-motion-dark {
+  position: absolute;
+  inset: 0;
+  background: #111211;
+  opacity: var(--hero-dark, 0);
+  z-index: -2;
+}
+.ap-site .ap-motion-copy {
+  width: 62%;
+  transform: translateY(var(--hero-shift, 0px));
+  opacity: var(--hero-first, 1);
+}
+.ap-site .ap-motion-eyebrow {
+  display: flex;
+  gap: 22px;
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  margin-bottom: 35px;
+  animation: ap-hero-reveal 1s 0.1s both;
+}
+.ap-site .ap-motion-eyebrow span:last-child {
+  color: #626262;
+}
+.ap-site .ap-motion-copy h1 {
+  font-size: clamp(88px, 9.25vw, 158px);
+  font-weight: 500;
+  line-height: 0.98;
+  letter-spacing: -0.065em;
+}
+.ap-site .ap-motion-copy h1 > span {
+  display: block;
+  width: max-content;
+  max-width: 100%;
+  overflow: hidden;
+  padding: 0.04em 0.06em 0.09em 0;
+  margin-bottom: -0.09em;
+}
+.ap-site .ap-motion-copy h1 > span > span {
+  display: block;
+}
+.ap-site .ap-motion-copy h1 .ap-motion-lead {
+  font-size: 0.34em;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+  margin-bottom: 22px;
+  line-height: 1.2;
+}
+.ap-site .ap-motion-lead > span {
+  animation: ap-type-arrive 1.2s 0.16s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ap-site .ap-motion-line > span {
+  animation: ap-type-arrive 1.45s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ap-site .ap-motion-line:last-child > span {
+  animation-delay: 0.47s;
+}
+.ap-site .ap-motion-intro {
+  margin-top: 34px;
+  animation: ap-hero-reveal 1s 0.8s both;
+}
+.ap-site .ap-motion-intro p {
+  font-size: 17px;
+  line-height: 1.5;
+  letter-spacing: -0.025em;
+  color: #626262;
+}
+.ap-site .ap-motion-buy {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 45px;
+  min-height: 56px;
+  margin-top: 25px;
+  padding: 15px 22px;
+  background: #111;
+  color: #fff;
+  font-size: 16px;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+.ap-site .ap-motion-buy > span {
+  display: inline-block;
+  font-size: 23px;
+  line-height: 1;
+  transition: transform 0.25s;
+}
+.ap-site .ap-motion-buy:hover {
+  background: #303030;
+}
+.ap-site .ap-motion-buy:hover > span {
+  transform: translate(2px, -2px);
+}
+.ap-site .ap-motion-foot {
+  position: absolute;
+  inset: auto 6% 29px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  min-height: 54px;
+  padding-top: 19px;
+  font-size: 14px;
+  animation: ap-hero-reveal 1s 1.1s both;
+}
+.ap-site .ap-motion-foot::before {
+  content: "";
+  position: absolute;
+  inset: 0 0 auto;
+  height: 1px;
+  background: #dcdcdc;
+  transform-origin: left;
+  animation: ap-rule-arrive 1.6s 0.6s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.ap-site .ap-motion-foot > a {
+  display: inline-flex;
+  gap: 16px;
+  align-items: center;
+  min-height: 44px;
+}
+.ap-site .ap-motion-scroll {
+  display: inline-grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  border: 1px solid #dcdcdc;
+  border-radius: 50%;
+  transition: transform 0.3s;
+}
+.ap-site .ap-motion-foot > a:hover .ap-motion-scroll {
+  transform: translateY(3px);
+}
+.ap-site .ap-motion-signoff {
+  font-size: 12px;
+  letter-spacing: 0.065em;
+  color: #626262;
+}
+.ap-site .ap-motion-control {
+  min-width: 96px;
+  min-height: 44px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  justify-content: flex-end;
+  border: 0;
+  padding: 0;
+  color: #626262;
+  background: transparent;
+  font-size: 12px;
+}
+.ap-site .ap-motion-control > span {
+  font-size: 18px;
+}
+.ap-site .ap-nav-order {
+  min-width: 122px;
+  background: #111;
+  border-color: #111;
+}
+.ap-site .ap-nav-order:hover {
+  background: #303030;
+  border-color: #303030;
+}
+@keyframes ap-type-arrive {
+  from {
+    transform: translateY(115%) rotate(4deg);
+  }
+  to {
+    transform: translateY(0) rotate(0);
+  }
+}
+@keyframes ap-hero-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+@keyframes ap-rule-arrive {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+@media (min-width: 1500px) {
+}
+
+.ap-site .ap-motion-finishes {
+  position: absolute;
+  left: 73.5%;
+  bottom: 13%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  font-size: 12px;
+  color: #626262;
+  opacity: var(--hero-first, 1);
+}
+.ap-site .ap-motion-finishes [role="group"] {
+  display: flex;
+  gap: 7px;
+}
+.ap-site .ap-motion-finishes button {
+  display: grid;
+  place-items: center;
+  width: 40px;
+  height: 40px;
+  border: 1px solid transparent;
+  border-radius: 50%;
+  background: transparent;
+}
+.ap-site .ap-motion-finishes button[aria-pressed="true"] {
+  border-color: #80735d;
+}
+.ap-site .ap-motion-finishes .ap-finish-dot {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: linear-gradient(115deg, #777972, #f0f0ec 50%, #8b8d87);
+  border: 1px solid #b9bab4;
+}
+.ap-site .ap-motion-finishes .gold {
+  background: linear-gradient(115deg, #aa8750, #f2ddb0 50%, #c9a870);
+  border-color: #c5ac7c;
+}
+.ap-site .ap-motion-chapter {
+  position: relative;
+  padding: 120px 6%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8%;
+}
+.ap-site .ap-motion-chapter h2 {
+  font-size: clamp(38px, 4vw, 72px);
+  font-weight: 500;
+  line-height: 1.07;
+  letter-spacing: -0.055em;
+}
+.ap-site .ap-chapter-label {
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  margin-bottom: 25px;
+}
+.ap-site .ap-chapter-aside {
+  font-size: 17px;
+  line-height: 1.65;
+  letter-spacing: -0.025em;
+}
+.ap-site .ap-chapter-aside span {
+  color: #b9b7b0;
+}
+.ap-site .ap-chapter-description {
+  margin-top: 25px;
+  font-size: 17px;
+  line-height: 1.6;
+  color: #626262;
+}
+.ap-site .ap-motion-duo-fallback {
+  width: 58%;
+  flex-shrink: 0;
+}
+.ap-site .ap-motion-duo-fallback img {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+.ap-site .ap-motion-duo-fallback figcaption {
+  text-align: center;
+  margin-top: 10px;
+  font-size: 12px;
+  color: #626262;
+}
+.ap-site .ap-motion-chapter-count {
+  font-size: 12px;
+  letter-spacing: 0.1em;
+}
+.ap-site .ap-motion-stage {
+  overflow: hidden;
+}
+.ap-site .ap-motion-chapter {
+  display: none;
+}
+@media (min-width: 900px) and (min-height: 650px) {
+  .ap-site .ap-motion-hero.is-cinematic {
+    height: 390svh;
+  }
+  .ap-site .is-cinematic .ap-motion-stage {
+    position: sticky;
+    top: 0;
+    height: 100svh;
+    min-height: 650px;
+    max-height: none;
+  }
+  .ap-site .is-cinematic .ap-motion-chapter {
+    display: flex;
+    position: absolute;
+    inset: 0;
+    padding: 150px 6% 125px;
+    pointer-events: none;
+  }
+  .ap-site .is-cinematic .ap-motion-chapter-middle {
+    color: white;
+    opacity: var(--hero-middle, 0);
+  }
+  .ap-site .is-cinematic .ap-motion-chapter-middle > div {
+    width: 26%;
+  }
+  .ap-site .is-cinematic .ap-motion-chapter-middle h2 {
+    font-size: clamp(34px, 3vw, 54px);
+  }
+  .ap-site .is-cinematic .ap-chapter-aside {
+    width: 23%;
+  }
+  .ap-site .is-cinematic .ap-motion-chapter-last {
+    opacity: var(--hero-last, 0);
+  }
+  .ap-site .is-cinematic .ap-motion-chapter-last:not([inert]) {
+    pointer-events: auto;
+  }
+  .ap-site .is-cinematic .ap-motion-chapter-last > div {
+    width: 38%;
+  }
+
+  .ap-site .is-cinematic .ap-motion-foot {
+    color: color-mix(in srgb, #fff calc(var(--hero-dark, 0) * 100%), #111);
+  }
+  .ap-site .is-cinematic .ap-motion-signoff {
+    color: inherit;
+    opacity: 0.6;
+  }
+  .ap-site .is-cinematic .ap-motion-foot::before {
+    background: currentColor;
+    opacity: 0.18;
+  }
+}
+@media (min-width: 900px) and (max-width: 1050px) {
+  .ap-site .ap-motion-stage {
+    padding-inline: 5%;
+  }
+  .ap-site .ap-motion-copy h1 {
+    font-size: 10vw;
+  }
+  .ap-site .ap-motion-signoff {
+    display: none;
+  }
+}
+@media (max-width: 899px), (max-height: 649px) {
+  .ap-site .ap-motion-stage {
+    min-height: 100svh;
+    height: auto;
+    max-height: none;
+    padding: 108px 6% 21px;
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-areas: "eyebrow" "heading" "object" "finishes" "intro" "foot" "story";
+  }
+  .ap-site .ap-motion-copy {
+    display: contents;
+  }
+  .ap-site .ap-motion-eyebrow {
+    grid-area: eyebrow;
+    gap: 15px;
+    margin-bottom: 22px;
+  }
+  .ap-site .ap-motion-copy h1 {
+    grid-area: heading;
+    font-size: clamp(64px, 17vw, 108px);
+    line-height: 0.94;
+    z-index: 1;
+  }
+  .ap-site .ap-motion-copy h1 .ap-motion-lead {
+    font-size: 0.39em;
+    margin-bottom: 14px;
+  }
+  .ap-site .ap-motion-art {
+    grid-area: object;
+    position: relative;
+    inset: auto;
+    height: clamp(260px, 38svh, 390px);
+    margin: -3px -6% -15px;
+    z-index: 0;
+  }
+  .ap-site .ap-motion-outline {
+    left: 50%;
+    top: 50%;
+    height: 18.1%;
+  }
+  .ap-site .ap-motion-finishes {
+    grid-area: finishes;
+    position: relative;
+    inset: auto;
+    transform: none;
+    flex-direction: row;
+    justify-content: center;
+    margin: 0 0 18px;
+  }
+  .ap-site .ap-motion-intro {
+    grid-area: intro;
+    margin: 6px 0 0;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .ap-site .ap-motion-intro p {
+    font-size: 16px;
+    line-height: 1.4;
+  }
+  .ap-site .ap-motion-intro p br {
+    display: none;
+  }
+  .ap-site .ap-motion-buy {
+    flex: 0 0 auto;
+    margin: 0;
+    gap: 15px;
+    padding: 14px;
+    font-size: 14px;
+    min-height: 52px;
+    white-space: nowrap;
+  }
+
+  .ap-site .ap-motion-foot {
+    grid-area: foot;
+    position: relative;
+    inset: auto;
+    margin-top: 26px;
+    padding-top: 12px;
+    font-size: 12px;
+    gap: 10px;
+  }
+  .ap-site .ap-motion-signoff {
+    display: none;
+  }
+  .ap-site .ap-motion-foot > a {
+    gap: 9px;
+  }
+  .ap-site .ap-motion-scroll {
+    width: 30px;
+    height: 30px;
+  }
+  .ap-site .ap-nav-order {
+    min-width: 96px;
+  }
+  .ap-site .ap-motion-chapter-last {
+    grid-area: story;
+    display: flex;
+    padding: 70px 0 20px;
+    flex-direction: column;
+    gap: 25px;
+  }
+  .ap-site .ap-motion-chapter-last h2 {
+    font-size: clamp(38px, 7vw, 64px);
+  }
+  .ap-site .ap-motion-chapter-last > div {
+    width: 100%;
+  }
+  .ap-site .ap-motion-chapter-last .ap-motion-buy {
+    margin-top: 20px;
+  }
+  .ap-site .ap-motion-duo-fallback {
+    width: 100%;
+  }
+}
+.ap-site.ap-reduced .ap-motion-hero *,
+.ap-site.ap-reduced .ap-motion-hero *::before {
+  animation: none !important;
+  transition: none !important;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-site .ap-motion-hero *,
+  .ap-site .ap-motion-hero *::before {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+.ap-site .is-cinematic .ap-motion-duo-fallback {
+  display: none;
+}

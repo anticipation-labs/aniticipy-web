@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -23,30 +24,12 @@ export const metadata: Metadata = {
 
 export default function TermsOfService() {
   return (
-    <div style={{ background: "var(--dark)" }} className="min-h-screen">
+    <CustomerFrame className="ac-editorial">
       {/* Header */}
-      <header
-        className="px-6 py-6 border-b"
-        style={{ borderColor: "var(--dark-border)" }}
-      >
-        <div className="flex items-center justify-between max-w-3xl mx-auto">
-          <Link
-            href="/"
-            className="font-serif text-[22px] text-[var(--text-on-dark)] hover:text-gold transition-colors"
-          >
-            Anticipy
-          </Link>
-          <Link
-            href="/"
-            className="text-[13px] text-[var(--text-on-dark-muted)] hover:text-gold transition-colors"
-          >
-            &larr; Back
-          </Link>
-        </div>
-      </header>
+
 
       {/* Content */}
-      <main className="px-6 py-16">
+      <main id="page-content" tabIndex={-1} className="ac-editorial-main">
         <div className="max-w-3xl mx-auto">
           <h1 className="font-serif text-[clamp(32px,5vw,48px)] text-[var(--text-on-dark)] leading-[1.15] mb-4">
             Terms of Service
@@ -183,28 +166,28 @@ export default function TermsOfService() {
               </p>
               <ul className="list-disc pl-6 mt-3 space-y-2">
                 <li>
-                  <strong className="text-[var(--text-on-dark)]">Anticipy Pendant</strong> , 
+                  <strong className="text-[var(--text-on-dark)]">Anticipy Pendant</strong> ,
                   A wearable hardware device equipped with a microphone array and Bluetooth Low Energy
                   (BLE) connectivity. The pendant captures ambient audio in your environment and
                   transmits it to the companion mobile application. An LED indicator on the pendant
                   is active whenever audio recording is in progress.
                 </li>
                 <li>
-                  <strong className="text-[var(--text-on-dark)]">Anticipy Mobile Application</strong> , 
+                  <strong className="text-[var(--text-on-dark)]">Anticipy Mobile Application</strong> ,
                   A companion app for iOS and Android that receives audio streams from the pendant,
                   performs on-device processing (including transcription and intent extraction), manages
                   device settings and preferences, and communicates with the cloud action engine.
                   Audio is processed locally on your phone to maximize privacy.
                 </li>
                 <li>
-                  <strong className="text-[var(--text-on-dark)]">Anticipy Action Engine</strong> , 
+                  <strong className="text-[var(--text-on-dark)]">Anticipy Action Engine</strong> ,
                   A cloud-based AI system that receives structured intent data from the mobile app,
                   interprets your needs, and executes actions on your behalf through integrations
                   with third-party services (e.g., calendar management, messaging, task creation,
                   online orders, and more).
                 </li>
                 <li>
-                  <strong className="text-[var(--text-on-dark)]">Charging Pad</strong> , 
+                  <strong className="text-[var(--text-on-dark)]">Charging Pad</strong> ,
                   A wireless charging accessory included with each Anticipy pendant for convenient
                   daily charging.
                 </li>
@@ -400,7 +383,7 @@ export default function TermsOfService() {
                   years or a fine.
                 </li>
                 <li>
-                  <strong className="text-[var(--text-on-dark)]">European Union (GDPR)</strong> , 
+                  <strong className="text-[var(--text-on-dark)]">European Union (GDPR)</strong> ,
                   The General Data Protection Regulation imposes strict requirements on the processing
                   of personal data, including voice recordings. A lawful basis (such as explicit consent)
                   is required for any processing of audio data that can identify individuals.
@@ -412,7 +395,7 @@ export default function TermsOfService() {
                   fines of up to 500,000 SAR.
                 </li>
                 <li>
-                  <strong className="text-[var(--text-on-dark)]">United Arab Emirates</strong> , 
+                  <strong className="text-[var(--text-on-dark)]">United Arab Emirates</strong> ,
                   Federal Decree-Law No. 34 of 2021 on combating rumors and cybercrime prohibits
                   recording or disclosing conversations without consent. Violations carry significant
                   penalties including imprisonment and fines.
@@ -1079,6 +1062,6 @@ export default function TermsOfService() {
           </div>
         </div>
       </main>
-    </div>
+    </CustomerFrame>
   );
 }

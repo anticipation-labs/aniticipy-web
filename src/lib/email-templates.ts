@@ -1,3 +1,4 @@
+import { type PendantFinish, pendantFinishLabel } from "./pendant-finish";
 import { escapeHtml } from "./escape";
 import { TM_HTML } from "./tm";
 
@@ -113,6 +114,7 @@ export function preorderConfirmationHtml(opts: {
   amountDisplay: string;
   currencyDisplay: string;
   sessionId: string;
+  finish?: PendantFinish | null;
 }): string {
   // Escaped here rather than at the call site: the name reaches us from Stripe
   // checkout, so it is attacker-controlled text landing in markup.
@@ -125,7 +127,7 @@ export function preorderConfirmationHtml(opts: {
         </tr>
         ${p(
           "Your Anticipy pendant is reserved. You're among the first people who will ever wear one.",
-          14
+          14,
         )}
 
         <tr>
@@ -139,7 +141,7 @@ export function preorderConfirmationHtml(opts: {
                       <td align="right" style="padding:5px 0;color:${TEXT};font-weight:600;font-size:15px;">$${opts.amountDisplay} ${opts.currencyDisplay}</td>
                     </tr>
                     <tr>
-                      <td style="padding:5px 0;">Retail at launch</td>
+                      <td style="padding:5px 0;">Finish</td><td align="right" style="padding:5px 0;">${pendantFinishLabel(opts.finish)}</td></tr><tr><td style="padding:5px 0;">Projected launch price</td>
                       <td align="right" style="padding:5px 0;color:${MUTED};text-decoration:line-through;">$199.00</td>
                     </tr>
                     <tr>
@@ -158,15 +160,15 @@ export function preorderConfirmationHtml(opts: {
         </tr>
         ${p(
           `<strong style="color:${TEXT};">We build.</strong> Manufacturing is targeting Q4 2026.`,
-          14
+          14,
         )}
         ${p(
           `<strong style="color:${TEXT};">We check in.</strong> Before anything ships we'll email you to confirm your address.`,
-          8
+          8,
         )}
         ${p(
           `<strong style="color:${TEXT};">It arrives.</strong> Pendant, chain and wireless charging pad, boxed and ready to wear.`,
-          8
+          8,
         )}
 
         <tr>
@@ -177,7 +179,7 @@ export function preorderConfirmationHtml(opts: {
 
         ${p(
           `Stripe emailed your receipt separately &mdash; keep it for your records. Need to change anything, or just want to ask a question? Reply to this email. I read every one personally.`,
-          24
+          24,
         )}
 
         <tr>
@@ -188,7 +190,7 @@ export function preorderConfirmationHtml(opts: {
 
         <tr>
           <td style="padding:22px 32px 0 32px;font-size:11px;color:${DIM};font-family:monospace;">Order reference: ${escapeHtml(
-            opts.sessionId
+            opts.sessionId,
           )}</td>
         </tr>
   `;
@@ -218,10 +220,10 @@ export function waitlistWelcomeHtml(opts: { firstName: string }): string {
         </tr>
         ${p(
           "You're now one of the first people following what we're building &mdash; before it's public, before it's on a shelf.",
-          14
+          14,
         )}
         ${p(
-          `Anticipy is a pendant that doesn't just listen. It <strong style="color:${TEXT};">acts</strong>. It books the appointment, sends the follow-up, fills in the form. You wear it, you forget it's there, and the things you said you'd do quietly get done.`
+          `Anticipy is a pendant that doesn't just listen. It <strong style="color:${TEXT};">acts</strong>. It books the appointment, sends the follow-up, fills in the form. You wear it, you forget it's there, and the things you said you'd do quietly get done.`,
         )}
 
         <tr>
@@ -238,7 +240,7 @@ export function waitlistWelcomeHtml(opts: { firstName: string }): string {
 
         ${p(
           "We'll write when there's something real to show you &mdash; not before. When pre-orders open to the public, you'll hear it here first.",
-          24
+          24,
         )}
 
         <tr>

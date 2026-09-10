@@ -1,3 +1,4 @@
+import { parsePendantFinish, pendantFinishLabel } from "@/lib/pendant-finish";
 import { NextRequest, NextResponse } from "next/server";
 import {
   stripe,
@@ -84,7 +85,15 @@ const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 export async function POST(request: NextRequest) {
   try {
     const body = await request.json().catch(() => ({}));
-    const email = typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
+    const finish =
+      body.finish === undefined ? "silver" : parsePendantFinish(body.finish);
+    if (!finish)
+      return NextResponse.json(
+        { error: "Choose titanium silver or gold." },
+        { status: 400 },
+      );
+    const email =
+      typeof body.email === "string" ? body.email.trim().toLowerCase() : "";
     const name = typeof body.name === "string" ? body.name.trim() : "";
     const ageConfirmed = body.ageConfirmed === true;
     const agreementAccepted = body.agreementAccepted === true;
@@ -104,20 +113,23 @@ export async function POST(request: NextRequest) {
         : "";
 
     if (!email || !EMAIL_REGEX.test(email)) {
-      return NextResponse.json({ error: "Enter a valid email." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Enter a valid email." },
+        { status: 400 },
+      );
     }
 
     if (!ageConfirmed) {
       return NextResponse.json(
         { error: "You must confirm that you are at least 18 years old." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
     if (!agreementAccepted) {
       return NextResponse.json(
         { error: "You must accept the Pre-Order Agreement to continue." },
-        { status: 400 }
+        { status: 400 },
       );
     }
 
@@ -136,7 +148,7 @@ export async function POST(request: NextRequest) {
     if (count && count >= 5) {
       return NextResponse.json(
         { error: "Too many checkout attempts. Try again in an hour." },
-        { status: 429 }
+        { status: 429 },
       );
     }
 
@@ -165,9 +177,10 @@ export async function POST(request: NextRequest) {
       submit_type: "book",
       payment_intent_data: {
         statement_descriptor_suffix: "PREORDER",
-        description: "Anticipy Pendant Pre-Order",
+        description: `Anticipy Pendant Pre-Order — ${pendantFinishLabel(finish)}`,
         metadata: {
           product_type: "preorder",
+          pendant_finish: finish,
           agreement_version: AGREEMENT_VERSION,
         },
       },
@@ -194,12 +207,12 @@ export async function POST(request: NextRequest) {
             "By placing this pre-order you agree to the [Pre-Order Agreement](https://www.anticipy.ai/pre-orders/agreement), [Terms of Service](https://www.anticipy.ai/terms), and [Privacy Policy](https://www.anticipy.ai/privacy). Estimated ship: Q4 2026.",
         },
         submit: {
-          message:
-            "Charges $149.99 USD now to lock in your Anticipy pendant at $50 off the $199 retail price.",
+          message: `Anticipy in ${pendantFinishLabel(finish)}. Pre-order price $149.99 USD before any eligible discount, charged now. Projected launch price $199. Estimated shipping Q4 2026.`,
         },
       },
       metadata: {
         product_type: "preorder",
+        pendant_finish: finish,
         agreement_version: AGREEMENT_VERSION,
         marketing_opt_in: marketingOptIn ? "true" : "false",
         age_confirmed: "true",
@@ -213,7 +226,7 @@ export async function POST(request: NextRequest) {
         creator_ref: creatorRef,
       },
       success_url: `${origin}/pre-orders/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/pre-orders/purchase?canceled=1`,
+      cancel_url: `${origin}/pre-orders/purchase?canceled=1&finish=${finish}`,
 
       // `discounts` and `allow_promotion_codes` are MUTUALLY EXCLUSIVE on a
       // Checkout Session — Stripe rejects a request carrying both, and it
@@ -252,11 +265,16 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    return NextResponse.json({ url: session.url, id: session.id }, { status: 200 });
+    return NextResponse.json(
+      { url: session.url, id: session.id },
+      { status: 200 },
+    );
   } catch (err: unknown) {
     console.error("Pre-order checkout error:", err);
     const message =
-      err instanceof Error ? err.message : "Could not start checkout. Try again.";
+      err instanceof Error
+        ? err.message
+        : "Could not start checkout. Try again.";
     return NextResponse.json({ error: message }, { status: 500 });
   }
 }

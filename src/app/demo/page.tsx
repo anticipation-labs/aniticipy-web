@@ -43,6 +43,7 @@ export default function DemoPage() {
           <form onSubmit={handleSubmit}>
             <input
               type="password"
+              aria-label="Demo passcode"
               value={passcode}
               onChange={(e) => setPasscode(e.target.value)}
               placeholder="Enter passcode"
@@ -59,7 +60,7 @@ export default function DemoPage() {
   }
 
   return (
-    <div style={styles.fullscreen}>
+    <div className="ac-demo-stage">
       <iframe
         src={engineUrl}
         style={styles.iframe}
@@ -72,16 +73,16 @@ export default function DemoPage() {
 
 const styles: Record<string, React.CSSProperties> = {
   container: {
-    minHeight: "100vh",
+    minHeight: "70vh",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
-    background: "#0a0a0b",
+    background: "#ffffff",
     padding: 20,
   },
   card: {
-    background: "#141417",
-    border: "1px solid #2a2a32",
+    background: "#f6f6f6",
+    border: "1px solid #dedede",
     borderRadius: 12,
     padding: 40,
     width: "100%",
@@ -91,19 +92,19 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: 28,
     fontWeight: 700,
-    color: "#e8e8ed",
+    color: "#111111",
     marginBottom: 8,
     letterSpacing: "-0.03em",
   },
   subtitle: {
     fontSize: 14,
-    color: "#8e8e9a",
+    color: "#626262",
     marginBottom: 32,
   },
   error: {
     background: "rgba(239,68,68,0.1)",
     border: "1px solid rgba(239,68,68,0.2)",
-    color: "#f87171",
+    color: "#8b3021",
     padding: "10px 14px",
     borderRadius: 8,
     fontSize: 13,
@@ -112,10 +113,10 @@ const styles: Record<string, React.CSSProperties> = {
   input: {
     width: "100%",
     padding: "10px 14px",
-    background: "#1c1c21",
-    border: "1px solid #2a2a32",
+    background: "#ffffff",
+    border: "1px solid #dedede",
     borderRadius: 8,
-    color: "#e8e8ed",
+    color: "#111111",
     fontSize: 15,
     outline: "none",
     marginBottom: 16,
@@ -123,7 +124,7 @@ const styles: Record<string, React.CSSProperties> = {
   button: {
     width: "100%",
     padding: 11,
-    background: "#7c6aef",
+    background: "#111111",
     color: "white",
     border: "none",
     borderRadius: 8,
@@ -131,15 +132,8 @@ const styles: Record<string, React.CSSProperties> = {
     fontWeight: 500,
     cursor: "pointer",
   },
-  fullscreen: {
-    position: "fixed" as const,
-    top: 0,
-    left: 0,
-    width: "100vw",
-    height: "100vh",
-    background: "#0a0a0b",
-  },
   iframe: {
+    display: "block",
     width: "100%",
     height: "100%",
     border: "none",

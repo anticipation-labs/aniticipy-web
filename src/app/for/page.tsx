@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -57,28 +58,10 @@ const audiences = [
 
 export default function ForPage() {
   return (
-    <div style={{ background: "var(--dark)" }} className="min-h-screen">
-      <header
-        className="px-6 py-6 border-b"
-        style={{ borderColor: "var(--dark-border)" }}
-      >
-        <div className="max-w-3xl mx-auto flex justify-between items-center">
-          <Link
-            href="/"
-            className="font-serif text-[22px] text-[var(--text-on-dark)] hover:text-gold transition-colors"
-          >
-            Anticipy
-          </Link>
-          <Link
-            href="/"
-            className="text-[15px] text-[var(--text-on-dark-muted)] hover:text-gold transition-colors"
-          >
-            Back to Home
-          </Link>
-        </div>
-      </header>
+    <CustomerFrame className="ac-editorial">
 
-      <main className="px-6 py-16">
+
+      <main id="page-content" tabIndex={-1} className="ac-editorial-main">
         <div className="max-w-3xl mx-auto">
           <h1 className="font-serif text-[clamp(32px,5vw,48px)] text-[var(--text-on-dark)] leading-[1.15] mb-4">
             Who Is Anticipy For?
@@ -150,6 +133,6 @@ export default function ForPage() {
           </div>
         </div>
       </main>
-    </div>
+    </CustomerFrame>
   );
 }

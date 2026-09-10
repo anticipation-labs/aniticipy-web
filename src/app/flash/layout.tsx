@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import type { Metadata } from "next";
 
 // B011: distinct title + description for /flash, the pendant firmware
@@ -22,5 +23,5 @@ export default function FlashLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <CustomerFrame className="ac-application"><div id="page-content" tabIndex={-1} className="ac-workspace">{children}</div></CustomerFrame>;
 }

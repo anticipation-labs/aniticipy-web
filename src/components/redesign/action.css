@@ -1,0 +1,798 @@
+/* White and black carry the page. Photo-derived bronze stays in small accents. */
+.ap-site {
+  --ap-paper: #ffffff;
+  --ap-surface: #ffffff;
+  --ap-linen: #f6f6f6;
+  --ap-sand: #e8e5e0;
+  --ap-ink: #111111;
+  --ap-muted: #626262;
+  --ap-accent: #705d48;
+  --ap-line: #e1e1e1;
+  --ap-control: #868686;
+  background: var(--ap-paper);
+  color: var(--ap-ink);
+}
+.ap-site .ap-shop-hero {
+  background: var(--ap-surface);
+}
+.ap-site .ap-shop-copy h1 {
+  font-weight: 550;
+  font-size: clamp(54px, 5.65vw, 86px);
+  letter-spacing: -0.063em;
+  line-height: 1.04;
+}
+.ap-site .ap-shop-category {
+  color: var(--ap-muted);
+}
+.ap-site .ap-shop-category > span {
+  background: var(--ap-accent);
+}
+.ap-site .ap-shop-description {
+  color: var(--ap-muted);
+}
+.ap-site .ap-button,
+.ap-site .ap-nav-order {
+  background: var(--ap-accent);
+  color: white;
+  border-color: var(--ap-accent);
+  border-radius: 7px;
+}
+.ap-site .ap-button:hover,
+.ap-site .ap-nav-order:hover {
+  background: #60482f;
+  color: white;
+}
+.ap-site .ap-button > span {
+  background: transparent;
+}
+.ap-site .ap-shop-backdrop {
+  background: radial-gradient(
+    ellipse at 55% 30%,
+    var(--ap-surface),
+    var(--ap-sand) 75%
+  );
+  border-radius: 18px;
+}
+.ap-site .ap-shop-assurances,
+.ap-site .ap-shop-delivery,
+.ap-site .ap-shop-foot {
+  color: var(--ap-muted);
+}
+.ap-site .ap-shop-assurances svg {
+  color: var(--ap-accent);
+}
+.ap-site .ap-shop-foot {
+  border-color: var(--ap-line);
+}
+.ap-site .ap-pendant-intro {
+  position: absolute;
+  width: 190%;
+  max-width: none;
+  height: 95%;
+  top: -12%;
+  left: -45%;
+  z-index: 3;
+  pointer-events: none;
+  color: var(--ap-accent);
+  animation: ap-pendant-resolve 2s both;
+}
+.ap-site .ap-pendant-intro path {
+  stroke: currentColor;
+  stroke-width: 0.8;
+  opacity: 0.35;
+}
+.ap-site .ap-pendant-guide {
+  stroke: currentColor;
+  stroke-width: 3;
+  stroke-dasharray: 2400;
+  animation: ap-pendant-trace 1.2s both;
+}
+.ap-site .ap-shop-visual > img {
+  animation: ap-materialize 2s both;
+}
+@keyframes ap-pendant-trace {
+  from {
+    stroke-dashoffset: 2400;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes ap-pendant-resolve {
+  0%,
+  55% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+    visibility: hidden;
+  }
+}
+@keyframes ap-materialize {
+  0%,
+  35% {
+    opacity: 0;
+    filter: blur(9px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+  }
+}
+.ap-site.ap-reduced .ap-pendant-intro {
+  display: none;
+}
+.ap-site.ap-reduced .ap-shop-visual > img {
+  animation: none;
+}
+.ap-site.ap-scrolled .ap-nav,
+.ap-site.ap-campaign .ap-nav {
+  background: #ffffffed;
+  border-color: var(--ap-line);
+}
+.ap-site .ap-menu-panel {
+  background: var(--ap-linen);
+}
+.ap-site :is(a, button, input, summary):focus-visible {
+  outline-color: var(--ap-accent);
+}
+@media (max-width: 800px) {
+  .ap-site .ap-shop-copy h1 {
+    font-size: clamp(39px, 6.8vw, 57px);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-site .ap-pendant-intro {
+    display: none;
+  }
+  .ap-site .ap-shop-visual > img {
+    animation: none;
+  }
+}
+
+.ap-site .ap-finish-picker {
+  padding: 0;
+  border: 0;
+  margin: 0 0 25px;
+}
+.ap-site .ap-finish-picker legend {
+  font-size: 12px;
+  color: var(--ap-muted);
+  margin-bottom: 9px;
+}
+.ap-site .ap-finish-picker > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.ap-site .ap-finish-picker button {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  padding: 9px 13px;
+  min-height: 42px;
+  border: 1px solid var(--ap-line);
+  border-radius: 7px;
+  background: var(--ap-surface);
+  color: var(--ap-ink);
+  font-size: 12px;
+}
+.ap-site .ap-finish-picker button[aria-pressed="true"] {
+  border-color: var(--ap-accent);
+  box-shadow: inset 0 0 0 1px var(--ap-accent);
+  background: var(--ap-surface);
+}
+.ap-swatch {
+  width: 19px;
+  height: 19px;
+  display: inline-block;
+  border-radius: 50%;
+  border: 1px solid #a1a1a175;
+}
+.ap-site .ap-swatch-silver {
+  background: linear-gradient(120deg, #969d9f, #f0f2ef 40%, #a5aaa9);
+}
+.ap-site .ap-swatch-gold {
+  background: linear-gradient(120deg, #b09561, #f2e1b3 40%, #c3a266);
+}
+.ap-site .ap-centered-heading {
+  text-align: center;
+  margin: 0 auto 65px;
+  max-width: 940px;
+}
+.ap-site .ap-centered-heading .ap-kicker {
+  justify-content: center;
+  color: var(--ap-muted);
+  margin-bottom: 22px;
+  font-size: 10px;
+}
+.ap-site .ap-centered-heading h2 {
+  font-size: clamp(36px, 4.35vw, 64px);
+  font-weight: 500;
+  line-height: 1.06;
+  letter-spacing: -0.05em;
+}
+.ap-site .ap-centered-heading em {
+  font-style: normal;
+  color: var(--ap-muted);
+}
+.ap-site .ap-centered-heading p {
+  color: var(--ap-muted);
+  font-size: 18px;
+  line-height: 1.6;
+  margin: 22px auto 0;
+}
+@keyframes ap-signal {
+  to {
+    stroke-dashoffset: -130;
+  }
+}
+.ap-site .ap-section-line {
+  color: var(--ap-muted);
+}
+.ap-site .ap-section-line {
+  border-color: var(--ap-line);
+}
+.ap-site .ap-benefits-sticky {
+  background: var(--ap-surface);
+}
+.ap-site .ap-benefit-card {
+  border-color: var(--ap-line);
+  background: var(--ap-surface);
+}
+.ap-site .ap-benefit-card svg {
+  color: var(--ap-accent);
+}
+.ap-site .ap-chapter-track i.active:after,
+.ap-site .ap-product-bottom button[aria-pressed="true"] {
+  background: var(--ap-accent);
+  color: white;
+}
+.ap-site .ap-benefit-heading > .ap-kicker,
+.ap-site .ap-benefit-heading > p,
+.ap-site .ap-benefit-context > .ap-kicker,
+.ap-site .ap-benefit-card p,
+.ap-site .ap-product-bottom,
+.ap-site .ap-engineering-top .ap-kicker,
+.ap-site .ap-engineering-copy > p,
+.ap-site .ap-engineering-copy ul {
+  color: var(--ap-muted);
+}
+.ap-site .ap-benefit-context,
+.ap-site .ap-benefit-context:after,
+.ap-site .ap-engineering-top {
+  border-color: var(--ap-line);
+}
+.ap-site .ap-engineering-sticky {
+  background: var(--ap-surface);
+}
+.ap-site .ap-inspector {
+  border-color: var(--ap-accent);
+}
+.ap-site .ap-inspector-card,
+.ap-site .ap-inspector-caption {
+  background: #111111;
+  color: var(--ap-surface);
+}
+.ap-site .ap-inspector-card strong {
+  color: #e6d3b5;
+}
+.ap-site .ap-engineering-index button[aria-pressed="true"] {
+  color: var(--ap-accent);
+}
+.ap-site .ap-engineering-index button[aria-pressed="true"] b {
+  background: var(--ap-accent);
+  color: var(--ap-surface);
+}
+.ap-site .ap-engineering-finishes {
+  position: absolute;
+  left: 4%;
+  bottom: 70px;
+  z-index: 5;
+}
+.ap-site .ap-engineering-finishes .ap-finish-picker {
+  margin: 0;
+}
+.ap-site .ap-action-faq {
+  background: var(--ap-surface);
+  padding: 100px 6%;
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  column-gap: 8%;
+}
+.ap-site .ap-faq-intro {
+  grid-column: 1 / -1;
+  margin-bottom: 45px;
+}
+.ap-site .ap-faq-intro .ap-kicker {
+  font-size: 10px;
+  color: var(--ap-muted);
+  margin-bottom: 15px;
+}
+.ap-site .ap-faq-intro h2 {
+  font-size: clamp(36px, 4vw, 55px);
+  font-weight: 500;
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+}
+.ap-site .ap-faq-intro p {
+  margin-top: 20px;
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ap-muted);
+}
+.ap-site .ap-faq-intro a {
+  color: var(--ap-accent);
+}
+.ap-site .ap-faq-controls {
+  display: flex;
+  gap: 24px;
+  border-bottom: 1px solid var(--ap-line);
+  margin-bottom: 16px;
+}
+.ap-site .ap-faq-controls button {
+  padding: 14px 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 2px solid transparent;
+  color: var(--ap-muted);
+  font-size: 12px;
+}
+.ap-site .ap-faq-controls button[aria-pressed="true"] {
+  color: var(--ap-ink);
+  border-color: var(--ap-accent);
+}
+.ap-site .ap-faq-list details {
+  border-color: var(--ap-line);
+}
+.ap-site .ap-faq-list summary {
+  font-size: 17px;
+}
+.ap-site .ap-faq-list details p {
+  color: var(--ap-muted);
+  font-size: 14px;
+}
+.ap-site .ap-faq-object {
+  position: relative;
+  min-height: 390px;
+  display: grid;
+  align-items: end;
+  text-align: center;
+}
+.ap-site .ap-faq-object img {
+  position: absolute;
+  height: 110%;
+  width: 220%;
+  max-width: none;
+  left: -60%;
+  top: -25%;
+  object-fit: contain;
+  pointer-events: none;
+  transform: rotate(12deg);
+}
+.ap-site .ap-faq-object > span {
+  font-size: 12px;
+  color: var(--ap-muted);
+}
+.ap-site .ap-order {
+  background: var(--ap-linen);
+  border-top: 1px solid var(--ap-line);
+}
+.ap-site .ap-order-product {
+  background: radial-gradient(
+    ellipse at 45% 30%,
+    var(--ap-surface),
+    var(--ap-sand)
+  );
+  min-height: 700px;
+}
+.ap-site .ap-order-product > .ap-kicker,
+.ap-site .ap-order-finish {
+  color: var(--ap-muted);
+}
+.ap-site .ap-order-finish {
+  border-color: var(--ap-line);
+}
+.ap-site .ap-order h2 {
+  font-weight: 500;
+}
+.ap-site .ap-order h2 span {
+  color: var(--ap-muted);
+}
+.ap-site .ap-order-price > span {
+  color: var(--ap-muted);
+  font-size: 12px;
+}
+.ap-site .ap-offer-saving {
+  font-weight: 500;
+  color: var(--ap-accent);
+  display: inline-block;
+  margin-top: 7px;
+  padding: 5px 8px;
+  background: var(--ap-sand);
+  border-radius: 4px;
+}
+.ap-site .ap-order-inclusions svg,
+.ap-site .ap-order-reassurance svg {
+  color: var(--ap-accent);
+}
+.ap-site .ap-service-terms {
+  border-color: var(--ap-line);
+}
+.ap-site .ap-footer {
+  background: #111111;
+  color: var(--ap-surface);
+}
+.ap-site .ap-footer-mark {
+  color: var(--ap-surface);
+}
+.ap-site .ap-footer-links nav {
+  flex-wrap: wrap;
+}
+.ap-site .ap-footer-bottom {
+  color: #d7c9b6;
+  border-color: #5d5142;
+}
+.ap-site .ap-lifestyle-caption i {
+  background: #e5d3ad;
+}
+.ap-site .ap-privacy {
+  display: block;
+  background: var(--ap-linen);
+  padding: 100px 6%;
+}
+.ap-site .ap-privacy .ap-centered-heading {
+  margin-bottom: 35px;
+}
+.ap-site .ap-privacy-symbol {
+  display: grid;
+  place-items: center;
+  margin-bottom: 30px;
+  color: var(--ap-accent);
+}
+.ap-site .ap-privacy-symbol svg {
+  width: 55px;
+  height: 55px;
+}
+.ap-site .ap-privacy-pills {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 9px;
+  margin: 0 auto 50px;
+  max-width: 1000px;
+}
+.ap-site .ap-privacy-pills span {
+  padding: 10px 16px;
+  font-size: 11px;
+  color: var(--ap-muted);
+  background: white;
+  border: 1px solid var(--ap-line);
+  border-radius: 30px;
+}
+.ap-site .ap-privacy-pills span:before {
+  content: "•";
+  margin-right: 8px;
+  color: var(--ap-accent);
+}
+.ap-site .ap-privacy-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  max-width: 1250px;
+  margin: auto;
+}
+.ap-site .ap-privacy-tile {
+  padding: 30px;
+  border-radius: 11px;
+  background: white;
+}
+.ap-site .ap-privacy-tile > svg {
+  color: var(--ap-accent);
+  border: 1px solid var(--ap-line);
+  background: var(--ap-surface);
+  padding: 8px;
+  border-radius: 9px;
+  width: 40px;
+  height: 40px;
+  margin-bottom: 18px;
+}
+.ap-site .ap-privacy-tile h3 {
+  font-size: 20px;
+  font-weight: 500;
+  margin-bottom: 12px;
+}
+.ap-site .ap-privacy-tile p {
+  color: var(--ap-muted);
+  font-size: 14px;
+  line-height: 1.65;
+  max-width: 480px;
+}
+.ap-site .ap-privacy-policy {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+  margin: 30px auto 0;
+  color: var(--ap-accent);
+  font-size: 13px;
+}
+@media (max-width: 800px) {
+  .ap-site .ap-privacy {
+    padding: 75px 5%;
+  }
+  .ap-site .ap-privacy-grid {
+    grid-template-columns: 1fr;
+  }
+  .ap-site .ap-privacy-pills span {
+    font-size: 10px;
+    padding: 9px 12px;
+  }
+}
+.ap-site .ap-manifesto {
+  height: 220svh;
+  position: relative;
+  background: #111111;
+  color: white;
+}
+.ap-site .ap-manifesto-sticky {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  min-height: 650px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  overflow: hidden;
+  padding: 95px 25px 30px;
+}
+.ap-site .ap-manifesto .ap-kicker {
+  font-size: 10px;
+  opacity: 0.6;
+}
+.ap-site .ap-manifesto h1 {
+  font-size: clamp(46px, 7vw, 105px);
+  font-weight: 500;
+  letter-spacing: -0.06em;
+  margin-top: 14px;
+}
+.ap-site .ap-manifesto-reveal {
+  position: relative;
+  height: 350px;
+  width: min(100%, 850px);
+  margin: 12px 0;
+}
+.ap-site .ap-note-mask {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  background: var(--ap-linen);
+  color: var(--ap-muted);
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: clamp(32px, 6vw, 75px);
+  font-weight: 600;
+  transform: translateY(calc(var(--manifesto-progress, 0) * -320px))
+    rotate(calc(var(--manifesto-progress, 0) * -12deg));
+  opacity: calc(1 - var(--manifesto-progress, 0) * 1.4);
+  pointer-events: none;
+}
+.ap-site .ap-note-mask span {
+  font-size: 15px;
+  font-weight: 400;
+  margin-top: 10px;
+}
+.ap-site .ap-manifesto-product {
+  height: 100%;
+  position: relative;
+  overflow: hidden;
+}
+.ap-site .ap-manifesto-product img {
+  position: absolute;
+  width: 150%;
+  height: 105%;
+  left: -25%;
+  top: -16%;
+  object-fit: contain;
+}
+.ap-site .ap-manifesto-product h2 {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+  font-size: clamp(30px, 5vw, 65px);
+  letter-spacing: -0.045em;
+}
+.ap-site .ap-manifesto p {
+  font-size: 17px;
+  line-height: 1.6;
+  color: #d7c9b6;
+}
+.ap-site .ap-campaign-cta {
+  padding: 14px 22px;
+  margin-top: 20px;
+  background: white;
+  color: #111111;
+  border-radius: 6px;
+  font-size: 14px;
+}
+.ap-site .ap-campaign-back {
+  font-size: 11px;
+  margin-top: 17px;
+  color: #d7c9b6;
+}
+.ap-site.ap-reduced .ap-manifesto {
+  height: auto;
+}
+.ap-site.ap-reduced .ap-note-mask {
+  display: none;
+}
+@media (max-width: 800px) {
+  .ap-site .ap-shop-hero {
+    min-height: 0;
+    padding-top: 115px;
+  }
+  .ap-site .ap-shop-copy .ap-finish-picker {
+    clear: both;
+    margin-bottom: 25px;
+  }
+  .ap-site .ap-centered-heading {
+    margin-bottom: 40px;
+  }
+  .ap-site .ap-centered-heading p {
+    font-size: 16px;
+  }
+  .ap-site .ap-centered-heading h2 {
+    font-size: 38px;
+  }
+  .ap-site .ap-centered-heading h2 br {
+    display: none;
+  }
+  .ap-site .ap-engineering-finishes {
+    bottom: 128px;
+    left: 6%;
+  }
+  .ap-site .ap-engineering-object {
+    bottom: 22%;
+  }
+  .ap-site .ap-engineering-finishes .ap-finish-picker legend {
+    display: none;
+  }
+  .ap-site .ap-engineering-finishes button {
+    padding: 6px 9px;
+    font-size: 10px;
+    min-height: 32px;
+  }
+  .ap-site .ap-engineering-finishes .ap-swatch {
+    width: 14px;
+    height: 14px;
+  }
+  .ap-site .ap-action-faq {
+    display: block;
+    padding: 75px 5%;
+  }
+  .ap-site .ap-faq-object {
+    display: none;
+  }
+  .ap-site .ap-faq-controls {
+    gap: 18px;
+  }
+  .ap-site .ap-faq-controls button {
+    font-size: 11px;
+  }
+  .ap-site .ap-faq-list summary {
+    font-size: 16px;
+  }
+  .ap-site .ap-order-product {
+    min-height: 450px;
+  }
+  .ap-site .ap-order-product > img {
+    height: 110%;
+    top: -18%;
+  }
+  .ap-site .ap-order-price {
+    align-items: flex-start;
+  }
+  .ap-site .ap-offer-saving {
+    max-width: 180px;
+  }
+  .ap-site .ap-manifesto-sticky {
+    min-height: 680px;
+  }
+  .ap-site .ap-manifesto-reveal {
+    height: 300px;
+  }
+  .ap-site .ap-note-mask {
+    font-size: 36px;
+  }
+}
+@media (max-width: 370px) {
+  .ap-site .ap-shop-copy h1 {
+    font-size: 36px;
+  }
+  .ap-site .ap-faq-controls {
+    gap: 12px;
+  }
+  .ap-site .ap-faq-controls button {
+    font-size: 10px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-site .ap-note-mask {
+    display: none;
+  }
+  .ap-site .ap-manifesto {
+    height: auto;
+  }
+}
+
+/* Keep the experience light. The photograph supplies depth and human warmth. */
+.ap-site .ap-shop-hero,
+.ap-site .ap-action-faq,
+.ap-site .ap-engineering-sticky {
+  background: var(--ap-paper);
+}
+.ap-site .ap-button,
+.ap-site .ap-nav-order {
+  background: var(--ap-ink);
+  border-color: var(--ap-ink);
+  color: var(--ap-surface);
+}
+.ap-site .ap-button:hover,
+.ap-site .ap-nav-order:hover {
+  background: #4b4032;
+  border-color: #4b4032;
+  color: var(--ap-surface);
+}
+.ap-site .ap-manifesto {
+  background: var(--ap-linen);
+  color: var(--ap-ink);
+}
+.ap-site .ap-manifesto .ap-kicker {
+  color: var(--ap-muted);
+  opacity: 1;
+}
+.ap-site .ap-manifesto p,
+.ap-site .ap-campaign-back {
+  color: var(--ap-muted);
+}
+.ap-site .ap-note-mask {
+  background: var(--ap-sand);
+  color: var(--ap-muted);
+}
+.ap-site .ap-campaign-cta {
+  background: var(--ap-ink);
+  color: var(--ap-surface);
+}
+.ap-site .ap-finish-picker button {
+  border-color: var(--ap-control);
+}
+.ap-site .ap-inspector {
+  border-color: var(--ap-control);
+}
+.ap-site .ap-centered-heading .ap-kicker {
+  opacity: 1;
+}
+.ap-site .ap-faq-controls button[aria-pressed="true"] {
+  border-color: var(--ap-accent);
+}
+
+/* Readable text and state indicators on the photo-derived surfaces. */
+.ap-site .ap-shop-material,
+.ap-site .ap-engineering-index button,
+.ap-site .ap-engineering-bottom {
+  color: var(--ap-muted);
+}
+.ap-site .ap-footer-bottom button {
+  color: #d7c9b6;
+}
+.ap-site .ap-footer-bottom button i {
+  background: #d7c9b6;
+}
+.ap-site .ap-footer :focus-visible {
+  outline-color: var(--ap-surface);
+}

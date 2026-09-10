@@ -1,0 +1,553 @@
+/* Product and chapter swaps must not move the reader's scroll anchor. */
+.ap-site {
+  overflow-anchor: none;
+}
+
+/* Product clarity, open white space, restrained Anticipy accents. */
+.ap-site .ap-shop-hero {
+  grid-template-columns: 1.13fr 1fr;
+  gap: 3%;
+  min-height: 750px;
+  height: auto;
+  max-height: none;
+  padding-top: 135px;
+  padding-bottom: 100px;
+}
+.ap-site .ap-shop-copy h1 {
+  font-size: clamp(58px, 6.2vw, 94px);
+  font-weight: 550;
+  letter-spacing: -0.065em;
+  line-height: 1.03;
+}
+.ap-site .ap-hero-contrast {
+  display: block;
+  color: var(--ap-ink);
+  font-size: 0.76em;
+  letter-spacing: -0.05em;
+  margin-bottom: 13px;
+  font-weight: 550;
+}
+.ap-site .ap-shop-description {
+  font-size: 19px;
+  line-height: 1.55;
+  max-width: 510px;
+  margin: 25px 0;
+}
+.ap-site .ap-shop-description strong {
+  display: block;
+  font-weight: 550;
+  color: var(--ap-ink);
+  margin-bottom: 4px;
+}
+.ap-site .ap-shop-visual {
+  height: 560px;
+  min-height: 0;
+}
+.ap-site .ap-shop-backdrop {
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 25%, #ffffff 20%, #f5f5f5 100%);
+  border-radius: 180px 180px 12px 12px;
+}
+.ap-site .ap-shop-visual > img {
+  height: 95%;
+  top: -8%;
+}
+.ap-site .ap-pendant-intro {
+  top: -8%;
+}
+.ap-site .ap-shop-material {
+  top: auto;
+  bottom: 95px;
+  font-size: 12px;
+  letter-spacing: 0;
+}
+.ap-site .ap-hero-capabilities {
+  position: absolute;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  bottom: 20px;
+  left: 6%;
+  right: 6%;
+  padding-top: 22px;
+  border-top: 1px solid var(--ap-line);
+}
+.ap-site .ap-hero-capabilities > span {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 9px;
+  font-size: 12px;
+}
+.ap-site .ap-hero-capabilities svg {
+  width: 23px;
+  height: 23px;
+}
+.ap-site .ap-prototype-trust {
+  padding: 32px 6%;
+  border-top: 1px solid var(--ap-line);
+  border-bottom: 1px solid var(--ap-line);
+  display: grid;
+  grid-template-columns: 1fr 280px;
+  gap: 7%;
+  align-items: center;
+  background: var(--ap-surface);
+}
+.ap-site .ap-prototype-trust p {
+  margin: 0;
+  color: var(--ap-muted);
+  font-size: 17px;
+  max-width: 770px;
+  line-height: 1.65;
+}
+.ap-site .ap-prototype-trust strong {
+  color: var(--ap-ink);
+  font-weight: 550;
+}
+.ap-site .ap-prototype-trust > span {
+  color: var(--ap-muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.ap-site .ap-order {
+  background: var(--ap-surface);
+}
+.ap-site .ap-order-product {
+  min-height: 740px;
+  background: radial-gradient(ellipse at 45% 20%, #ffffff, #f5f5f5);
+}
+.ap-site .ap-order-product > img {
+  height: 100%;
+  top: -8%;
+}
+.ap-site .ap-order-finish {
+  bottom: 28px;
+}
+.ap-site .ap-order-service-cost {
+  font-size: 12px;
+  line-height: 1.6;
+  color: var(--ap-muted);
+  margin: 20px 0 12px;
+}
+.ap-site .ap-order-details h2 span {
+  color: var(--ap-ink);
+}
+.ap-site .ap-manifesto-sticky > h1 {
+  font-size: clamp(36px, 5vw, 72px);
+  letter-spacing: -0.055em;
+  line-height: 1.05;
+}
+@media (max-width: 1100px) {
+  .ap-site .ap-shop-copy h1 {
+    font-size: 64px;
+  }
+}
+@media (max-width: 800px) {
+  .ap-site .ap-shop-hero {
+    display: block;
+    padding: 108px 6% 28px;
+    min-height: 0;
+  }
+  .ap-site .ap-shop-copy h1 {
+    font-size: clamp(42px, 7.5vw, 60px);
+    padding-top: 14px;
+    line-height: 1.04;
+  }
+  .ap-site .ap-hero-contrast {
+    font-size: 0.76em;
+    margin-bottom: 12px;
+  }
+  .ap-site .ap-shop-mobile-product {
+    height: 200px;
+    width: 33%;
+    margin-left: 12px;
+    margin-right: -3%;
+  }
+  .ap-site .ap-shop-mobile-product img {
+    width: 420%;
+    left: -160%;
+    height: 155%;
+    top: -27%;
+  }
+  .ap-site .ap-shop-description {
+    font-size: 16px;
+    padding-top: 0;
+    margin: 19px 0 23px;
+  }
+  .ap-site .ap-shop-description strong {
+    margin-bottom: 6px;
+  }
+  .ap-site .ap-prototype-trust {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 25px 6%;
+  }
+  .ap-site .ap-prototype-trust p {
+    font-size: 15px;
+  }
+  .ap-site .ap-prototype-trust > span {
+    font-size: 11px;
+  }
+  .ap-site .ap-order-product {
+    min-height: 400px;
+    width: 100%;
+    height: 110vw;
+    max-height: 700px;
+  }
+  .ap-site .ap-order-product > img {
+    height: 100%;
+    top: -8%;
+  }
+  .ap-site .ap-order-finish {
+    bottom: 24px;
+  }
+}
+@media (max-width: 370px) {
+  .ap-site .ap-shop-copy h1 {
+    font-size: 38px;
+  }
+  .ap-site .ap-shop-mobile-product {
+    height: 183px;
+    width: 30%;
+  }
+}
+
+@media (min-width: 801px) {
+  .ap-site .ap-order {
+    align-items: start;
+    padding-top: 70px;
+  }
+  .ap-site .ap-order-product {
+    min-height: 620px;
+    height: 620px;
+  }
+}
+.ap-photoreal-scene {
+  position: absolute;
+  inset: 0;
+  /* Fade only the studio background at the frame edges, not the metal. */
+  -webkit-mask-image:
+    linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent),
+    linear-gradient(transparent, #000 6%, #000 94%, transparent);
+  mask-image:
+    linear-gradient(90deg, transparent, #000 15%, #000 85%, transparent),
+    linear-gradient(transparent, #000 6%, #000 94%, transparent);
+  -webkit-mask-composite: source-in;
+  mask-composite: intersect;
+}
+.ap-photoreal-scene > img,
+.ap-photoreal-scene > video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+}
+.ap-photoreal-scene > video {
+  opacity: 0;
+}
+.ap-photoreal-scene.is-ready > video {
+  opacity: 1;
+}
+.ap-photoreal-scene.is-ready > img {
+  opacity: 0;
+}
+
+/* Open editorial capabilities replace the simulated conversation/app interface. */
+.ap-site .ap-experience {
+  padding: 125px 6% 110px;
+  background: var(--ap-paper);
+  scroll-margin-top: 90px;
+}
+.ap-site .ap-experience-heading {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 9%;
+  align-items: end;
+  margin-bottom: 100px;
+}
+.ap-site .ap-experience-heading h2 {
+  font-size: clamp(58px, 7vw, 106px);
+  line-height: 0.99;
+  font-weight: 500;
+  letter-spacing: -0.065em;
+}
+.ap-site .ap-experience-heading h2 > span {
+  position: relative;
+}
+.ap-site .ap-experience-heading h2 > span:after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -9px;
+  height: 2px;
+  background: #a18b70;
+  transform: scaleX(0.12);
+  transform-origin: left;
+  transition: transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+.ap-site .ap-experience[data-entered="true"] h2 > span:after {
+  transform: scaleX(1);
+}
+.ap-site .ap-experience-intro p {
+  font-size: 19px;
+  line-height: 1.55;
+  color: var(--ap-muted);
+  max-width: 365px;
+}
+.ap-site .ap-experience-intro a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 30px;
+  margin-top: 28px;
+  padding: 14px 19px;
+  border-radius: 5px;
+  background: var(--ap-ink);
+  color: #fff;
+  font-size: 14px;
+  transition: background 0.2s;
+}
+.ap-site .ap-experience-intro a:hover {
+  background: var(--ap-accent);
+}
+.ap-site .ap-experience-intro a span {
+  font-size: 22px;
+}
+.ap-site .ap-experience-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  align-items: center;
+  gap: 6%;
+  padding: 35px 0;
+  border-top: 1px solid #d7cfc4;
+}
+.ap-site .ap-experience-row:last-child {
+  border-bottom: 1px solid #d7cfc4;
+}
+.ap-site .ap-experience-row h3 {
+  font-size: clamp(28px, 3.2vw, 48px);
+  line-height: 1.15;
+  font-weight: 400;
+  letter-spacing: -0.045em;
+}
+.ap-site .ap-experience-row p {
+  font-size: 16px;
+  color: var(--ap-muted);
+  line-height: 1.55;
+  max-width: 350px;
+}
+.ap-site .ap-experience-row > span {
+  color: var(--ap-accent);
+  font-size: 24px;
+}
+.ap-site .ap-experience[data-entered="true"] .ap-experience-row {
+  animation: ap-editorial-enter 0.65s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+.ap-site .ap-experience[data-entered="true"] .ap-experience-row:nth-child(2) {
+  animation-delay: 0.1s;
+}
+.ap-site .ap-experience[data-entered="true"] .ap-experience-row:nth-child(3) {
+  animation-delay: 0.2s;
+}
+@keyframes ap-editorial-enter {
+  from {
+    transform: translateY(8px);
+  }
+  to {
+    transform: translateY(0);
+  }
+}
+.ap-site .ap-privacy,
+.ap-site .ap-manifesto,
+.ap-site .ap-menu-panel {
+  background: #fff;
+}
+.ap-site .ap-footer {
+  background: #111;
+}
+.ap-site .ap-footer-bottom,
+.ap-site .ap-footer-bottom button {
+  color: #bcbcbc;
+}
+.ap-site .ap-footer-bottom {
+  border-color: #393939;
+}
+.ap-site .ap-footer-bottom button i {
+  background: #bcbcbc;
+}
+@media (max-width: 800px) {
+  .ap-site .ap-experience {
+    padding: 74px 6%;
+  }
+  .ap-site .ap-experience-heading {
+    grid-template-columns: 1fr;
+    gap: 32px;
+    margin-bottom: 52px;
+  }
+  .ap-site .ap-experience-heading h2 {
+    font-size: clamp(52px, 11vw, 76px);
+  }
+  .ap-site .ap-experience-intro p {
+    font-size: 17px;
+    max-width: 430px;
+  }
+  .ap-site .ap-experience-intro a {
+    margin-top: 22px;
+  }
+  .ap-site .ap-experience-row {
+    grid-template-columns: 1fr;
+    gap: 12px;
+    padding: 26px 0;
+  }
+  .ap-site .ap-experience-row p {
+    grid-row: 2;
+    font-size: 15px;
+  }
+  .ap-site .ap-experience-row > span {
+    grid-column: 2;
+    grid-row: 1;
+  }
+}
+.ap-site.ap-reduced .ap-experience-row {
+  animation: none !important;
+}
+.ap-site.ap-reduced .ap-experience-heading h2 > span:after {
+  transition: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-site .ap-experience-row {
+    animation: none !important;
+  }
+  .ap-site .ap-experience-heading h2 > span:after {
+    transform: none;
+    transition: none;
+  }
+}
+
+.ap-site .ap-benefits,
+.ap-site .ap-engineering {
+  background: #fff;
+}
+
+/* A paired product portrait, with identical scale for both finishes. */
+.ap-site .ap-faq-intro {
+  grid-column: 1;
+}
+.ap-site .ap-faq-object {
+  grid-column: 2;
+  grid-row: 1 / span 2;
+  align-self: center;
+  display: block;
+  min-height: 0;
+  margin: 0;
+}
+.ap-site .ap-faq-pair {
+  position: relative;
+  height: 570px;
+  isolation: isolate;
+}
+.ap-site .ap-faq-pendant {
+  position: absolute;
+  width: 68%;
+  height: 440px;
+  overflow: hidden;
+}
+.ap-site .ap-faq-pendant img {
+  width: 320%;
+  height: 100%;
+  max-width: none;
+  top: 0;
+  left: -110%;
+  transform: none;
+}
+.ap-site .ap-faq-pendant-gold {
+  top: -15px;
+  left: 32%;
+  transform: rotate(16deg);
+}
+.ap-site .ap-faq-pendant-silver {
+  top: 155px;
+  left: -3%;
+  transform: rotate(-14deg);
+  z-index: 1;
+}
+.ap-site .ap-faq-object figcaption {
+  font-size: 12px;
+  color: var(--ap-muted);
+  margin-top: 10px;
+}
+
+/* One restrained entry rhythm across headings, descriptions and actions. */
+.ap-site .ap-text-reveal {
+  opacity: 0;
+  transform: translateY(14px);
+  transition:
+    opacity 800ms cubic-bezier(0.22, 1, 0.36, 1),
+    transform 800ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition-delay: var(--text-delay, 0ms);
+}
+.ap-site .ap-text-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+.ap-site .ap-benefit-heading,
+.ap-site .ap-benefit-context,
+.ap-site .ap-engineering-copy,
+.ap-site .ap-faq-list details[open] p {
+  animation: ap-text-flow 800ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+@keyframes ap-text-flow {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+.ap-site.ap-reduced .ap-text-reveal {
+  opacity: 1;
+  transform: none;
+  transition: none;
+}
+.ap-site.ap-reduced .ap-benefit-heading,
+.ap-site.ap-reduced .ap-benefit-context,
+.ap-site.ap-reduced .ap-engineering-copy,
+.ap-site.ap-reduced .ap-faq-list details[open] p {
+  animation: none;
+}
+@media (max-width: 800px) {
+  .ap-site .ap-faq-object {
+    display: block;
+    max-width: 450px;
+    margin: 35px auto 0;
+  }
+  .ap-site .ap-faq-pair {
+    height: 470px;
+  }
+  .ap-site .ap-faq-pendant {
+    height: 365px;
+  }
+  .ap-site .ap-faq-pendant-silver {
+    top: 110px;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .ap-site .ap-text-reveal {
+    opacity: 1;
+    transform: none;
+    transition: none;
+  }
+  .ap-site .ap-benefit-heading,
+  .ap-site .ap-benefit-context,
+  .ap-site .ap-engineering-copy,
+  .ap-site .ap-faq-list details[open] p {
+    animation: none;
+  }
+}

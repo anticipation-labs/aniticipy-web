@@ -78,7 +78,7 @@ export default function AppDownloadPage() {
   const isIntel = arch === "intel";
 
   return (
-    <div className="min-h-screen bg-dark text-cream px-8 md:px-20 py-24 font-sans">
+    <main className="min-h-screen bg-dark text-cream px-8 md:px-20 py-24 font-sans">
       <p className="text-[11px] uppercase tracking-[0.22em] text-gold/80 font-medium mb-6">
         The app
       </p>
@@ -176,6 +176,6 @@ export default function AppDownloadPage() {
           </p>
         </div>
       )}
-    </div>
+    </main>
   );
 }

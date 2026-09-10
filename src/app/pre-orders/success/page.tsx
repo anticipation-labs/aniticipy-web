@@ -1,4 +1,11 @@
+import {
+  type PendantFinish,
+  parsePendantFinish,
+  pendantFinishLabel,
+} from "@/lib/pendant-finish";
 import Link from "next/link";
+import { CustomerFrame, Arrow } from "@/components/customer/CustomerFrame";
+import { FINISHES } from "@/components/redesign/pendant-design";
 import type { Metadata } from "next";
 import { stripe } from "@/lib/stripe";
 
@@ -6,12 +13,14 @@ export const runtime = "nodejs";
 export const dynamic = "force-dynamic";
 
 export const metadata: Metadata = {
-  title: "Pre-order confirmed",
-  description: "Your Anticipy pre-order is confirmed. Thank you for being early.",
+  title: "Your Anticipy order",
+  description:
+    "Your Anticipy pre-order is confirmed. Thank you for being early.",
   robots: { index: false, follow: false },
 };
 
 type Session = {
+  finish: PendantFinish | null;
   email: string | null;
   amount: number;
   currency: string;
@@ -20,13 +29,19 @@ type Session = {
   state: string | null;
 };
 
-async function loadSession(sessionId: string | undefined): Promise<Session | null> {
+async function loadSession(
+  sessionId: string | undefined,
+): Promise<Session | null> {
   if (!sessionId || !sessionId.startsWith("cs_")) return null;
   try {
-    const session = await stripe.checkout.sessions.retrieve(sessionId, {
-      expand: ["customer_details"],
-    });
+    const session = await stripe.checkout.sessions.retrieve(sessionId);
+    if (
+      session.payment_status !== "paid" ||
+      session.metadata?.product_type !== "preorder"
+    )
+      return null;
     return {
+      finish: parsePendantFinish(session.metadata?.pendant_finish),
       email: session.customer_details?.email ?? session.customer_email ?? null,
       amount: session.amount_total ?? 0,
       currency: session.currency ?? "usd",
@@ -34,7 +49,8 @@ async function loadSession(sessionId: string | undefined): Promise<Session | nul
         session.customer_details?.name ??
         session.collected_information?.shipping_details?.name ??
         null,
-      city: session.collected_information?.shipping_details?.address?.city ?? null,
+      city:
+        session.collected_information?.shipping_details?.address?.city ?? null,
       state:
         session.collected_information?.shipping_details?.address?.state ?? null,
     };
@@ -49,113 +65,109 @@ export default async function PreOrderSuccessPage({
   searchParams: { session_id?: string };
 }) {
   const session = await loadSession(searchParams?.session_id);
-  const amountDisplay = session ? (session.amount / 100).toFixed(2) : "149.99";
-  const currencyDisplay = (session?.currency || "usd").toUpperCase();
   const firstName = session?.name?.split(" ")[0];
-
   return (
-    <div
-      className="min-h-screen flex flex-col"
-      style={{ background: "var(--cream)", color: "var(--text-on-light)" }}
-    >
-      <header
-        className="px-6 py-6 border-b"
-        style={{ borderColor: "var(--cream-border)" }}
-      >
-        <div className="max-w-container mx-auto">
-          <Link
-            href="/"
-            className="font-serif text-[22px] hover:text-[var(--gold)] transition-colors"
-            style={{ color: "var(--text-on-light)" }}
-          >
-            Anticipy
-          </Link>
-        </div>
-      </header>
-
-      <main className="flex-1 flex items-center justify-center px-6 py-16">
-        <div className="max-w-2xl text-center">
-          <div
-            className="w-20 h-20 rounded-full mx-auto mb-8 flex items-center justify-center"
-            style={{ background: "var(--gold-dim)" }}
-          >
-            <svg
-              className="w-10 h-10"
-              fill="none"
-              stroke="var(--gold)"
-              viewBox="0 0 24 24"
-            >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M5 13l4 4L19 7"
-              />
-            </svg>
-          </div>
-
-          <h1
-            className="font-serif leading-[1.1] mb-6"
-            style={{
-              fontSize: "clamp(40px, 5.5vw, 64px)",
-              color: "var(--text-on-light)",
-            }}
-          >
-            {firstName ? `Thank you, ${firstName}.` : "Thank you."}
-          </h1>
-
-          <p
-            className="text-[18px] font-light leading-[1.7] mb-10"
-            style={{ color: "var(--text-on-light-muted)" }}
-          >
-            Your Anticipy pendant pre-order is confirmed at{" "}
-            <strong style={{ color: "var(--text-on-light)" }}>
-              ${amountDisplay} {currencyDisplay}
-            </strong>
-            . You locked in $50 off the $199 retail price.
-          </p>
-
-          <div
-            className="rounded-card p-6 mb-10 text-left"
-            style={{ background: "var(--cream-muted)" }}
-          >
-            <p className="text-[14px] font-light leading-[1.7]" style={{ color: "var(--text-on-light-muted)" }}>
-              <strong style={{ color: "var(--text-on-light)" }}>What is next.</strong>
-              {" "}
-              We are targeting shipping for Q4 2026. As the date approaches we will email{" "}
-              <strong style={{ color: "var(--text-on-light)" }}>
-                {session?.email ?? "your inbox"}
-              </strong>
-              {" "}
-              to confirm the shipping address and answer any questions. Stripe also emailed a receipt for your records.
-            </p>
-          </div>
-
-          <div className="flex flex-col sm:flex-row gap-3 justify-center">
-            <Link
-              href="/"
-              className="px-8 py-3.5 rounded-pill text-[15px] font-medium transition-colors"
-              style={{
-                background: "var(--dark)",
-                color: "var(--cream)",
-              }}
-            >
-              Back to anticipy.ai
+    <CustomerFrame>
+      <main id="page-content" tabIndex={-1} className="ac-split-page ac-enter">
+        <div className="ac-split-copy">
+          <p className="ac-eyebrow">Your Anticipy</p>
+          {session ? (
+            <>
+              <div
+                className="ac-success-mark"
+                style={{ marginTop: 28 }}
+                aria-hidden="true"
+              >
+                ✓
+              </div>
+              <h1>
+                {firstName
+                  ? `Thank you, ${firstName}.`
+                  : "It’s a little closer."}
+              </h1>
+              <p className="ac-lead">
+                Your Anticipy order is confirmed. A little more room for life is
+                on its way.
+              </p>
+              <dl className="ac-summary-list">
+                <div>
+                  <dt>Amount paid</dt>
+                  <dd>
+                    ${(session.amount / 100).toFixed(2)}{" "}
+                    {session.currency.toUpperCase()}
+                  </dd>
+                </div>
+                {session.finish && (
+                  <div>
+                    <dt>Your finish</dt>
+                    <dd>{pendantFinishLabel(session.finish)}</dd>
+                  </div>
+                )}
+                {session.email && (
+                  <div>
+                    <dt>Order email</dt>
+                    <dd>{session.email}</dd>
+                  </div>
+                )}
+                <div>
+                  <dt>Estimated shipping</dt>
+                  <dd>Q4 2026</dd>
+                </div>
+              </dl>
+              <p className="ac-form-note">
+                We’ll email you as manufacturing progresses and confirm your
+                shipping details before your pendant is sent. You can cancel for
+                a full refund any time before it ships.
+              </p>
+            </>
+          ) : (
+            <>
+              <h1>
+                Let’s check
+                <br />
+                your order.
+              </h1>
+              <p className="ac-lead">
+                We couldn’t verify a completed payment from this link. If you
+                just checked out, look for your confirmation email before
+                placing another order.
+              </p>
+              <p className="ac-aside-link">
+                Need a hand?
+                <br />
+                <a href="mailto:hello@anticipy.ai">hello@anticipy.ai ↗</a>
+              </p>
+            </>
+          )}
+          <div className="ac-action-row">
+            <Link className="ac-button" href="/">
+              Back to Anticipy <Arrow />
             </Link>
-            <Link
-              href="/pre-orders/agreement"
-              className="px-8 py-3.5 rounded-pill text-[15px] font-medium transition-colors"
-              style={{
-                background: "var(--cream-muted)",
-                color: "var(--text-on-light)",
-                border: "1px solid var(--cream-border)",
-              }}
-            >
-              Read the Pre-Order Agreement
+            <Link className="ac-text-link" href="/pre-orders/agreement">
+              Purchase terms
             </Link>
           </div>
         </div>
+        <figure className="ac-split-photo">
+          <img
+            src={
+              session?.finish
+                ? FINISHES[session.finish].stone
+                : "/redesign/purchase-both-finishes.webp"
+            }
+            alt={
+              session?.finish
+                ? `${pendantFinishLabel(session.finish)} Anticipy pendant with a seamless brushed casing`
+                : "Titanium silver and gold Anticipy pendants with matching chains"
+            }
+            width="1600"
+            height="1600"
+          />
+          <figcaption>
+            <span>Small object. Real possibility.</span>
+          </figcaption>
+        </figure>
       </main>
-    </div>
+    </CustomerFrame>
   );
 }

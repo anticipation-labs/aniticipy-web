@@ -2139,10 +2139,10 @@ export default function EnginePage() {
       style={{ background: "var(--dark)", color: "var(--text-on-dark)" }}
     >
       {/* Header */}
-      <header
+      <div role="navigation" aria-label="Engine tools"
         className="sticky top-0 z-50 px-6 py-4"
         style={{
-          background: "rgba(12,12,12,0.85)",
+          background: "rgba(255,255,255,0.96)",
           backdropFilter: "blur(20px)",
           borderBottom: "1px solid rgba(255,255,255,0.06)",
         }}
@@ -2232,7 +2232,7 @@ export default function EnginePage() {
             </button>
           </div>
         </div>
-      </header>
+      </div>
 
       {/* Setup card */}
       {!setupDismissed && (
@@ -2535,7 +2535,7 @@ export default function EnginePage() {
         </div>
       )}
 
-      <main className="max-w-container mx-auto px-6 py-12">
+      <section className="max-w-container mx-auto px-6 py-12">
         {/* 30-second Quick Start — only when fully idle and no work has happened */}
         {state === "idle" && segments.length === 0 && intents.length === 0 && (
           <div className="max-w-2xl mx-auto mb-12">
@@ -3448,16 +3448,16 @@ export default function EnginePage() {
             </div>
           )}
 
-      </main>
+      </section>
 
       {/* Footer */}
-      <footer
+      <aside aria-label="Engine help"
         className="px-6 py-8 mt-20"
         style={{ borderTop: "1px solid var(--dark-border)" }}
       >
         <div className="max-w-container mx-auto flex items-center justify-between">
           <p className="text-[13px]" style={{ color: "var(--text-on-dark-muted)" }}>
-            &copy; 2026 Anticipy.
+            Support & resources
           </p>
           <div className="flex items-center gap-4">
             <a
@@ -3477,7 +3477,7 @@ export default function EnginePage() {
             </a>
           </div>
         </div>
-      </footer>
+      </aside>
 
       {/* Toast — single source of polite, ephemeral feedback. Never shows
           raw error strings; copy is curated upstream via showToast. */}

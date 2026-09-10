@@ -1,5 +1,6 @@
 "use client";
 
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import { motion, useInView } from "motion/react";
 import { useRef, useState, useEffect } from "react";
 import Link from "next/link";
@@ -138,11 +139,11 @@ function HeroSection() {
             href="#book-a-call"
             className="px-8 py-3.5 rounded-pill text-[15px] font-semibold transition-all duration-200"
             style={{
-              backgroundColor: "#C9A227",
-              color: "var(--dark)",
+              backgroundColor: "var(--anticipy-ink)",
+              color: "var(--anticipy-paper)",
             }}
-            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#D4AF37")}
-            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#C9A227")}
+            onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = "#333333")}
+            onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = "#111111")}
           >
             Book a Call
           </a>
@@ -378,7 +379,7 @@ function WhyNowSection() {
         <ScrollReveal delay={0.4}>
           <div className="mt-16 max-w-[800px] mx-auto rounded-image overflow-hidden relative">
             <Image
-              src="/images/macro.png"
+              src="/redesign/pendant-stone-closed.webp"
               alt="Anticipy pendant close-up"
               width={800}
               height={500}
@@ -736,7 +737,7 @@ function InvestorInterestSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block mt-6 px-8 py-3.5 rounded-pill text-[15px] font-semibold transition-all duration-200"
-                style={{ backgroundColor: "#C9A227", color: "var(--dark)" }}
+                style={{ backgroundColor: "var(--anticipy-ink)", color: "var(--anticipy-paper)" }}
               >
                 Book a Call with Omar
               </a>
@@ -765,7 +766,7 @@ function InvestorInterestSection() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="inline-block px-8 py-3.5 rounded-pill text-[15px] font-semibold transition-all duration-200"
-                style={{ backgroundColor: "#C9A227", color: "var(--dark)" }}
+                style={{ backgroundColor: "var(--anticipy-ink)", color: "var(--anticipy-paper)" }}
               >
                 Book a Call with Omar
               </a>
@@ -785,7 +786,7 @@ function InvestorInterestSection() {
                     color: "var(--text-on-light)",
                     border: "1px solid var(--cream-border)",
                   }}
-                  onFocus={(e) => (e.currentTarget.style.borderColor = "#C9A227")}
+                  onFocus={(e) => (e.currentTarget.style.borderColor = "#705d48")}
                   onBlur={(e) => (e.currentTarget.style.borderColor = "var(--cream-border)")}
                 />
                 <div className="flex gap-3">
@@ -801,7 +802,7 @@ function InvestorInterestSection() {
                       color: "var(--text-on-light)",
                       border: "1px solid var(--cream-border)",
                     }}
-                    onFocus={(e) => (e.currentTarget.style.borderColor = "#C9A227")}
+                    onFocus={(e) => (e.currentTarget.style.borderColor = "#705d48")}
                     onBlur={(e) => (e.currentTarget.style.borderColor = "var(--cream-border)")}
                   />
                   <button
@@ -809,8 +810,8 @@ function InvestorInterestSection() {
                     disabled={status === "loading"}
                     className="px-6 py-3.5 rounded-pill text-[15px] font-semibold transition-all duration-200 flex-shrink-0"
                     style={{
-                      backgroundColor: "#C9A227",
-                      color: "var(--dark)",
+                      backgroundColor: "var(--anticipy-ink)",
+                      color: "var(--anticipy-paper)",
                       opacity: status === "loading" ? 0.7 : 1,
                     }}
                   >
@@ -939,7 +940,7 @@ function FundedFooter() {
 export default function FundedPage() {
   return (
     <>
-      <FundedNav />
+      <CustomerFrame audience="investors" className="ac-investor"><main id="page-content" tabIndex={-1} className="ac-public-story">
       <HeroSection />
       <div className="transition-dark-to-cream" />
       <OpportunitySection />
@@ -957,7 +958,7 @@ export default function FundedPage() {
       <InvestorInterestSection />
       <div className="transition-cream-to-dark" />
       <FAQSection />
-      <FundedFooter />
+      </main></CustomerFrame>
     </>
   );
 }

@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import type { Metadata } from "next";
 import Link from "next/link";
 import { Tm } from "@/components/Tm";
@@ -7,12 +8,12 @@ import { ROLES } from "./roles";
 import { PAY } from "@/app/ugc/program";
 
 export const metadata: Metadata = {
-  title: "Come build the thing. — Anticipy",
+  title: "Come build the thing. | Anticipy",
   description:
     "Four open roles at Anticipy: content and growth, software, hardware, and the layer in between. No cover letter, no resume.",
   alternates: { canonical: "https://www.anticipy.ai/apply" },
   openGraph: {
-    title: "Come build the thing. — Anticipy",
+    title: "Come build the thing. | Anticipy",
     description: "Four roles. No cover letter, no resume. Omar reads every application.",
     url: "https://www.anticipy.ai/apply",
     type: "website",
@@ -20,7 +21,7 @@ export const metadata: Metadata = {
 };
 
 const HOW = [
-  "You apply. I read it — not a filter, not a recruiter.",
+  "You apply. I read it personally.",
   "One 30-minute call with me.",
   "A fast, clear yes or no. If it's a no, I'll tell you why.",
 ];
@@ -41,37 +42,9 @@ const HOW = [
  */
 export default function ApplyHubPage() {
   return (
-    <main style={{ ...HIRE_THEME, minHeight: "100dvh" }}>
+    <CustomerFrame audience="careers" className="ac-careers"><main id="page-content" tabIndex={-1} style={{ ...HIRE_THEME, minHeight: "100dvh" }}>
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 28px" }}>
-        <header
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            gap: 16,
-            padding: "26px 0",
-            borderBottom: "1px solid var(--rule)",
-          }}
-        >
-          <Link
-            href="/"
-            className="font-serif"
-            style={{ fontSize: 19, color: "var(--ink)", textDecoration: "none", letterSpacing: "0.01em" }}
-          >
-            Anticipy<Tm />
-          </Link>
-          <span
-            style={{
-              fontFamily: "var(--mono)",
-              fontSize: 11,
-              letterSpacing: "0.12em",
-              textTransform: "uppercase",
-              color: "var(--accent-ink)",
-            }}
-          >
-            Four open roles
-          </span>
-        </header>
+
 
         <section className="hub-hero">
           <h1
@@ -130,7 +103,7 @@ export default function ApplyHubPage() {
           </p>
           <p>
             If you&apos;ve been passed over for being young, self-taught, or
-            short on the right logos — that counts for you here, not against
+            short on the right logos, that counts for you here, not against
             you. I&apos;m 15. I&apos;m not going to hold your CV against you.
           </p>
           <p className="who-note">
@@ -164,13 +137,13 @@ export default function ApplyHubPage() {
         <section className="ugc-block">
           <div>
             <p style={{ fontFamily: "var(--mono)", fontSize: 10.5, letterSpacing: "0.14em", textTransform: "uppercase", color: "var(--accent-ink)", margin: "0 0 12px" }}>
-              Not a job — anyone can do this
+              Anyone can do this
             </p>
             <h2 className="font-serif" style={{ fontSize: "clamp(26px, 3.4vw, 36px)", letterSpacing: "-0.025em", color: "var(--ink)", margin: "0 0 12px" }}>
               Anticipy UGC Creator
             </h2>
             <p style={{ fontSize: 16.5, lineHeight: 1.65, color: "var(--ink-2)", margin: "0 0 18px", maxWidth: "30em" }}>
-              Make videos, get your own link, get paid twice — ${PAY.perVideo} a
+              Make videos, get your own link, get paid twice: ${PAY.perVideo} a
               video past {PAY.viewFloor.toLocaleString()} views, and{" "}
               {PAY.purchaseSharePct}% of every order through your link.
             </p>
@@ -253,6 +226,6 @@ export default function ApplyHubPage() {
           .role-main { grid-column: 1 / -1; }
         }
       ` }} />
-    </main>
+    </main></CustomerFrame>
   );
 }

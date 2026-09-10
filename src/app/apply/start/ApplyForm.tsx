@@ -503,7 +503,7 @@ export function ApplyForm() {
             transition={{ duration: 0.55, ease, delay: 0.38 }}
           >
             <p style={{ color: "var(--ink)", fontSize: 17, lineHeight: 1.7, margin: "18px 0 0", maxWidth: 560 }}>
-              It&apos;s in Omar&apos;s inbox — not a queue, not a recruiter, not
+              It&apos;s in Omar&apos;s inbox, not a queue, not a recruiter, not
               a screening tool. He reads every one himself and replies to the
               ones he wants to talk to.
             </p>
@@ -595,7 +595,7 @@ export function ApplyForm() {
               <>
                 <Q>Which role are you here for?</Q>
                 <Sub>
-                  Pick more than one engineering role if both fit — we&apos;ll
+                  Pick more than one engineering role if both fit. We&apos;ll
                   ask the combined questions.
                 </Sub>
                 <div style={{ display: "grid", gap: 10 }}>
@@ -625,7 +625,7 @@ export function ApplyForm() {
                     </button>
                   </div>
                 )}
-                <Q>First — who are you?</Q>
+                <Q>First, who are you?</Q>
                 <Sub>Name, email, and where you are.</Sub>
                 <div className="ap-fields" style={{ display: "grid", gap: 22 }}>
                   <div>
@@ -684,7 +684,7 @@ export function ApplyForm() {
               <>
                 <Q>Where can we see your work?</Q>
                 <Sub>
-                  Portfolio, GitHub, website, LinkedIn, social channels — paste
+                  Portfolio, GitHub, website, LinkedIn, social channels. Paste
                   whatever is relevant, one per line. Résumé optional.
                 </Sub>
                 <textarea
@@ -703,7 +703,7 @@ export function ApplyForm() {
                     style={{ position: "absolute", width: 1, height: 1, opacity: 0, pointerEvents: "none" }} />
                   <button type="button" onClick={() => fileRef.current?.click()}
                     style={{ ...rule(false, !!errors.files), display: "flex", justifyContent: "space-between", alignItems: "center", cursor: "pointer", textAlign: "left", fontSize: MIN_INPUT_PX, color: "var(--ink-2)" }}>
-                    <span>{files.length ? `${files.length} file${files.length > 1 ? "s" : ""}` : "Résumé or work samples — optional"}</span>
+                    <span>{files.length ? `${files.length} file${files.length > 1 ? "s" : ""}` : "Résumé or work samples (optional)"}</span>
                     <span style={{ color: "var(--accent-ink)", fontSize: 13 }}>Add</span>
                   </button>
                   <Err msg={errors.files} />
@@ -724,7 +724,7 @@ export function ApplyForm() {
 
             {screen === 8 && (
               <>
-                <Q>Last bit — the practical stuff.</Q>
+                <Q>Last bit: the practical stuff.</Q>
                 <Sub>Four quick answers and you&apos;re done.</Sub>
                 <div className="ap-fields" style={{ display: "grid", gap: 22 }}>
                   <div>

@@ -26,6 +26,9 @@ const OfferDialog = dynamic(
  * Adding a page that is not a purchase funnel? Add it here at the same time.
  */
 const SUPPRESSED = [
+  "/waitlist",
+  "/book",
+  "/action-taker",
   "/pre-orders/purchase",
   "/pre-orders/success",
   "/pre-orders/agreement",
@@ -50,6 +53,9 @@ const SUPPRESSED = [
   "/analytics",
   "/internal",
   "/app",
+  "/onboarding",
+  "/flash",
+  "/demo",
 ];
 
 const K = {
@@ -118,7 +124,8 @@ export function OfferMount() {
   useEffect(() => {
     if (typeof window === "undefined") return;
     if (armed.current) return;
-    if (SUPPRESSED.some((p) => pathname?.startsWith(p))) return;
+    // Keep the homepage product story uninterrupted; purchase links stay visible.
+    if (pathname === "/" || SUPPRESSED.some((p) => pathname?.startsWith(p))) return;
     if (isBot() && !window.location.search.includes("popup=force")) return;
     if (!eligibleByFrequency()) return;
 
@@ -231,7 +238,7 @@ export function OfferMount() {
     };
   }, [pathname]);
 
-  if (!offer) return null;
+  if (!offer || pathname === "/" || SUPPRESSED.some((p) => pathname?.startsWith(p))) return null;
 
   return (
     <OfferDialog

@@ -124,8 +124,8 @@ export default function OnboardingAudioPage() {
     <div
       className="min-h-screen font-sans"
       style={{
-        backgroundColor: "#0C0C0C",
-        color: "#F5F0EB",
+        backgroundColor: "#ffffff",
+        color: "#111111",
         backgroundImage:
           "radial-gradient(60rem 40rem at 50% -10%, rgba(200,169,126,0.10), transparent 70%)",
       }}
@@ -133,19 +133,19 @@ export default function OnboardingAudioPage() {
       <main className="px-8 md:px-20 py-12 max-w-[820px] mx-auto">
         <p
           className="text-xs uppercase tracking-[0.26em] mb-4"
-          style={{ color: "#C8A97E" }}
+          style={{ color: "#705d48" }}
         >
           Onboarding
         </p>
         <h1
           className="text-4xl md:text-5xl leading-tight tracking-tight"
-          style={{ fontFamily: "var(--font-dm-serif), Georgia, serif" }}
+          style={{ fontFamily: "var(--anticipy-font)" }}
         >
           Show me your life.
         </h1>
         <p
           className="mt-6 text-base leading-relaxed max-w-[42rem]"
-          style={{ color: "rgba(245,240,235,0.62)" }}
+          style={{ color: "#626262" }}
         >
           Drag in an audio recording of your day, up to twenty-four hours.
           Anticipy transcribes it on this Mac with parakeet-mlx in chunks of
@@ -159,7 +159,10 @@ export default function OnboardingAudioPage() {
           tabIndex={0}
           onClick={onPick}
           onKeyDown={(e) => {
-            if (e.key === "Enter" || e.key === " ") onPick();
+            if (e.key === "Enter" || e.key === " ") {
+              e.preventDefault();
+              onPick();
+            }
           }}
           onDragOver={(e) => {
             e.preventDefault();
@@ -174,21 +177,21 @@ export default function OnboardingAudioPage() {
           }}
           className="mt-10 cursor-pointer rounded-2xl border border-dashed px-8 py-12 text-center transition"
           style={{
-            borderColor: dragOver ? "#C8A97E" : "rgba(245,240,235,0.18)",
+            borderColor: dragOver ? "#705d48" : "#bfbfbf",
             backgroundColor: dragOver
               ? "rgba(200,169,126,0.06)"
-              : "rgba(245,240,235,0.02)",
+              : "#ffffff",
           }}
         >
           <p
             className="text-base"
-            style={{ color: "rgba(245,240,235,0.85)" }}
+            style={{ color: "#111111" }}
           >
             Drop an audio file here or click to pick one.
           </p>
           <p
             className="mt-3 text-xs"
-            style={{ color: "rgba(245,240,235,0.40)" }}
+            style={{ color: "#626262" }}
           >
             MP3, WAV, AIFF, M4A, FLAC are all fine. Up to twenty-four hours.
           </p>
@@ -210,7 +213,7 @@ export default function OnboardingAudioPage() {
           phase === "extracting") && (
           <p
             className="mt-8 text-sm leading-relaxed"
-            style={{ color: "rgba(245,240,235,0.55)" }}
+            style={{ color: "#626262" }}
           >
             Listening to your week. {statusLine}
           </p>
@@ -219,7 +222,7 @@ export default function OnboardingAudioPage() {
         {phase === "error" && (
           <p
             className="mt-8 text-sm leading-relaxed"
-            style={{ color: "#C98A6E" }}
+            style={{ color: "#8b3021" }}
           >
             {errorLine}
           </p>
@@ -229,19 +232,19 @@ export default function OnboardingAudioPage() {
           <div
             className="mt-10 rounded-2xl p-6"
             style={{
-              backgroundColor: "rgba(245,240,235,0.04)",
-              border: "1px solid rgba(245,240,235,0.10)",
+              backgroundColor: "#f6f6f6",
+              border: "1px solid #dedede",
             }}
           >
             <p
               className="text-xs uppercase tracking-[0.22em]"
-              style={{ color: "#C8A97E" }}
+              style={{ color: "#705d48" }}
             >
               Your profile
             </p>
             <h2
               className="mt-2 text-2xl"
-              style={{ fontFamily: "var(--font-dm-serif), Georgia, serif" }}
+              style={{ fontFamily: "var(--anticipy-font)" }}
             >
               {profile.name
                 ? `Good to meet you, ${profile.name.split(" ")[0]}.`
@@ -249,7 +252,7 @@ export default function OnboardingAudioPage() {
             </h2>
             <p
               className="mt-2 text-xs"
-              style={{ color: "rgba(245,240,235,0.45)" }}
+              style={{ color: "#626262" }}
             >
               Transcribed {transcriptChars.toLocaleString()} characters from
               the recording. Stored on this Mac, used to resolve who you mean.
@@ -258,10 +261,10 @@ export default function OnboardingAudioPage() {
               <ul className="mt-6 space-y-2 text-sm">
                 {Object.entries(profile.people).map(([k, v]) => (
                   <li key={k}>
-                    <span style={{ color: "rgba(245,240,235,0.55)" }}>
+                    <span style={{ color: "#626262" }}>
                       {k}
                     </span>{" "}
-                    <span style={{ color: "#F5F0EB" }}>{v}</span>
+                    <span style={{ color: "#111111" }}>{v}</span>
                   </li>
                 ))}
               </ul>
@@ -269,7 +272,7 @@ export default function OnboardingAudioPage() {
             {profile.do_not_touch && profile.do_not_touch.length > 0 && (
               <p
                 className="mt-6 text-xs"
-                style={{ color: "rgba(245,240,235,0.55)" }}
+                style={{ color: "#626262" }}
               >
                 Do not touch: {profile.do_not_touch.join(", ")}.
               </p>

@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import type { Metadata } from "next";
 
 // B011 + B013: /app needs its own title + description, distinct from the
@@ -24,5 +25,5 @@ export default function AppLayout({
 }: {
   children: React.ReactNode;
 }) {
-  return <>{children}</>;
+  return <CustomerFrame className="ac-application"><div id="page-content" tabIndex={-1} className="ac-workspace">{children}</div></CustomerFrame>;
 }

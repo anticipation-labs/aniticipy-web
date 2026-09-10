@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import Link from "next/link";
 import { HIRE_THEME } from "./theme";
 import { Tm } from "@/components/Tm";
@@ -56,33 +57,9 @@ export function RolePage({ role, content }: { role: Role; content: RolePageConte
   ];
 
   return (
-    <main style={{ ...HIRE_THEME, minHeight: "100dvh" }}>
+    <CustomerFrame audience="careers" className="ac-careers"><main id="page-content" tabIndex={-1} style={{ ...HIRE_THEME, minHeight: "100dvh" }}>
       <div style={{ maxWidth: 1000, margin: "0 auto", padding: "0 28px" }}>
-        <header
-          style={{
-            display: "flex",
-            alignItems: "baseline",
-            justifyContent: "space-between",
-            gap: 16,
-            padding: "26px 0",
-            borderBottom: "1px solid var(--rule)",
-          }}
-        >
-          <Link
-            href="/"
-            className="font-serif"
-            style={{ fontSize: 19, color: "var(--ink)", textDecoration: "none", letterSpacing: "0.01em" }}
-          >
-            Anticipy<Tm />
-          </Link>
-          <Link
-            href="/apply"
-            className="rp-mono"
-            style={{ fontSize: 11, letterSpacing: "0.12em", textTransform: "uppercase", color: "var(--accent-ink)", textDecoration: "none" }}
-          >
-            All roles
-          </Link>
-        </header>
+
 
         <div className="rp-grid">
           <div className="rp-intro">
@@ -260,6 +237,6 @@ export function RolePage({ role, content }: { role: Role; content: RolePageConte
           .rp-spec { padding-top: 10px; margin-top: 10px; }
         }
       ` }} />
-    </main>
+    </main></CustomerFrame>
   );
 }

@@ -59,26 +59,8 @@ Output: ONE assistant message per turn, plain text, no JSON, no
 markdown headers, no role labels. Never produce ${END_TOKEN} before
 turn 15.`;
 
-function Shell({ children }: { children: React.ReactNode }) {
-  return (
-    <div
-      className="min-h-screen bg-dark text-cream font-sans relative overflow-hidden"
-      style={{
-        backgroundImage:
-          "radial-gradient(60rem 40rem at 50% -10%, rgba(200,169,126,0.10), transparent 70%)",
-      }}
-    >
-      <div
-        aria-hidden
-        className="pointer-events-none fixed inset-0 opacity-[0.035]"
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-      <div className="relative z-10">{children}</div>
-    </div>
-  );
+function Shell({children}:{children:React.ReactNode}) {
+  return <div className="ac-app-shell">{children}</div>;
 }
 
 function turnsToMessages(turns: Turn[]) {
