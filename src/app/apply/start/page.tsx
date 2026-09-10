@@ -1,9 +1,10 @@
+import "@/components/customer/customer.css";
 import type { Metadata, Viewport } from "next";
 import { ApplyForm } from "./ApplyForm";
 import { HIRE_THEME } from "@/components/apply/theme";
 
 export const metadata: Metadata = {
-  title: "Apply — Anticipy",
+  title: "Apply | Anticipy",
   description: "A few screens, no cover letter, no resume.",
   alternates: { canonical: "https://www.anticipy.ai/apply/start" },
   // The listings hub at /apply is the page worth indexing; this is the form.
@@ -33,7 +34,7 @@ export const viewport: Viewport = {
  */
 export default function ApplyStartPage() {
   return (
-    <main style={HIRE_THEME}>
+    <main className="ac-careers-wizard" style={HIRE_THEME}>
       <ApplyForm />
     </main>
   );

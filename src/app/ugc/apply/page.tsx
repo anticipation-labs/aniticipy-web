@@ -1,3 +1,4 @@
+import "@/components/customer/customer.css";
 import type { Metadata, Viewport } from "next";
 import { UgcForm } from "./UgcForm";
 import { HIRE_THEME } from "@/components/apply/theme";
@@ -25,7 +26,7 @@ export const viewport: Viewport = {
  */
 export default function UgcApplyPage() {
   return (
-    <main style={HIRE_THEME}>
+    <main className="ac-careers-wizard" style={HIRE_THEME}>
       <UgcForm />
     </main>
   );

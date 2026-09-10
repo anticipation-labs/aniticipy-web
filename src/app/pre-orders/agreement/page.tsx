@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -16,33 +17,10 @@ const EFFECTIVE_DATE = "May 28, 2026";
 
 export default function PreOrderAgreementPage() {
   return (
-    <div
-      className="min-h-screen"
-      style={{ background: "var(--dark)", color: "var(--text-on-dark)" }}
-    >
-      <header
-        className="px-6 py-6 border-b"
-        style={{ borderColor: "var(--dark-border)" }}
-      >
-        <div className="max-w-3xl mx-auto flex justify-between items-center">
-          <Link
-            href="/"
-            className="font-serif text-[22px] hover:text-[var(--gold)] transition-colors"
-            style={{ color: "var(--text-on-dark)" }}
-          >
-            Anticipy
-          </Link>
-          <Link
-            href="/pre-orders/purchase"
-            className="text-[13px] hover:text-[var(--gold)] transition-colors"
-            style={{ color: "var(--text-on-dark-muted)" }}
-          >
-            &larr; Back to pre-order
-          </Link>
-        </div>
-      </header>
+    <CustomerFrame className="ac-editorial">
 
-      <main className="px-6 py-16">
+
+      <main id="page-content" tabIndex={-1} className="ac-editorial-main">
         <div className="max-w-3xl mx-auto">
           <h1
             className="font-serif leading-[1.15] mb-3"
@@ -211,7 +189,7 @@ export default function PreOrderAgreementPage() {
                 <Strong>Refund timing.</Strong> If you cancel under the Act,
                 we will refund you within <Strong>fifteen (15) days</Strong>{" "}
                 of the cancellation, in the original form of payment, with no
-                deductions — including all fees, charges and taxes you paid.
+                deductions · including all fees, charges and taxes you paid.
               </p>
               <p>
                 <Strong>Your copy of this contract.</Strong> We will send you
@@ -766,7 +744,7 @@ export default function PreOrderAgreementPage() {
           </div>
         </div>
       </main>
-    </div>
+    </CustomerFrame>
   );
 }
 

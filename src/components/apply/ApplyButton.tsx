@@ -44,7 +44,7 @@ export function ApplyButton({
         fontSize: lg ? 16.5 : 14.5,
         fontWeight: 600,
         letterSpacing: "-0.005em",
-        borderRadius: 999,
+        borderRadius: 5,
         textDecoration: "none",
         lineHeight: 1,
       }}

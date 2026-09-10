@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -23,30 +24,12 @@ export const metadata: Metadata = {
 
 export default function RefundPolicy() {
   return (
-    <div style={{ background: "var(--dark)" }} className="min-h-screen">
+    <CustomerFrame className="ac-editorial">
       {/* Header */}
-      <header
-        className="px-6 py-6 border-b"
-        style={{ borderColor: "var(--dark-border)" }}
-      >
-        <div className="flex items-center justify-between">
-          <Link
-            href="/"
-            className="font-serif text-[22px] text-[var(--text-on-dark)] hover:text-gold transition-colors"
-          >
-            Anticipy
-          </Link>
-          <Link
-            href="/"
-            className="text-[13px] text-[var(--text-on-dark-muted)] hover:text-gold transition-colors"
-          >
-            &larr; Back to Home
-          </Link>
-        </div>
-      </header>
+
 
       {/* Content */}
-      <main className="px-6 py-16">
+      <main id="page-content" tabIndex={-1} className="ac-editorial-main">
         <div className="max-w-3xl mx-auto">
           <h1 className="font-serif text-[clamp(32px,5vw,48px)] text-[var(--text-on-dark)] leading-[1.15] mb-4">
             Refund Policy
@@ -91,7 +74,7 @@ export default function RefundPolicy() {
                 Business Practices and Consumer Protection Act, SBC 2004 c 2. If we have not
                 shipped within <strong className="text-[var(--text-on-dark)]">30 days</strong> of
                 the estimated ship date shown at checkout, you may cancel and receive a full
-                refund — no reason required and no agreement from us needed. We will refund you
+                refund · no reason required and no agreement from us needed. We will refund you
                 within <strong className="text-[var(--text-on-dark)]">15 days</strong>, in your
                 original payment method, with no deductions, including all fees and taxes.
               </p>
@@ -126,7 +109,7 @@ export default function RefundPolicy() {
             {/* 3. Hardware Returns . Final sale after delivery */}
             <section>
               <h2 className="font-serif text-[22px] text-[var(--text-on-dark)] mb-4">
-                3. Hardware Returns &mdash; All Sales Final After Delivery
+                3. Hardware Returns: All Sales Final After Delivery
               </h2>
               <p>
                 <strong className="text-[var(--text-on-dark)]">Once your pendant has been
@@ -137,7 +120,7 @@ export default function RefundPolicy() {
               </p>
               <p className="mt-4">
                 You have a full and unconditional right to change your mind{" "}
-                <strong className="text-[var(--text-on-dark)]">before your unit ships</strong> —
+                <strong className="text-[var(--text-on-dark)]">before your unit ships</strong> ·
                 one email and we refund you in full, no reason required. That window closes when
                 the unit is handed to the carrier. Please use it if you are unsure.
               </p>
@@ -312,7 +295,7 @@ export default function RefundPolicy() {
                 Canada
               </h3>
               <p>
-                If you are located in Canada, you may benefit from protections under applicable provincial consumer protection legislation, including the <strong className="text-[var(--text-on-dark)]">Business Practices and Consumer Protection Act (BPCPA)</strong> in British Columbia and similar statutes in other provinces. You also benefit from the implied conditions in provincial sale-of-goods legislation. None of those rights are waivable, and the final-sale rule in section 3 does not attempt to waive them — it applies only to change-of-mind returns of a working pendant.
+                If you are located in Canada, you may benefit from protections under applicable provincial consumer protection legislation, including the <strong className="text-[var(--text-on-dark)]">Business Practices and Consumer Protection Act (BPCPA)</strong> in British Columbia and similar statutes in other provinces. You also benefit from the implied conditions in provincial sale-of-goods legislation. None of those rights are waivable, and the final-sale rule in section 3 does not attempt to waive them · it applies only to change-of-mind returns of a working pendant.
               </p>
 
               <h3 className="font-serif text-[18px] text-[var(--text-on-dark)] mb-2 mt-6">
@@ -435,6 +418,6 @@ export default function RefundPolicy() {
           </div>
         </div>
       </main>
-    </div>
+    </CustomerFrame>
   );
 }

@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -62,28 +63,10 @@ const faqSchema = {
 
 export default function ForParentsPage() {
   return (
-    <div style={{ background: "var(--dark)" }} className="min-h-screen">
-      <header
-        className="px-6 py-6 border-b"
-        style={{ borderColor: "var(--dark-border)" }}
-      >
-        <div className="max-w-3xl mx-auto flex justify-between items-center">
-          <Link
-            href="/"
-            className="font-serif text-[22px] text-[var(--text-on-dark)] hover:text-gold transition-colors"
-          >
-            Anticipy
-          </Link>
-          <Link
-            href="/for"
-            className="text-[15px] text-[var(--text-on-dark-muted)] hover:text-gold transition-colors"
-          >
-            All Use Cases
-          </Link>
-        </div>
-      </header>
+    <CustomerFrame className="ac-editorial">
 
-      <main className="px-6 py-16">
+
+      <main id="page-content" tabIndex={-1} className="ac-editorial-main">
         <div className="max-w-3xl mx-auto">
           <div className="mb-4">
             <span className="text-[12px] font-medium px-3 py-1 rounded-full bg-gold/10 text-gold">
@@ -329,6 +312,6 @@ export default function ForParentsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
       />
-    </div>
+    </CustomerFrame>
   );
 }

@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -23,30 +24,12 @@ export const metadata: Metadata = {
 
 export default function PrivacyPolicy() {
   return (
-    <div style={{ background: "var(--dark)" }} className="min-h-screen">
+    <CustomerFrame className="ac-editorial">
       {/* Header */}
-      <header
-        className="px-6 py-6 border-b"
-        style={{ borderColor: "var(--dark-border)" }}
-      >
-        <div className="max-w-3xl mx-auto flex justify-between items-center">
-          <Link
-            href="/"
-            className="font-serif text-[22px] text-[var(--text-on-dark)] hover:text-gold transition-colors"
-          >
-            Anticipy
-          </Link>
-          <Link
-            href="/"
-            className="text-[15px] text-[var(--text-on-dark-muted)] hover:text-gold transition-colors"
-          >
-            Back to Home
-          </Link>
-        </div>
-      </header>
+
 
       {/* Content */}
-      <main className="px-6 py-16">
+      <main id="page-content" tabIndex={-1} className="ac-editorial-main">
         <div className="max-w-3xl mx-auto">
           <h1 className="font-serif text-[clamp(32px,5vw,48px)] text-[var(--text-on-dark)] leading-[1.15] mb-4">
             Privacy Policy
@@ -616,7 +599,7 @@ export default function PrivacyPolicy() {
                   <strong className="text-[var(--text-on-dark)]">
                     Maryland
                   </strong>{" "}
-                  (Md. Code, Cts. &amp; Jud. Proc. &sect;10-402) , 
+                  (Md. Code, Cts. &amp; Jud. Proc. &sect;10-402) ,
                   All-party consent required.
                 </li>
                 <li>
@@ -2517,30 +2500,7 @@ export default function PrivacyPolicy() {
       </main>
 
       {/* Footer */}
-      <footer
-        className="px-6 py-10 border-t"
-        style={{ borderColor: "var(--dark-border)" }}
-      >
-        <div className="max-w-3xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-4">
-          <p className="text-[13px] text-[var(--text-on-dark-muted)]">
-            &copy; 2026 Anticipation Labs Inc. All rights reserved.
-          </p>
-          <nav className="flex gap-4">
-            <Link
-              href="/terms"
-              className="text-[13px] text-[var(--text-on-dark-muted)] hover:text-gold transition-colors"
-            >
-              Terms of Service
-            </Link>
-            <Link
-              href="/refund"
-              className="text-[13px] text-[var(--text-on-dark-muted)] hover:text-gold transition-colors"
-            >
-              Refund Policy
-            </Link>
-          </nav>
-        </div>
-      </footer>
-    </div>
+
+    </CustomerFrame>
   );
 }

@@ -1,3 +1,4 @@
+import { CustomerFrame } from "@/components/customer/CustomerFrame";
 import Link from "next/link";
 import type { Metadata } from "next";
 
@@ -158,28 +159,10 @@ const players = [
 
 export default function GuidePage() {
   return (
-    <div style={{ background: "var(--dark)" }} className="min-h-screen">
-      <header
-        className="px-6 py-6 border-b"
-        style={{ borderColor: "var(--dark-border)" }}
-      >
-        <div className="max-w-4xl mx-auto flex justify-between items-center">
-          <Link
-            href="/"
-            className="font-serif text-[22px] text-[var(--text-on-dark)] hover:text-gold transition-colors"
-          >
-            Anticipy
-          </Link>
-          <Link
-            href="/compare"
-            className="text-[15px] text-[var(--text-on-dark-muted)] hover:text-gold transition-colors"
-          >
-            All Comparisons
-          </Link>
-        </div>
-      </header>
+    <CustomerFrame className="ac-editorial">
 
-      <main className="px-6 py-16">
+
+      <main id="page-content" tabIndex={-1} className="ac-editorial-main">
         <div className="max-w-4xl mx-auto">
           <div className="mb-4 flex items-center gap-3">
             <span className="text-[12px] font-medium px-3 py-1 rounded-full bg-gold/10 text-gold">
@@ -824,6 +807,6 @@ export default function GuidePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
       />
-    </div>
+    </CustomerFrame>
   );
 }
