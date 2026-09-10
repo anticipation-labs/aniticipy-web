@@ -4,10 +4,11 @@ import { useCallback, useEffect, useState } from "react";
 import { createClient } from "@supabase/supabase-js";
 import { useRouter } from "next/navigation";
 
-const supabase = createClient(
-  process.env.NEXT_PUBLIC_SUPABASE_URL!,
-  process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!
-);
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+const supabase = supabaseUrl && supabaseKey
+  ? createClient(supabaseUrl, supabaseKey)
+  : null;
 
 interface Tier {
   tier_key: string;
@@ -38,6 +39,7 @@ export default function OffersAdmin() {
   const [msg, setMsg] = useState<string | null>(null);
 
   useEffect(() => {
+    if (!supabase) return;
     supabase.auth.getSession().then(({ data }) => {
       const t = data.session?.access_token ?? null;
       if (!t) router.push("/admin/login");
@@ -105,6 +107,15 @@ export default function OffersAdmin() {
     : listPrice;
 
   const money = (c: number) => `$${(c / 100).toFixed(2)}`;
+
+  if (!supabase) {
+    return (
+      <main style={{ padding: 40, color: "#111", background: "#fff" }}>
+        <h1>Admin configuration unavailable</h1>
+        <p>Configure Supabase to access the discount ladder.</p>
+      </main>
+    );
+  }
 
   if (loading) return <main style={{ padding: 40, color: "#888" }}>Loading…</main>;
 
