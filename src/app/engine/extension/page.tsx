@@ -178,7 +178,7 @@ export default function ExtensionInstallPage() {
       }}
     >
       {/* Header */}
-      <header
+      <div role="navigation" aria-label="Engine tools"
         style={{
           padding: "16px 24px",
           borderBottom: "1px solid rgba(255,255,255,0.06)",
@@ -220,9 +220,9 @@ export default function ExtensionInstallPage() {
         >
           Install Guide
         </span>
-      </header>
+      </div>
 
-      <main style={{ maxWidth: 680, margin: "0 auto", padding: "48px 24px 80px" }}>
+      <section style={{ maxWidth: 680, margin: "0 auto", padding: "48px 24px 80px" }}>
         {/* Title */}
         <h1
           className="font-serif"
@@ -392,10 +392,10 @@ export default function ExtensionInstallPage() {
             Go to Engine →
           </Link>
         </div>
-      </main>
+      </section>
 
       {/* Footer */}
-      <footer
+      <aside aria-label="Engine help"
         style={{
           padding: "20px 24px",
           borderTop: "1px solid rgba(255,255,255,0.06)",
@@ -417,7 +417,7 @@ export default function ExtensionInstallPage() {
         >
           Back to Engine
         </Link>
-      </footer>
+      </aside>
     </div>
   );
 }
