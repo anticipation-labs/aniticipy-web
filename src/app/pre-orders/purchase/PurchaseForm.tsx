@@ -1,8 +1,6 @@
 "use client";
 
 import { FormEvent, useEffect, useState } from "react";
-import { motion } from "motion/react";
-import { ease } from "@/lib/animation";
 import {
   capture,
   identifyByEmail,
@@ -17,9 +15,11 @@ type FormState = "idle" | "loading" | "error";
 export function PurchaseForm({
   canceled,
   initialFinish = "silver",
+  onFinishChange,
 }: {
   canceled: boolean;
   initialFinish?: PendantFinish;
+  onFinishChange?: (finish: PendantFinish) => void;
 }) {
   const [finish, setFinish] = useState<PendantFinish>(initialFinish);
   const [email, setEmail] = useState("");
@@ -185,184 +185,174 @@ export function PurchaseForm({
   };
 
   return (
-    <form onSubmit={onSubmit} className="flex flex-col gap-4" noValidate>
-      <fieldset className="flex flex-col gap-2 mb-3">
-        <legend className="text-[13px] uppercase tracking-[0.12em] mb-2">
-          Choose your finish
+    <form
+      onSubmit={onSubmit}
+      className="ac-form"
+      noValidate
+      aria-busy={state === "loading"}
+    >
+      <fieldset>
+        <legend>
+          <span>1</span> Choose your finish
         </legend>
-        <div className="flex gap-3">
+        <div className="ac-finish-options">
           {(["silver", "gold"] as const).map((value) => (
-            <label
-              key={value}
-              className="flex items-center gap-2 border rounded-lg px-4 py-3 cursor-pointer"
-              style={{ borderColor: finish === value ? "#795c3e" : "#8a7b68" }}
-            >
+            <label className="ac-finish-option" key={value}>
               <input
                 type="radio"
                 name="finish"
                 value={value}
                 checked={finish === value}
-                onChange={() => setFinish(value)}
+                onChange={() => {
+                  setFinish(value);
+                  onFinishChange?.(value);
+                }}
+              />
+              <i
+                className={`ac-swatch ac-swatch-${value}`}
+                aria-hidden="true"
               />
               {pendantFinishLabel(value)}
+              <span className="ac-finish-check" aria-hidden="true">
+                {finish === value ? "✓" : ""}
+              </span>
             </label>
           ))}
         </div>
       </fieldset>
       {showCanceled && (
-        <motion.div
-          initial={{ opacity: 0, y: -8 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease }}
-          className="px-4 py-3 rounded-card text-[14px]"
-          style={{
-            background: "var(--gold-dim)",
-            color: "var(--gold)",
-            border: "1px solid rgba(200,169,126,0.3)",
-          }}
-        >
-          Checkout canceled. Your card was not charged. You can complete your
-          pre-order any time before manufacturing finishes.
-        </motion.div>
+        <p className="ac-status" role="status">
+          Checkout wasn’t completed. You can continue below when you’re ready.
+        </p>
       )}
-
-      <label className="flex flex-col gap-2">
-        <span className="text-[13px] uppercase tracking-[0.12em] font-medium text-[var(--text-on-light-muted)]">
-          Name
-        </span>
-        <input
-          type="text"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Full name"
-          autoComplete="name"
-          className="px-5 py-3.5 rounded-pill text-[15px] font-light outline-none transition-colors duration-300 bg-white"
-          style={{
-            border: "1px solid var(--cream-border)",
-            color: "var(--text-on-light)",
-          }}
-        />
-      </label>
-
-      <label className="flex flex-col gap-2">
-        <span className="text-[13px] uppercase tracking-[0.12em] font-medium text-[var(--text-on-light-muted)]">
-          Email
-        </span>
-        <input
-          type="email"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          onBlur={onEmailBlur}
-          placeholder="you@example.com"
-          required
-          autoComplete="email"
-          className="px-5 py-3.5 rounded-pill text-[15px] font-light outline-none transition-colors duration-300 bg-white"
-          style={{
-            border: "1px solid var(--cream-border)",
-            color: "var(--text-on-light)",
-          }}
-        />
-      </label>
-
-      <label className="flex items-start gap-3 mt-2 text-[14px] text-[var(--text-on-light-muted)] cursor-pointer">
-        <input
-          type="checkbox"
-          checked={ageConfirmed}
-          onChange={(e) => setAgeConfirmed(e.target.checked)}
-          className="mt-1 w-4 h-4 accent-[var(--text-on-light)]"
-        />
-        <span>
-          I confirm I am at least 18 years old and have the legal capacity to
-          enter a binding contract in my jurisdiction.
-        </span>
-      </label>
-
-      <label className="flex items-start gap-3 text-[14px] text-[var(--text-on-light-muted)] cursor-pointer">
-        <input
-          type="checkbox"
-          checked={agreed}
-          onChange={(e) => setAgreed(e.target.checked)}
-          className="mt-1 w-4 h-4 accent-[var(--text-on-light)]"
-        />
-        <span>
-          I have read and accept the{" "}
-          <a
-            href="/pre-orders/agreement"
-            target="_blank"
-            rel="noopener"
-            className="underline hover:text-[var(--text-on-light)]"
-          >
-            Pre-Order Agreement
-          </a>
-          , the{" "}
-          <a
-            href="/terms"
-            target="_blank"
-            rel="noopener"
-            className="underline hover:text-[var(--text-on-light)]"
-          >
-            Terms of Service
-          </a>
-          , and the{" "}
-          <a
-            href="/privacy"
-            target="_blank"
-            rel="noopener"
-            className="underline hover:text-[var(--text-on-light)]"
-          >
-            Privacy Policy
-          </a>
-          . I understand the estimated ship date is Q4 2026, that I can cancel
-          for a full refund any time before my unit ships, and that the
-          Pre-Order Agreement contains a binding arbitration clause and class
-          action waiver in Section 14 that affect my legal rights (with a 30-day
-          opt-out).
-        </span>
-      </label>
-
-      <label className="flex items-start gap-3 text-[14px] text-[var(--text-on-light-muted)] cursor-pointer">
-        <input
-          type="checkbox"
-          checked={marketingOptIn}
-          onChange={(e) => setMarketingOptIn(e.target.checked)}
-          className="mt-1 w-4 h-4 accent-[var(--text-on-light)]"
-        />
-        <span>
-          (Optional) Send me product updates and shipping notifications. You can
-          unsubscribe at any time using the link in every email.
-        </span>
-      </label>
-
-      {error && <p className="text-[14px] text-red-700">{error}</p>}
-
+      <div className="ac-form-section">
+        <h2>
+          <span className="ac-section-number">2</span>Your details
+        </h2>
+        <div className="ac-fields">
+          <label className="ac-field">
+            Full name{" "}
+            <input
+              type="text"
+              name="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Your name"
+              autoComplete="name"
+            />
+            <small>Optional</small>
+          </label>
+          <label className="ac-field">
+            Email address{" "}
+            <input
+              type="email"
+              name="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={onEmailBlur}
+              placeholder="you@example.com"
+              required
+              autoComplete="email"
+              aria-describedby={error ? "purchase-error" : undefined}
+            />
+            <small>For your order confirmation and shipping updates.</small>
+          </label>
+        </div>
+      </div>
+      <div className="ac-form-section">
+        <h2>
+          <span className="ac-section-number">3</span>Before you continue
+        </h2>
+        <div className="ac-consents">
+          <label className="ac-check">
+            <input
+              type="checkbox"
+              checked={ageConfirmed}
+              onChange={(e) => setAgeConfirmed(e.target.checked)}
+            />
+            <span>
+              I confirm I am at least 18 years old and have the legal capacity
+              to enter a binding contract in my jurisdiction.
+            </span>
+          </label>
+          <label className="ac-check">
+            <input
+              type="checkbox"
+              checked={agreed}
+              onChange={(e) => setAgreed(e.target.checked)}
+            />
+            <span>
+              I have read and accept the{" "}
+              <a href="/pre-orders/agreement" target="_blank" rel="noopener">
+                Pre-Order Agreement
+              </a>
+              , the{" "}
+              <a href="/terms" target="_blank" rel="noopener">
+                Terms of Service
+              </a>
+              , and the{" "}
+              <a href="/privacy" target="_blank" rel="noopener">
+                Privacy Policy
+              </a>
+              . I understand the estimated ship date is Q4 2026, that I can
+              cancel for a full refund any time before my unit ships, and that
+              the Pre-Order Agreement contains a binding arbitration clause and
+              class action waiver in Section 14 that affect my legal rights
+              (with a 30-day opt-out).
+            </span>
+          </label>
+          <label className="ac-check">
+            <input
+              type="checkbox"
+              checked={marketingOptIn}
+              onChange={(e) => setMarketingOptIn(e.target.checked)}
+            />
+            <span>
+              (Optional) Send me product updates. You can unsubscribe at any
+              time using the link in every email.
+            </span>
+          </label>
+        </div>
+      </div>
+      {error && (
+        <p
+          id="purchase-error"
+          className="ac-status ac-status-error"
+          role="alert"
+        >
+          {error}
+        </p>
+      )}
       <button
         type="submit"
         disabled={state === "loading"}
         data-attr="preorder-submit"
         data-cta-id="preorder_submit"
-        data-cta-location="hero"
+        data-cta-location="purchase"
         data-cta-type="preorder"
         data-cta-style="primary"
         data-cta-label="Continue to payment"
-        className="mt-2 px-8 py-4 rounded-pill text-[16px] font-medium transition-all duration-300 disabled:opacity-60"
-        style={{
-          background: "var(--dark)",
-          color: "var(--cream)",
-        }}
+        className="ac-button"
       >
-        {state === "loading" ? (
-          <span className="inline-flex items-center gap-2 justify-center">
-            <span className="inline-block w-4 h-4 border-2 border-cream border-t-transparent rounded-full animate-spin" />
-            Redirecting to secure checkout
-          </span>
-        ) : (
-          "Pre-order for $149.99"
-        )}
+        {state === "loading"
+          ? "Opening secure checkout…"
+          : "Continue to payment"}
+        <span aria-hidden="true">↗</span>
       </button>
-
-      <p className="text-[12px] text-[var(--text-on-light-muted)] mt-1 text-center">
-        Secured by Stripe. Payment is charged today and locks in $50 off the
-        $199 retail price. Free shipping in the US and Canada.
+      <p className="ac-payment-note">
+        $149.99 USD charged today · Secure payment with Stripe
+      </p>
+      <div className="ac-promises">
+        <div>
+          Free shipping<span>United States & Canada</span>
+        </div>
+        <div>
+          Fully refundable<span>Before your pendant ships</span>
+        </div>
+      </div>
+      <p className="ac-form-note">
+        Estimated shipping Q4 2026. After year one, optional AI service is
+        projected at $99 USD/year. No automatic enrollment.
       </p>
     </form>
   );
