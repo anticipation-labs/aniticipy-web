@@ -16,7 +16,7 @@ import { PhotorealPendantScene } from "./PhotorealPendantScene";
 import { PurchaseGallery } from "./PurchaseGallery";
 import { MotionHero } from "./MotionHero";
 
-const STORE = "https://www.anticipy.ai";
+
 const BENEFITS = [
   {
     title: (
@@ -221,6 +221,7 @@ export function AnticipyLanding({
   preview?: boolean;
   campaign?: boolean;
 }) {
+  const STORE = preview ? "https://www.anticipy.ai" : "";
   const root = useRef<HTMLDivElement>(null);
   const dialog = useRef<HTMLDialogElement>(null);
   const menuButton = useRef<HTMLButtonElement>(null);

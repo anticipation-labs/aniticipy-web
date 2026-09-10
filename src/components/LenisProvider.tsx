@@ -13,7 +13,7 @@ export function LenisProvider({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
 
   useEffect(() => {
-    if (pathname === "/") return;
+    if (pathname === "/" || pathname === "/action-taker" || pathname === "/waitlist" || pathname === "/book" || pathname.startsWith("/pre-orders") || pathname.startsWith("/app")) return;
     const preference = window.matchMedia("(prefers-reduced-motion: reduce)");
     let cleanup: (() => void) | undefined;
     const syncMotion = () => {

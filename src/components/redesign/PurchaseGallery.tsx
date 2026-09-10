@@ -57,7 +57,7 @@ function Chevron({ previous = false }: { previous?: boolean }) {
   );
 }
 
-export function PurchaseGallery({ finish }: { finish: PendantFinish }) {
+export function PurchaseGallery({ finish, priority = false }: { finish: PendantFinish; priority?: boolean }) {
   const [selected, setSelected] = useState(0);
   const [expanded, setExpanded] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
@@ -133,7 +133,7 @@ export function PurchaseGallery({ finish }: { finish: PendantFinish }) {
             alt={photo.alt}
             width="1600"
             height="1600"
-            loading="lazy"
+            loading={priority ? "eager" : "lazy"}
             decoding="async"
             draggable={false}
           />

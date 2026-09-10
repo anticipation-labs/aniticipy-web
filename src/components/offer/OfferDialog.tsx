@@ -17,7 +17,7 @@ interface Props {
   onClose: (accepted: boolean) => void;
 }
 
-const GOLD = "#C8A97E";
+const GOLD = "#705d48";
 
 /**
  * The offer dialog.
@@ -118,13 +118,13 @@ export function OfferDialog({ offer, triggerType, onClose }: Props) {
         <div
           style={{
             width: "min(440px, calc(100vw - 32px))",
-            background: "#111111",
-            border: "1px solid #1F1F1F",
-            borderRadius: 18,
+            background: "#ffffff",
+            border: "1px solid #dedede",
+            borderRadius: 8,
             padding: "30px 28px 26px",
-            color: "#FAFAFA",
+            color: "#111111",
             fontFamily:
-              "-apple-system,BlinkMacSystemFont,'Segoe UI',Helvetica,Arial,sans-serif",
+              "var(--anticipy-font)",
             textAlign: "center",
             animation: "ap-fade 240ms ease-out",
           }}
@@ -154,7 +154,7 @@ export function OfferDialog({ offer, triggerType, onClose }: Props) {
 
           <p
             style={{
-              fontFamily: "Georgia,'Times New Roman',serif",
+              fontFamily: "var(--anticipy-font)",
               fontSize: 19,
               color: GOLD,
               margin: "0 0 20px",
@@ -182,7 +182,7 @@ export function OfferDialog({ offer, triggerType, onClose }: Props) {
                 border: `2px solid ${GOLD}`,
                 background: `conic-gradient(${Array.from({ length: SEGMENTS })
                   .map((_, i) => {
-                    const c = i % 2 === 0 ? "#1A1A1A" : "#141414";
+                    const c = i % 2 === 0 ? "#f6f6f6" : "#eeeeee";
                     return `${c} ${(i * 360) / SEGMENTS}deg ${
                       ((i + 1) * 360) / SEGMENTS
                     }deg`;
@@ -218,7 +218,7 @@ export function OfferDialog({ offer, triggerType, onClose }: Props) {
               >
                 <div
                   style={{
-                    background: "#0C0C0C",
+                    background: "#ffffff",
                     border: `2px solid ${GOLD}`,
                     borderRadius: "50%",
                     width: 132,
@@ -249,7 +249,7 @@ export function OfferDialog({ offer, triggerType, onClose }: Props) {
 
           <p
             id="ap-offer-desc"
-            style={{ fontSize: 14, lineHeight: 1.6, color: "#B8B8B8", margin: "0 0 20px" }}
+            style={{ fontSize: 14, lineHeight: 1.6, color: "#626262", margin: "0 0 20px" }}
           >
             {revealed
               ? offer.subhead ?? ""
@@ -272,10 +272,10 @@ export function OfferDialog({ offer, triggerType, onClose }: Props) {
               data-cta-type="preorder"
               data-cta-style="primary"
               style={{
-                background: GOLD,
-                color: "#0C0C0C",
+                background: "#111111",
+                color: "#ffffff",
                 border: "none",
-                borderRadius: 100,
+                borderRadius: 5,
                 padding: "13px 34px",
                 fontSize: 15,
                 fontWeight: 600,
@@ -293,10 +293,10 @@ export function OfferDialog({ offer, triggerType, onClose }: Props) {
               data-cta-type="preorder"
               data-cta-style="primary"
               style={{
-                background: revealed ? GOLD : "#2A2A2A",
-                color: revealed ? "#0C0C0C" : "#6A6A6A",
+                background: revealed ? "#111111" : "#eeeeee",
+                color: revealed ? "#ffffff" : "#626262",
                 border: "none",
-                borderRadius: 100,
+                borderRadius: 5,
                 padding: "13px 34px",
                 fontSize: 15,
                 fontWeight: 600,

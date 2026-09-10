@@ -26,6 +26,9 @@ const OfferDialog = dynamic(
  * Adding a page that is not a purchase funnel? Add it here at the same time.
  */
 const SUPPRESSED = [
+  "/waitlist",
+  "/book",
+  "/action-taker",
   "/pre-orders/purchase",
   "/pre-orders/success",
   "/pre-orders/agreement",
@@ -50,6 +53,9 @@ const SUPPRESSED = [
   "/analytics",
   "/internal",
   "/app",
+  "/onboarding",
+  "/flash",
+  "/demo",
 ];
 
 const K = {
@@ -232,7 +238,7 @@ export function OfferMount() {
     };
   }, [pathname]);
 
-  if (!offer || pathname === "/") return null;
+  if (!offer || pathname === "/" || SUPPRESSED.some((p) => pathname?.startsWith(p))) return null;
 
   return (
     <OfferDialog
