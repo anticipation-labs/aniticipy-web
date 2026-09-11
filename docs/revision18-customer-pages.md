@@ -45,6 +45,6 @@ The local checkout, waitlist and account flows need the existing development Str
 
 The full customer migration must use the Next.js production build. `build:design` produces a standalone landing preview only.
 
-GitHub currently reports that Vercel cannot deploy this private organization repository on the configured Hobby plan. Resolve the project/account restriction before relying on automatic deployment. This is separate from the passing local production build.
+The production domain uses the Cloudflare Worker `anticipy-site`. See [Cloudflare release setup](cloudflare-release.md) for the repository, build commands and required build-time configuration. The previous Vercel account restriction does not describe the current production serving path.
 
 The migration is split into meaningful commits for shared foundations, purchasing, public information pages, app/device surfaces, and release readiness. No history was rewritten.

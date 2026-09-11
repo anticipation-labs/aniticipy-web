@@ -12,6 +12,10 @@ export function getStripe(): Stripe {
   }
   _stripe = new Stripe(secretKey, {
     apiVersion: "2026-05-27.dahlia",
+    // Use fetch on Cloudflare Workers; the Node HTTP transport can stall.
+    httpClient: Stripe.createFetchHttpClient(),
+    timeout: 20_000,
+    maxNetworkRetries: 1,
     appInfo: {
       name: "Anticipy Web",
       url: "https://www.anticipy.ai",
