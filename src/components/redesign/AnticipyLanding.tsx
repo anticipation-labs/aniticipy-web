@@ -8,7 +8,13 @@ import "./action.css";
 import "./clarity.css";
 import "./purchase.css";
 import "./hero.css";
-import { ActionExperience, PrototypeTrust } from "./ActionExperience";
+import "./workflow.css";
+import {
+  ActionExperience,
+  PrototypeTrust,
+  SeeItWork,
+  Testimonial,
+} from "./ActionExperience";
 import { ActionFAQ, ActionManifesto, FinishPicker } from "./ActionSections";
 import { FINISHES, type PendantFinish } from "./pendant-design";
 import { PendantScene, type PendantSceneHandle } from "./PendantScene";
@@ -564,8 +570,10 @@ export function AnticipyLanding({
           onFinishChange={setFinish}
         />
 
-        <PrototypeTrust />
         <ActionExperience motion={motion} />
+        <SeeItWork motion={motion} />
+        <PrototypeTrust />
+        <Testimonial />
 
         <section
           ref={benefits}

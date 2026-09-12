@@ -268,11 +268,12 @@ export function MotionHero({
               <span>taker.</span>
             </span>
           </h1>
+          <p className="ap-motion-summary">
+            Anticipy is a wearable AI pendant that automatically turns
+            commitments from your conversations into ready-to-send emails,
+            calendar events and tasks.
+          </p>
           <div className="ap-motion-intro">
-            <p>
-              Your words become emails, plans and tasks.
-              <br /> You have the final say.
-            </p>
             <a
               className="ap-motion-buy"
               href="#order"

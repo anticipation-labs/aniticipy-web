@@ -407,7 +407,7 @@
     padding: 108px 6% 21px;
     display: grid;
     grid-template-columns: 1fr;
-    grid-template-areas: "eyebrow" "heading" "object" "finishes" "intro" "foot" "story";
+    grid-template-areas: "eyebrow" "heading" "summary" "object" "finishes" "intro" "foot" "story";
   }
   .ap-site .ap-motion-copy {
     display: contents;
