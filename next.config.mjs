@@ -6,8 +6,20 @@
 // this same backend — so adding a /fellows/* route needs no change in this
 // file any more. What is left below is HQ (which deliberately stays on
 // anticipy.ai, behind the site passcode) and /r/*.
+// CUTOVER 2026-09-04: the default backend is now the Cloudflare Worker
+// (D1-backed), which replaces the Railway PocketBase for HQ. Every /internal/*
+// route rewritten below was probed on it and answers — 33/33 present, zero 404
+// at the edge. Rollback is one line and needs NO code change: set the env var
+// back to the Railway host —
+//   FELLOWSHIP_ORIGIN=https://backend-production-61e0a.up.railway.app
+// The prerequisite that makes this safe (already done): ANTICIPY_AUTH_SECRET on
+// the Worker equals PocketBase's owners.authToken.secret, or every existing HQ
+// session token is rejected. See, in the Anticipy backend repo,
+// research/2026-09-04-the-auth-secret-nobody-set.md.
+// TODO before this is the PERMANENT prod origin: give the Worker a custom domain
+// (e.g. api.anticipy.ai) and put it here instead of the workers.dev hostname.
 const FELLOWSHIP_ORIGIN =
-  process.env.FELLOWSHIP_ORIGIN || "https://backend-production-61e0a.up.railway.app";
+  process.env.FELLOWSHIP_ORIGIN || "https://anticipy-api.omar-114.workers.dev";
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
@@ -79,8 +91,10 @@ const nextConfig = {
       //
       // A fellow's minted link. /c/* was the old creator link shape and is
       // pointed at the same place so anything already posted keeps working.
-      { source: "/r/:code", destination: `${FELLOWSHIP_ORIGIN}/r/:code` },
-      { source: "/c/:code", destination: `${FELLOWSHIP_ORIGIN}/r/:code` },
+      // /r/:code and /c/:code are NO LONGER REWRITTEN. They are route handlers
+      // at src/app/r/[code] and src/app/c/[code], because a rewrite proxy's
+      // redirect handling differs between Vercel and OpenNext and the 302 those
+      // links return IS the attribution. See the comment in either file.
       // HQ — the team's own workspace — now answers at anticipy.ai/internal.
       //
       // It used to be reachable only at the raw Railway hostname, because

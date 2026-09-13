@@ -142,6 +142,15 @@ export async function middleware(request: NextRequest) {
     return NextResponse.redirect(url, 301);
   }
 
+  // FIX 2026-09-05: the OpenNext worker mis-resolves the literal "/app" route
+  // to the homepage. Serve the real page from the /enter alias while keeping the
+  // /app URL. Exact match only, so /app/download and other subpaths are untouched.
+  if (pathname === "/app") {
+    const url = request.nextUrl.clone();
+    url.pathname = "/enter";
+    return NextResponse.rewrite(url);
+  }
+
   // B061: client-side PasswordGate previously rendered the full /internal
   // page HTML server-side (including hardware spec, block diagrams, BOM,
   // pinouts). Anyone could curl the URL to read the doc, because the gate
@@ -180,6 +189,7 @@ export async function middleware(request: NextRequest) {
 export const config = {
   matcher: [
     "/engine",
+    "/app",
     "/engine/:path*",
     "/internal",
     "/internal/:path*",

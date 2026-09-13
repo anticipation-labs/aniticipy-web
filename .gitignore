@@ -121,3 +121,7 @@ desktop/src-tauri/target/
 
 # Temporary server render used by the static design review build
 /.design-preview/
+
+# Cloudflare / OpenNext build output
+.open-next/
+.wrangler/
